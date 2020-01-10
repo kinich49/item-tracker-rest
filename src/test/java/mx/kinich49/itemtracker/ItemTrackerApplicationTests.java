@@ -1,4 +1,4 @@
-package com.kinich49.itemtracker;
+package mx.kinich49.itemtracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

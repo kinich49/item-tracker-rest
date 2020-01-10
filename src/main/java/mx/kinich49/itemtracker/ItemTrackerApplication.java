@@ -1,4 +1,4 @@
-package com.kinich49.itemtracker;
+package mx.kinich49.itemtracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

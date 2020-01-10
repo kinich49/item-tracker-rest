@@ -8,7 +8,7 @@
 		<version>2.2.2.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.kinich49</groupId>
+	<groupId>mx.kinich49</groupId>
 	<artifactId>item-tracker</artifactId>
 	<version>1.0</version>
 	<name>item-tracker</name>
