@@ -1,7 +1,9 @@
 package mx.kinich49.itemtracker.models;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,5 +18,16 @@ public class Item {
     private long id;
     @NotNull
     private String name;
-    private String brand;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+    @OneToMany(
+        mappedBy = "item",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
+    private List<ShoppingItem> items;
+
 }

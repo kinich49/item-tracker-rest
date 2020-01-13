@@ -1,6 +1,6 @@
 package mx.kinich49.itemtracker.controllers;
 
-import mx.kinich49.itemtracker.models.ShoppingList;
+import mx.kinich49.itemtracker.models.Shopping;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class ShoppingListController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<?> getShoppingList(@PathVariable("id") long shoppingListId) {
-        Optional<ShoppingList> optional = repository.findById(shoppingListId);
+        Optional<Shopping> optional = repository.findById(shoppingListId);
         if (optional.isPresent()) {
             return new ResponseEntity<>(optional.get(), HttpStatus.OK);
         } else {
@@ -31,8 +31,8 @@ public class ShoppingListController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insertShoppingList(@RequestBody ShoppingList category) {
-        return new ResponseEntity<ShoppingList>(repository.save(category), HttpStatus.OK);
+    public ResponseEntity<?> insertShoppingList(@RequestBody Shopping category) {
+        return new ResponseEntity<Shopping>(repository.save(category), HttpStatus.OK);
     }
 
     @DeleteMapping("/id/{id}")

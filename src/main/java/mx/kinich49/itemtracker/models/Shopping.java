@@ -9,20 +9,18 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "ShoppingLists")
-public class ShoppingList {
+@Table(name = "Shoppins")
+public class Shopping {
 
     @Id
     @GeneratedValue
     private long id;
-
     private LocalDate shoppingDate;
     @OneToMany(
-            mappedBy = "shoppingList",
+            mappedBy = "shopping",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<ShoppingItem> shoppingItems = new ArrayList<>();
-
 
 }

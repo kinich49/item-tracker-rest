@@ -1,7 +1,6 @@
 package mx.kinich49.itemtracker.models;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,11 +16,11 @@ public class ShoppingItem {
     private double quantity = 1;
     @NotNull
     private int unitPrice;
-    @NotNull
-    private int totalPrice;
-    @OneToOne
-    private Item item;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    private ShoppingList shoppingList;
+    @JoinColumn(name = "item_id")
+    private Item item;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shopping_id")
+    private Shopping shopping;
+
 }
