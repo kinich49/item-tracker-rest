@@ -28,6 +28,5 @@ public class Item {
         mappedBy = "item",
         cascade = CascadeType.ALL,
         orphanRemoval = true)
-    private List<ShoppingItem> items;
-
+    private List<ShoppingItem> items = new ArrayList<>();
 }

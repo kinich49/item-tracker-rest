@@ -9,18 +9,17 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Shoppins")
+@Table(name = "Shoppings")
 public class Shopping {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private LocalDate shoppingDate;
+    private LocalDate shoppingDate = LocalDate.now();
     @OneToMany(
             mappedBy = "shopping",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<ShoppingItem> shoppingItems = new ArrayList<>();
-
 }

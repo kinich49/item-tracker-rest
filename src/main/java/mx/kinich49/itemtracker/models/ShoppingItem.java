@@ -22,5 +22,4 @@ public class ShoppingItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_id")
     private Shopping shopping;
-
 }

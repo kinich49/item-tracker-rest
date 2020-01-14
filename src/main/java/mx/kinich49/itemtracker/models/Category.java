@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "ItemCategories")
+@Table(name = "Categories")
 public class Category {
 
     @Id
@@ -29,5 +29,4 @@ public class Category {
         cascade = CascadeType.ALL,
         orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
-
 }

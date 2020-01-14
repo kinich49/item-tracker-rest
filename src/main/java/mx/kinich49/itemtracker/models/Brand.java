@@ -27,5 +27,4 @@ public class Brand {
         cascade = CascadeType.ALL,
         orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
-
 }

@@ -17,4 +17,5 @@ public class Store {
     private long id;
     @NotNull
     private String name;
+
 }
