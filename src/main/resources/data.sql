@@ -75,7 +75,9 @@ INSERT INTO items(name, brand_id, category_id) VALUES('Toallitas húmedas con Ar
 INSERT INTO items(name, brand_id, category_id) VALUES('Desinfectante 90ml', 14, 1)
 INSERT INTO items(name, brand_id, category_id) VALUES('Shampoo Control Caída', 15, 10)
 
-INSERT INTO Shoppings(shopping_date) VALUES('2020-01-06')
+INSERT INTO Stores(name) VALUES('HEB')
+
+INSERT INTO Shoppings(shopping_date, store_id) VALUES('2020-01-06',1)
 
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_id) VALUES(1, 0.355, 2395, 1)
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_id) VALUES(2, 1.055, 3995, 1)
