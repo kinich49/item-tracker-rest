@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.services;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,17 +44,31 @@ public class ShoppingService {
         .map(item -> from(item))
         .collect(Collectors.toList());
 
-        return new ShoppingDto(shopping.getId(), itemDtos, storeDto);
+        return new ShoppingDto(shopping.getId(), shopping.getShoppingDate(), storeDto, itemDtos);
     }
 
     private ShoppingItemDto from(ShoppingItem item) {
         CategoryDto categoryDto = from(item.getItem().getCategory());
 
-        double quantity = item.getQuantity();
+        DecimalFormat df = new DecimalFormat("#.###");
+        String quantityDto;
         double unitPrice = item.getUnitPrice() / Constants.PRICE_SCALE;
-        double totalPrice = quantity * unitPrice;
+        double totalPrice = unitPrice * item.getQuantity();
 
-        return new ShoppingItemDto(item.getId(), quantity, null, unitPrice, totalPrice, categoryDto);
+        //Only supporting KG for now
+        if("KG".equals(item.getUnit())) {
+            quantityDto = df.format(item.getQuantity()) + " KG";
+        } else {
+            quantityDto = Integer.toString(((int) item.getQuantity()));
+        }
+
+        //only supporting MXN for now
+        //Add conversion later
+        df = new DecimalFormat("#.##");
+        String unitPriceDto = "$" +df.format(unitPrice) + " MXN";
+        String totalPriceDto = df.format(totalPrice) + " MXN";
+        return new ShoppingItemDto(item.getId(), item.getItem().getName(), quantityDto, 
+                   unitPriceDto, totalPriceDto, categoryDto);
     }
 
     private CategoryDto from(Category category) {

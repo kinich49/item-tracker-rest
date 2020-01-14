@@ -14,8 +14,11 @@ public class ShoppingItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double quantity = 1;
+    private String unit;
     @NotNull
     private int unitPrice;
+    @NotNull
+    private String currency;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;

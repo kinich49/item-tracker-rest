@@ -6,9 +6,9 @@ import lombok.Data;
 public class ShoppingItemDto {
 
     private final long id;
-    private final double quantity;
-    private final String measure;
-    private final double unitPrice;
-    private final double totalPrice;
+    private final String name;
+    private final String quantity;
+    private final String unitPrice;
+    private final String totalPrice;
     private final CategoryDto categoryDto;
 }
