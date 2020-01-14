@@ -16,10 +16,14 @@ public class Shopping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate shoppingDate = LocalDate.now();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
     @OneToMany(
             mappedBy = "shopping",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<ShoppingItem> shoppingItems = new ArrayList<>();
+
 }

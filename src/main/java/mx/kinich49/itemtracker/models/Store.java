@@ -3,6 +3,8 @@ package mx.kinich49.itemtracker.models;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -17,5 +19,9 @@ public class Store {
     private long id;
     @NotNull
     private String name;
-
+    @OneToMany(
+        mappedBy = "store",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
+    private List<Shopping> shoppings;
 }
