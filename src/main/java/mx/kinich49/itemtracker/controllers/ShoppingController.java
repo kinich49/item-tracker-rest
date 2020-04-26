@@ -24,7 +24,7 @@ public class ShoppingController {
         this.service = service;
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ShoppingDto> getShopping(@PathVariable("id") long shoppingId) {
         return service.loadById(shoppingId)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
@@ -32,11 +32,13 @@ public class ShoppingController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insertShopping(@RequestBody Shopping category) {
-        return new ResponseEntity<>(repository.save(category), HttpStatus.OK);
+    public ResponseEntity<ShoppingDto> insertShopping(@RequestBody Shopping shopping) {
+        return service.save(shopping)
+                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @DeleteMapping("/id/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteShopping(@PathVariable("id") long shoppingListId) {
         repository.deleteById(shoppingListId);

@@ -1,8 +1,9 @@
 package mx.kinich49.itemtracker.controllers;
 
+import mx.kinich49.itemtracker.dtos.CategoryDto;
 import mx.kinich49.itemtracker.models.Category;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
-import mx.kinich49.itemtracker.sevices.CategoryService;
+import mx.kinich49.itemtracker.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> postCategory(@RequestBody Category category) {
+    public ResponseEntity<CategoryDto> postCategory(@RequestBody Category category) {
         return categoryService.saveCategory(category)
                 .map(persistedCategory -> new ResponseEntity<>(persistedCategory, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));

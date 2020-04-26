@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Shopping {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private List<ShoppingItem> shoppingItems = new ArrayList<>();
 
 }

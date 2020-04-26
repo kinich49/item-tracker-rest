@@ -1,12 +1,12 @@
 package mx.kinich49.itemtracker.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,8 +20,9 @@ public class Store {
     @NotNull
     private String name;
     @OneToMany(
-        mappedBy = "store",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true)
+            mappedBy = "store",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore
     private List<Shopping> shoppings;
 }

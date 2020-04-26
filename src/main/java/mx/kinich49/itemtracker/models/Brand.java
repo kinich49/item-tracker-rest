@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
@@ -26,5 +27,6 @@ public class Brand {
         mappedBy = "brand",
         cascade = CascadeType.ALL,
         orphanRemoval = true)
+    @JsonIgnore
     private List<Item> items = new ArrayList<>();
 }
