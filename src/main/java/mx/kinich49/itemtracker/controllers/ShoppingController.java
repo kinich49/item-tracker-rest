@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.controllers;
 
-import mx.kinich49.itemtracker.dtos.ShoppingDto;
-import mx.kinich49.itemtracker.models.Shopping;
+import mx.kinich49.itemtracker.dtos.ShoppingListDto;
+import mx.kinich49.itemtracker.models.ShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingRepository;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +25,15 @@ public class ShoppingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShoppingDto> getShopping(@PathVariable("id") long shoppingId) {
+    public ResponseEntity<ShoppingListDto> getShopping(@PathVariable("id") long shoppingId) {
         return service.loadById(shoppingId)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingDto> insertShopping(@RequestBody Shopping shopping) {
-        return service.save(shopping)
+    public ResponseEntity<ShoppingListDto> insertShopping(@RequestBody ShoppingList shoppingList) {
+        return service.save(shoppingList)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }

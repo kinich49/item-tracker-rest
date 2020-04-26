@@ -23,6 +23,6 @@ public class ShoppingItem {
     @JoinColumn(name = "item_id")
     private Item item;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shopping_id")
-    private Shopping shopping;
+    @JoinColumn(name = "shoppingList_id")
+    private ShoppingList shoppingList;
 }

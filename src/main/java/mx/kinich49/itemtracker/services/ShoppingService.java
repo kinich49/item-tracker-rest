@@ -1,13 +1,13 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.ShoppingDto;
-import mx.kinich49.itemtracker.models.Shopping;
+import mx.kinich49.itemtracker.dtos.ShoppingListDto;
+import mx.kinich49.itemtracker.models.ShoppingList;
 
 import java.util.Optional;
 
 public interface ShoppingService {
 
-    Optional<ShoppingDto> loadById(long id);
+    Optional<ShoppingListDto> loadById(long id);
 
-    Optional<ShoppingDto> save(Shopping fromRequest);
+    Optional<ShoppingListDto> save(ShoppingList fromRequest);
 }

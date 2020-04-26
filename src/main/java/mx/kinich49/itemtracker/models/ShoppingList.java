@@ -10,8 +10,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Shoppings")
-public class Shopping {
+@Table(name = "ShoppingLists")
+public class ShoppingList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class Shopping {
     @JoinColumn(name = "store_id")
     private Store store;
     @OneToMany(
-            mappedBy = "shopping",
+            mappedBy = "shoppingList",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

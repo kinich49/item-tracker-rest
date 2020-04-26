@@ -24,5 +24,5 @@ public class Store {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonIgnore
-    private List<Shopping> shoppings;
+    private List<ShoppingList> shoppingLists;
 }
