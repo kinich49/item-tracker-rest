@@ -7,7 +7,10 @@ import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingServiceImpl implements ShoppingService {
@@ -31,4 +34,11 @@ public class ShoppingServiceImpl implements ShoppingService {
                 .map(ShoppingListDto::from);
     }
 
+    @Override
+    public List<ShoppingListDto> loadByDate(LocalDate date) {
+        return repository.findByShoppingDate(date)
+                .stream().parallel()
+                .map(ShoppingListDto::from)
+                .collect(Collectors.toList());
+    }
 }
