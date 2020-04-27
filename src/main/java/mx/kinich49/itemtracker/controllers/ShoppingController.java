@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/shopping")
+@RequestMapping("api/shoppingLists")
 @SuppressWarnings("unused")
 public class ShoppingController {
 
