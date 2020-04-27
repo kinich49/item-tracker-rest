@@ -41,6 +41,7 @@ public class ShoppingController {
                                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                           LocalDate shoppingDate) {
         return Optional.ofNullable(service.loadByDate(shoppingDate))
+                .filter(dtos -> !dtos.isEmpty())
                 .map(dtos -> new ResponseEntity<>(dtos, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
