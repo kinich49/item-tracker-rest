@@ -11,7 +11,7 @@
 	<groupId>mx.kinich49</groupId>
 	<artifactId>item-tracker</artifactId>
 	<version>1.0</version>
-	<name>item-tracker</name>
+	<name>item-tracker-rest</name>
 	<description>An ideal way to track where you buy each item</description>
 
 	<properties>
