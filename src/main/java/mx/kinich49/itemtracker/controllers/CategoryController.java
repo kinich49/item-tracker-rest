@@ -38,6 +38,13 @@ public class CategoryController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(params = "name")
+    public ResponseEntity<List<CategoryDto>> getCategoriesLike(@RequestParam String name) {
+        return categoryService.findLike(name)
+                .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping
     public ResponseEntity<CategoryDto> postCategory(@RequestBody Category category) {
         return categoryService.saveCategory(category)

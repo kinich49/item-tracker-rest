@@ -50,6 +50,19 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public Optional<List<BrandDto>> findLike(String name) {
+        if (name == null || name.length() == 0)
+            return Optional.empty();
+
+        return Optional.ofNullable(brandRepository.findByNameStartsWithIgnoreCase(name))
+                .map(brands ->
+                        brands.stream()
+                                .map(BrandDto::from)
+                                .collect(Collectors.toList())
+                );
+    }
+
+    @Override
     public void delete(long id) {
         brandRepository.deleteById(id);
     }

@@ -41,6 +41,13 @@ public class BrandController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
+    @GetMapping(params = "name")
+    public ResponseEntity<List<BrandDto>> getBrandsLikeName(@RequestParam String name) {
+        return brandService.findLike(name)
+                .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBrand(@PathVariable long id) {

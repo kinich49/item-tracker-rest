@@ -37,6 +37,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Optional<List<CategoryDto>> findLike(String name) {
+        if (name == null || name.length() == 0)
+            return Optional.empty();
+
+        return Optional.ofNullable(categoryRepository.findByNameStartsWithIgnoreCase(name))
+                .map(categories ->
+                        categories.stream()
+                                .map(CategoryDto::from)
+                                .collect(Collectors.toList())
+                );
+    }
+
+    @Override
     public Optional<CategoryDto> saveCategory(Category fromRequest) {
         if (fromRequest == null)
             return Optional.empty();
