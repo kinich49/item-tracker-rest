@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("api/brands")
+@CrossOrigin
 @SuppressWarnings("unused")
 public class BrandController {
 

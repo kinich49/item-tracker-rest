@@ -17,6 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/shoppingLists")
 @SuppressWarnings("unused")
+@CrossOrigin
 public class ShoppingController {
 
     private final ShoppingRepository repository;

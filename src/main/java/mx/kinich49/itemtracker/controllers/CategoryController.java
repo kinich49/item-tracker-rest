@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/categories")
+@CrossOrigin
 @SuppressWarnings("unused")
 public class CategoryController {
 
