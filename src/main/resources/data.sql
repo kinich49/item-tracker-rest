@@ -77,6 +77,9 @@ INSERT INTO items(name, brand_id, category_id) VALUES('Desinfectante 90ml', 14, 
 INSERT INTO items(name, brand_id, category_id) VALUES('Shampoo Control Caida', 15, 10)
 
 INSERT INTO Stores(name) VALUES('HEB')
+INSERT INTO Stores(name) VALUES('Soriana')
+INSERT INTO Stores(name) VALUES('Walmart')
+INSERT INTO Stores(name) VALUES('Costco')
 
 INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-01-06',1)
 
