@@ -1,8 +1,8 @@
 package mx.kinich49.itemtracker.controllers;
 
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
-import mx.kinich49.itemtracker.models.ShoppingList;
-import mx.kinich49.itemtracker.repositories.ShoppingRepository;
+import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
+import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,19 +20,19 @@ import java.util.Optional;
 @CrossOrigin
 public class ShoppingController {
 
-    private final ShoppingRepository repository;
-    private final ShoppingService service;
+    private final ShoppingListRepository repository;
+    private final ShoppingService shoppingListService;
 
     @Autowired
-    public ShoppingController(ShoppingRepository repository,
-                              ShoppingService service) {
+    public ShoppingController(ShoppingListRepository repository,
+                              ShoppingService shoppingListService) {
         this.repository = repository;
-        this.service = service;
+        this.shoppingListService = shoppingListService;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ShoppingListDto> getShopping(@PathVariable("id") long shoppingId) {
-        return service.loadById(shoppingId)
+        return shoppingListService.findBy(shoppingId)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -41,15 +41,15 @@ public class ShoppingController {
     public ResponseEntity<List<ShoppingListDto>> getShoppingLists(@RequestParam
                                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                           LocalDate shoppingDate) {
-        return Optional.ofNullable(service.loadByDate(shoppingDate))
+        return Optional.ofNullable(shoppingListService.findBy(shoppingDate))
                 .filter(dtos -> !dtos.isEmpty())
                 .map(dtos -> new ResponseEntity<>(dtos, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingListDto> insertShopping(@RequestBody ShoppingList shoppingList) {
-        return service.save(shoppingList)
+    public ResponseEntity<ShoppingListDto> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
+        return shoppingListService.save(shoppingList)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }

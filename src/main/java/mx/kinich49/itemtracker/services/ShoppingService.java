@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.services;
 
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
-import mx.kinich49.itemtracker.models.ShoppingList;
+import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface ShoppingService {
 
-    Optional<ShoppingListDto> loadById(long id);
+    Optional<ShoppingListDto> findBy(long id);
 
-    Optional<ShoppingListDto> save(ShoppingList fromRequest);
+    Optional<ShoppingListDto> save(ShoppingListRequest request);
 
-    List<ShoppingListDto> loadByDate(LocalDate date);
+    List<ShoppingListDto> findBy(LocalDate date);
 }

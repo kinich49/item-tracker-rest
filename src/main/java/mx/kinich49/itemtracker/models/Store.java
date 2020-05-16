@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "Stores")
+@ToString(exclude = {"shoppingLists"})
 public class Store {
 
     @Id

@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "ShoppingLists")
+@ToString(exclude = {"shoppingItems"})
 public class ShoppingList {
 
     @Id
@@ -27,5 +29,15 @@ public class ShoppingList {
     )
     @JsonIgnore
     private List<ShoppingItem> shoppingItems = new ArrayList<>();
+
+    public void addShoppingItem(ShoppingItem shoppingItem) {
+        shoppingItems.add(shoppingItem);
+        shoppingItem.setShoppingList(this);
+    }
+
+    public void removeShoppingItem(ShoppingItem shoppingItem) {
+        shoppingItems.remove(shoppingItem);
+        shoppingItem.setShoppingList(null);
+    }
 
 }

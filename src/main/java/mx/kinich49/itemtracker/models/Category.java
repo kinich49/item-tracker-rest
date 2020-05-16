@@ -14,10 +14,12 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
 @Table(name = "Categories")
+@ToString(exclude = {"items"})
 public class Category {
 
     @Id
