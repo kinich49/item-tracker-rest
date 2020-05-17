@@ -159,14 +159,14 @@ public class ShoppingServiceTest {
 
         ShoppingItemDto itemDto = itemDtos.get(0);
 
-        assertEquals(String.valueOf(shoppingItem.getQuantity()), itemDto.getQuantity());
+        assertEquals("1", itemDto.getQuantity());
         assertNotNull(itemDto.getBrand());
         assertEquals(testBrand.getName(), itemDto.getBrand().getName());
         assertNotNull(itemDto.getCategory());
         assertEquals(testCategory.getName(), itemDto.getCategory().getName());
         assertEquals(testItem.getId(), itemDto.getId());
 
-        assertEquals("$1 MXN", itemDto.getUnitPrice());
+        assertEquals("$1.00 MXN", itemDto.getUnitPrice());
     }
 
     @Test
@@ -197,13 +197,13 @@ public class ShoppingServiceTest {
 
         ShoppingItemDto itemDto = itemDtos.get(0);
 
-        assertEquals(String.valueOf(shoppingItem.getQuantity()), itemDto.getQuantity());
+        assertEquals("1", itemDto.getQuantity());
         assertNotNull(itemDto.getBrand());
         assertEquals(testBrand.getName(), itemDto.getBrand().getName());
         assertNotNull(itemDto.getCategory());
         assertEquals(testCategory.getName(), itemDto.getCategory().getName());
         assertEquals(testItem.getId(), itemDto.getId());
-        assertEquals("$1 MXN", itemDto.getUnitPrice());
+        assertEquals("$1.00 MXN", itemDto.getUnitPrice());
     }
 
     @Test
