@@ -15,10 +15,10 @@ public class ShoppingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int quantity = 1;
+    private double quantity = 1;
     private String unit;
     @NotNull
-    private double unitPrice;
+    private int unitPrice;
     @NotNull
     private String currency;
     @ManyToOne(fetch = FetchType.LAZY)

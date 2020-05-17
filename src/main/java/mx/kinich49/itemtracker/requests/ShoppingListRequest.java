@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,7 +13,7 @@ public class ShoppingListRequest {
 
     private Store store;
     private LocalDate shoppingDate;
-    private List<ShoppingItem> shoppingItems;
+    private List<ShoppingItem> shoppingItems = new ArrayList<>();
 
     @Data
     @NoArgsConstructor

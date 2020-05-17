@@ -1,20 +1,13 @@
 package mx.kinich49.itemtracker.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,9 +21,19 @@ public class Category {
     @NotNull
     private String name;
     @OneToMany(
-        mappedBy = "category",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true)
+            mappedBy = "category",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JsonIgnore
     private List<Item> items = new ArrayList<>();
+
+    public void addItem(Item item) {
+        items.add(item);
+        item.setCategory(this);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+        item.setCategory(null);
+    }
 }

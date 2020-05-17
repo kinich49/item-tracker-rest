@@ -26,23 +26,30 @@ public class ShoppingItemDto {
         CategoryDto categoryDto = CategoryDto.from(item.getCategory());
         BrandDto brandDto = BrandDto.from(item.getBrand());
 
-        DecimalFormat df = new DecimalFormat("#.###");
+        DecimalFormat df = null;
         String quantityDto;
         double unitPrice = shoppingItem.getUnitPrice() / Constants.PRICE_SCALE;
         double totalPrice = unitPrice * shoppingItem.getQuantity();
 
-        //Only supporting KG for now
-        if ("KG".equals(shoppingItem.getUnit())) {
-            quantityDto = df.format(shoppingItem.getQuantity()) + " KG";
+        String unit = shoppingItem.getUnit();
+        double quantity = shoppingItem.getQuantity();
+
+        if (unit != null && unit.length() > 0) {
+            df = new DecimalFormat("#0.0##");
+            quantityDto = String.format("%1$s %2$s", df.format(quantity), unit);
         } else {
-            quantityDto = Integer.toString(((int) shoppingItem.getQuantity()));
+            df = new DecimalFormat("#,###");
+            quantityDto = df.format(quantity);
         }
 
-        //only supporting MXN for now
-        //Add conversion later
-        df = new DecimalFormat("#.##");
-        String unitPriceDto = "$" + df.format(unitPrice) + " MXN";
-        String totalPriceDto = "$" + df.format(totalPrice) + " MXN";
+        df = new DecimalFormat("#,##0.00");
+
+        String unitPriceDto = String.format("%1$s%2$s %3$s",
+                "$", df.format(unitPrice), shoppingItem.getCurrency());
+
+        String totalPriceDto = String.format("%1$s%2$s %3$s",
+                "$", df.format(totalPrice), shoppingItem.getCurrency());
+
         return new ShoppingItemDto(item.getId(), item.getName(), quantityDto,
                 unitPriceDto, totalPriceDto, categoryDto, brandDto);
     }

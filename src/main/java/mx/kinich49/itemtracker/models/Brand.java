@@ -19,9 +19,19 @@ public class Brand {
     private long id;
     private String name;
     @OneToMany(
-        mappedBy = "brand",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true)
+            mappedBy = "brand",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JsonIgnore
     private List<Item> items = new ArrayList<>();
+
+    public void addItem(Item item) {
+        items.add(item);
+        item.setBrand(this);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+        item.setBrand(null);
+    }
 }

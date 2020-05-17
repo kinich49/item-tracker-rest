@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,5 +27,15 @@ public class Store {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonIgnore
-    private List<ShoppingList> shoppingLists;
+    private List<ShoppingList> shoppingLists = new ArrayList<>();
+
+    public void addShoppingList(ShoppingList shoppingList) {
+        shoppingLists.add(shoppingList);
+        shoppingList.setStore(this);
+    }
+
+    public void removeShoppingList(ShoppingList shoppingList) {
+        shoppingLists.remove(shoppingList);
+        shoppingList.setStore(null);
+    }
 }
