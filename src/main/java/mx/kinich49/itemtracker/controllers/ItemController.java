@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.controllers;
 
+import mx.kinich49.itemtracker.dtos.ItemAnalyticsDto;
 import mx.kinich49.itemtracker.dtos.ItemDto;
 import mx.kinich49.itemtracker.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,4 +28,12 @@ public class ItemController {
                 .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @GetMapping(path = "/{id}/analytics")
+    public ResponseEntity<ItemAnalyticsDto> getAnalyticsForItem(@PathVariable(value = "id") long itemId) {
+        return itemService.getAnalyticsFor(itemId)
+                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }

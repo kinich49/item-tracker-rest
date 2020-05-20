@@ -82,6 +82,8 @@ INSERT INTO Stores(name) VALUES('Walmart')
 INSERT INTO Stores(name) VALUES('Costco')
 
 INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-01-06',1)
+INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-03-31',2)
+INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-05-20',3)
 
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(1, 0.355, 2395, 1,'KG', 'MXN')
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(2, 1.055, 3995, 1,'KG', 'MXN')
@@ -122,3 +124,12 @@ INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(37, 1.0, 3890, 1,'Unit', 'MXN')
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(38, 1.0, 3395, 1,'Unit', 'MXN')
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(39, 1.0, 5890, 1,'Unit', 'MXN')
+
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(11, 1.0, 7000, 2,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(14, 1.0, 2800, 2,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(23, 1.0, 5890, 2,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(32, 0.500, 19000, 2,'KG', 'MXN')
+
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(11, 1.0, 8000, 3,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(30, 2.0, 500, 3,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(32, 1.5, 19000, 3,'KG', 'MXN')
