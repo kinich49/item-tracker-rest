@@ -3,6 +3,7 @@ package mx.kinich49.itemtracker.services.impl;
 import mx.kinich49.itemtracker.dtos.ItemAnalyticsDto;
 import mx.kinich49.itemtracker.dtos.ItemDto;
 import mx.kinich49.itemtracker.dtos.ShoppingItemDto;
+import mx.kinich49.itemtracker.models.Item;
 import mx.kinich49.itemtracker.models.Store;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
 import mx.kinich49.itemtracker.services.ItemService;
@@ -30,16 +31,17 @@ public class ItemServiceImpl implements ItemService {
         if (name == null || name.length() == 0)
             return Optional.empty();
 
-        return Optional.ofNullable(itemRepository.findByNameStartsWithIgnoreCase(name))
-                .map(categories ->
-                        categories.stream()
-                                .map(ItemDto::from)
-                                .collect(Collectors.toList()));
+        List<Item> items = itemRepository.findByNameStartsWithIgnoreCase(name);
+        if (items == null || items.isEmpty())
+            return Optional.empty();
+
+        return Optional.of(items.stream()
+                .map(ItemDto::from)
+                .collect(Collectors.toList()));
     }
 
     @Override
     public Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId) {
-
         if (!itemRepository.existsById(itemId))
             return Optional.empty();
 

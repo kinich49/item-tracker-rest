@@ -26,8 +26,10 @@ public class ItemRepositoryCustomTest {
     @Test
     @DisplayName("Get valid Latest Store, Price and Date for item")
     public void findAnalyticsForItem() {
+        //when
         Optional<Tuple> response = itemRepository.findLatestStoreAndShoppingDateAndPrice(11);
 
+        //then
         assertNotNull(response);
         assertTrue(response.isPresent());
         Tuple tuple = response.get();
@@ -46,7 +48,10 @@ public class ItemRepositoryCustomTest {
     @Test
     @DisplayName("Get average price for item")
     public void findAveragePrice() {
+        //when
         List<Tuple> results = itemRepository.findAverageUnitPriceAndCurrency(11);
+
+        //then
         assertNotNull(results);
         assertFalse(results.isEmpty());
         Tuple result = results.get(0);
