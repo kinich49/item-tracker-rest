@@ -4,6 +4,7 @@ import mx.kinich49.itemtracker.dtos.BrandDto;
 import mx.kinich49.itemtracker.models.Brand;
 import mx.kinich49.itemtracker.repositories.BrandRepository;
 import mx.kinich49.itemtracker.services.BrandService;
+import mx.kinich49.itemtracker.services.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,18 @@ import java.util.stream.Collectors;
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
+    private final SuggestionService suggestionService;
 
     @Autowired
-    public BrandServiceImpl(BrandRepository brandRepository) {
+    public BrandServiceImpl(BrandRepository brandRepository,
+                            SuggestionService suggestionService) {
         this.brandRepository = brandRepository;
+        this.suggestionService = suggestionService;
     }
 
+    //TODO revisit this
+    // Probably map to Dto can be done
+    // via jpql
     @Override
     public List<BrandDto> findAll() {
         return brandRepository.findAll()
@@ -36,6 +43,8 @@ public class BrandServiceImpl implements BrandService {
                 .map(BrandDto::from);
     }
 
+    //TODO revisit this
+    // Probably updating a current brand will fail
     @Override
     public Optional<BrandDto> saveBrand(Brand fromRequest) {
         if (fromRequest == null)
@@ -51,15 +60,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Optional<List<BrandDto>> findLike(String name) {
-        if (name == null || name.length() == 0)
-            return Optional.empty();
-
-        return Optional.ofNullable(brandRepository.findByNameStartsWithIgnoreCase(name))
-                .map(brands ->
-                        brands.stream()
-                                .map(BrandDto::from)
-                                .collect(Collectors.toList())
-                );
+        return suggestionService.findBrandsLike(name);
     }
 
     @Override

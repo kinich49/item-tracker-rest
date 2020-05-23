@@ -3,10 +3,10 @@ package mx.kinich49.itemtracker.services.impl;
 import mx.kinich49.itemtracker.dtos.ItemAnalyticsDto;
 import mx.kinich49.itemtracker.dtos.ItemDto;
 import mx.kinich49.itemtracker.dtos.ShoppingItemDto;
-import mx.kinich49.itemtracker.models.Item;
 import mx.kinich49.itemtracker.models.Store;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
 import mx.kinich49.itemtracker.services.ItemService;
+import mx.kinich49.itemtracker.services.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,30 +14,23 @@ import javax.persistence.Tuple;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
+    private final SuggestionService suggestionService;
 
     @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository,
+                           SuggestionService suggestionService) {
         this.itemRepository = itemRepository;
+        this.suggestionService = suggestionService;
     }
 
     @Override
     public Optional<List<ItemDto>> findLike(String name) {
-        if (name == null || name.length() == 0)
-            return Optional.empty();
-
-        List<Item> items = itemRepository.findByNameStartsWithIgnoreCase(name);
-        if (items == null || items.isEmpty())
-            return Optional.empty();
-
-        return Optional.of(items.stream()
-                .map(ItemDto::from)
-                .collect(Collectors.toList()));
+        return suggestionService.findItemsLike(name);
     }
 
     @Override

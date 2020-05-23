@@ -3,7 +3,9 @@ package mx.kinich49.itemtracker.dtos;
 import lombok.Data;
 import mx.kinich49.itemtracker.models.Item;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Data
 public class ItemDto {
@@ -25,5 +27,14 @@ public class ItemDto {
                 .orElse(null);
 
         return new ItemDto(item.getId(), item.getName(), categoryDto, brandDto);
+    }
+
+    public static List<ItemDto> from(List<Item> items) {
+        if (items == null || items.isEmpty())
+            return null;
+
+        return items.stream()
+                .map(ItemDto::from)
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,9 @@ package mx.kinich49.itemtracker.dtos;
 import lombok.Data;
 import mx.kinich49.itemtracker.models.Category;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 public class CategoryDto {
 
@@ -11,5 +14,14 @@ public class CategoryDto {
 
     public static CategoryDto from(Category category) {
         return new CategoryDto(category.getId(), category.getName());
+    }
+
+    public static List<CategoryDto> from(List<Category> categories) {
+        if (categories == null || categories.isEmpty())
+            return null;
+
+        return categories.stream()
+                .map(CategoryDto::from)
+                .collect(Collectors.toList());
     }
 }

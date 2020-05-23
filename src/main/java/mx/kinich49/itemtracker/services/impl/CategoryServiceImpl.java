@@ -4,6 +4,7 @@ import mx.kinich49.itemtracker.dtos.CategoryDto;
 import mx.kinich49.itemtracker.models.Category;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
 import mx.kinich49.itemtracker.services.CategoryService;
+import mx.kinich49.itemtracker.services.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,13 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final SuggestionService suggestionService;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository,
+                               SuggestionService suggestionService) {
         this.categoryRepository = categoryRepository;
+        this.suggestionService = suggestionService;
     }
 
     @Override
@@ -38,15 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Optional<List<CategoryDto>> findLike(String name) {
-        if (name == null || name.length() == 0)
-            return Optional.empty();
-
-        return Optional.ofNullable(categoryRepository.findByNameStartsWithIgnoreCase(name))
-                .map(categories ->
-                        categories.stream()
-                                .map(CategoryDto::from)
-                                .collect(Collectors.toList())
-                );
+        return suggestionService.findCategoriesLike(name);
     }
 
     @Override
