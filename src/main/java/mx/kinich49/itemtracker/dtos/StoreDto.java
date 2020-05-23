@@ -13,6 +13,8 @@ public class StoreDto {
     public final String name;
 
     public static StoreDto from(Store store) {
+        if (store == null)
+            return null;
         return new StoreDto(store.getId(), store.getName());
     }
 

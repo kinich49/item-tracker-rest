@@ -13,6 +13,8 @@ public class CategoryDto {
     private final String name;
 
     public static CategoryDto from(Category category) {
+        if (category == null)
+            return null;
         return new CategoryDto(category.getId(), category.getName());
     }
 
