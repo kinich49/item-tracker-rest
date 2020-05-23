@@ -1,7 +1,6 @@
 package mx.kinich49.itemtracker.dtos;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
