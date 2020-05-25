@@ -68,4 +68,9 @@ public class ItemServiceImpl implements ItemService {
         }
         return Optional.of(dto);
     }
+
+    @Override
+    public Optional<List<ItemAnalyticsDto>> getAnalyticsForCategory(long categoryId) {
+        return Optional.empty();
+    }
 }

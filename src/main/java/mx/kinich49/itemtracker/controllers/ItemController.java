@@ -36,4 +36,11 @@ public class ItemController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(path = "/category/{id}/analytics")
+    public ResponseEntity<List<ItemAnalyticsDto>> getAnalyticsForCategory(
+            @PathVariable(value = "id") long categoryId) {
+        return itemService.getAnalyticsForCategory(categoryId)
+                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

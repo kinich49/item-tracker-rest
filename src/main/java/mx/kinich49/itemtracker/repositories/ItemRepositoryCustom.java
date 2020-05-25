@@ -8,5 +8,13 @@ public interface ItemRepositoryCustom {
 
     Optional<Tuple> findLatestStoreAndShoppingDateAndPrice(long itemId);
 
+    Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForCategory(long categoryId);
+
+    Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForBrand(long categoryId);
+
     List<Tuple> findAverageUnitPriceAndCurrency(long itemId);
+
+    Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForCategory(long categoryId);
+
+    Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForBrand(long brandId);
 }

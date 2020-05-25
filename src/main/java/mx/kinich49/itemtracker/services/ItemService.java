@@ -11,4 +11,6 @@ public interface ItemService {
     Optional<List<ItemDto>> findLike(String name);
 
     Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId);
+
+    Optional<List<ItemAnalyticsDto>> getAnalyticsForCategory(long categoryId);
 }

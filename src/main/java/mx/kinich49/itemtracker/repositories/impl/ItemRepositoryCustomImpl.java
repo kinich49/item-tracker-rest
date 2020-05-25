@@ -6,8 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
@@ -17,13 +16,51 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     @Override
     @Transactional(readOnly = true)
     public Optional<Tuple> findLatestStoreAndShoppingDateAndPrice(long itemId) {
-        String query = "SELECT sl.store, MAX(sl.shoppingDate), si.unitPrice FROM ShoppingList sl JOIN sl.shoppingItems si " +
-                "WHERE si.item.id =:itemId GROUP BY si.item.id, sl.store.id ORDER BY sl.shoppingDate DESC";
-        Tuple result = entityManager.createQuery(query, Tuple.class)
+        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice FROM ShoppingList sl JOIN sl.shoppingItems si " +
+                "WHERE si.item.id =:itemId ORDER BY sl.shoppingDate DESC";
+        List<Tuple> results = entityManager.createQuery(query, Tuple.class)
                 .setParameter("itemId", itemId)
                 .setMaxResults(1)
-                .getSingleResult();
-        return Optional.ofNullable(result);
+                .getResultList();
+        if (results == null || results.isEmpty())
+            return Optional.empty();
+        return Optional.of(results.get(0));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForCategory(long categoryId) {
+        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id FROM ShoppingList sl JOIN sl.shoppingItems si " +
+                "WHERE si.item.category.id =:categoryId ORDER BY sl.shoppingDate DESC";
+
+        List<Tuple> result = entityManager.createQuery(query, Tuple.class)
+                .setParameter("categoryId", categoryId)
+                .getResultList();
+
+        if (result == null || result.isEmpty())
+            return Optional.empty();
+
+        Map<Long, Tuple> map = new HashMap<>();
+        result.forEach(tuple -> map.putIfAbsent(tuple.get(3, Long.class), tuple));
+        return Optional.of(new ArrayList<>(map.values()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForBrand(long brandId) {
+        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id FROM ShoppingList sl JOIN sl.shoppingItems si " +
+                "WHERE si.item.brand.id =:brandId ORDER BY sl.shoppingDate DESC";
+
+        List<Tuple> result = entityManager.createQuery(query, Tuple.class)
+                .setParameter("brandId", brandId)
+                .getResultList();
+
+        if (result == null || result.isEmpty())
+            return Optional.empty();
+
+        Map<Long, Tuple> map = new HashMap<>();
+        result.forEach(tuple -> map.putIfAbsent(tuple.get(3, Long.class), tuple));
+        return Optional.of(new ArrayList<>(map.values()));
     }
 
     @Override
@@ -34,6 +71,17 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return entityManager.createQuery(query, Tuple.class)
                 .setParameter("itemId", itemId)
                 .getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForCategory(long categoryId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForBrand(long brandId) {
+        return Optional.empty();
     }
 
 }
