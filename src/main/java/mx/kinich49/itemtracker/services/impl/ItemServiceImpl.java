@@ -62,6 +62,10 @@ public class ItemServiceImpl implements ItemService {
 
     private List<ItemAnalyticsDto> getAnalyticsFor(Collection<Tuple> averageTuples,
                                                    Collection<Tuple> latestTuples) {
+        if ((averageTuples == null || averageTuples.isEmpty()) &&
+                (latestTuples == null || latestTuples.isEmpty()))
+            return null;
+
         Map<Item, Tuple[]> map = new HashMap<>();
 
         Optional.ofNullable(averageTuples)
