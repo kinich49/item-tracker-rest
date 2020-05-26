@@ -102,27 +102,27 @@ public class ItemServiceImpl implements ItemService {
     private ItemAnalyticsDto buildAnalyticsDto(Item item,
                                                Tuple averageTuple,
                                                Tuple latestTuple) {
-        ItemAnalyticsDto dto = new ItemAnalyticsDto();
-        dto.setItem(ItemDto.from(item));
+        ItemAnalyticsDto.ItemAnalyticsDtoBuilder builder = ItemAnalyticsDto.builder();
+        builder.item(ItemDto.from(item));
         if (averageTuple != null) {
             Double averagePrice = averageTuple.get(1, Double.class);
             String currency = averageTuple.get(2, String.class);
-            dto.setAveragePrice(ShoppingItemDto.transformAndFormatPrice(averagePrice, currency));
+            builder.averagePrice(ShoppingItemDto.transformAndFormatPrice(averagePrice, currency));
         }
 
         if (latestTuple != null) {
             Optional.ofNullable(latestTuple.get(1, Store.class))
                     .map(Store::getName)
-                    .ifPresent(dto::setLatestStore);
+                    .ifPresent(builder::latestStore);
 
             Optional.ofNullable(latestTuple.get(2, LocalDate.class))
                     .map(LocalDate::toString)
-                    .ifPresent(dto::setLatestDate);
+                    .ifPresent(builder::latestDate);
 
             Optional.ofNullable(latestTuple.get(3, Integer.class))
                     .map(latestPrice -> ShoppingItemDto.transformAndFormatPrice(latestPrice, "MXN"))
-                    .ifPresent(dto::setLatestPrice);
+                    .ifPresent(builder::latestPrice);
         }
-        return dto;
+        return builder.build();
     }
 }

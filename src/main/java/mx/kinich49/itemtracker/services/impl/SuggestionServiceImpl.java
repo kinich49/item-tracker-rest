@@ -65,11 +65,11 @@ public class SuggestionServiceImpl implements SuggestionService {
                 !brandDtos.isPresent())
             return Optional.empty();
 
-        SuggestionsDto suggestionsDto = new SuggestionsDto();
-        suggestionsDto.setItems(itemDtos.orElse(null));
-        suggestionsDto.setCategories(categoryDtos.orElse(null));
-        suggestionsDto.setBrands(brandDtos.orElse(null));
+        SuggestionsDto.SuggestionsDtoBuilder builder = SuggestionsDto.builder();
+        builder.items(itemDtos.orElse(null));
+        builder.brands(brandDtos.orElse(null));
+        builder.categories(categoryDtos.orElse(null));
 
-        return Optional.of(suggestionsDto);
+        return Optional.of(builder.build());
     }
 }

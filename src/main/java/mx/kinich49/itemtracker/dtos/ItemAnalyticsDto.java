@@ -1,13 +1,15 @@
 package mx.kinich49.itemtracker.dtos;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class ItemAnalyticsDto {
+@Builder
+public final class ItemAnalyticsDto {
 
-    private ItemDto item;
-    private String latestStore;
-    private String latestDate;
-    private String latestPrice;
-    private String averagePrice;
+    private final ItemDto item;
+    private final String latestStore;
+    private final String latestDate;
+    private final String latestPrice;
+    private final String averagePrice;
 }

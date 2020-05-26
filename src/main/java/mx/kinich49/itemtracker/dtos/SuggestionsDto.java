@@ -1,13 +1,15 @@
 package mx.kinich49.itemtracker.dtos;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class SuggestionsDto {
+@Builder
+public final class SuggestionsDto {
 
-    List<CategoryDto> categories;
-    List<BrandDto> brands;
-    List<ItemDto> items;
+    private final List<CategoryDto> categories;
+    private final List<BrandDto> brands;
+    private final List<ItemDto> items;
 }

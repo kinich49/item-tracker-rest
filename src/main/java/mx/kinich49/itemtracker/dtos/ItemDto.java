@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
-public class ItemDto {
+public final class ItemDto {
     private final long id;
     private final String name;
     private final CategoryDto category;

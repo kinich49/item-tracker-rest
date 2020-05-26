@@ -8,7 +8,7 @@ import mx.kinich49.itemtracker.models.ShoppingItem;
 import java.text.DecimalFormat;
 
 @Data
-public class ShoppingItemDto {
+public final class ShoppingItemDto {
 
     private final long id;
     private final String name;

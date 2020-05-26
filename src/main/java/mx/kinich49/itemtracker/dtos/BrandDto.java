@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class BrandDto {
+public final class BrandDto {
 
     private final long id;
     private final String name;

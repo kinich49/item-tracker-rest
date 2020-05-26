@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class CategoryDto {
+public final class CategoryDto {
 
     private final long id;
     private final String name;

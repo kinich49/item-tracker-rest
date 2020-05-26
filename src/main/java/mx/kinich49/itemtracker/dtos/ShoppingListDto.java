@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class ShoppingListDto {
+public final class ShoppingListDto {
 
     private final long id;
     private final LocalDate localDate;
