@@ -30,7 +30,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForCategory(long categoryId) {
-        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id FROM ShoppingList sl JOIN sl.shoppingItems si " +
+        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id " +
+                "FROM ShoppingList sl JOIN sl.shoppingItems si " +
                 "WHERE si.item.category.id =:categoryId ORDER BY sl.shoppingDate DESC";
 
         List<Tuple> result = entityManager.createQuery(query, Tuple.class)
@@ -48,7 +49,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForBrand(long brandId) {
-        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id FROM ShoppingList sl JOIN sl.shoppingItems si " +
+        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id " +
+                "FROM ShoppingList sl JOIN sl.shoppingItems si " +
                 "WHERE si.item.brand.id =:brandId ORDER BY sl.shoppingDate DESC";
 
         List<Tuple> result = entityManager.createQuery(query, Tuple.class)
@@ -76,12 +78,23 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForCategory(long categoryId) {
-        return Optional.empty();
+        String query = "SELECT si.item, avg(si.unitPrice), si.currency FROM ShoppingItem si" +
+                " WHERE si.item.category.id =:categoryId GROUP BY si.item.id, si.currency";
+        List<Tuple> results = entityManager.createQuery(query, Tuple.class)
+                .setParameter("categoryId", categoryId)
+                .getResultList();
+
+        return Optional.ofNullable(results);
     }
 
     @Override
     public Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForBrand(long brandId) {
-        return Optional.empty();
-    }
+        String query = "SELECT si.item, avg(si.unitPrice), si.currency FROM ShoppingItem si" +
+                " WHERE si.item.brand.id =:brandId GROUP BY si.item.id, si.currency";
+        List<Tuple> results = entityManager.createQuery(query, Tuple.class)
+                .setParameter("brandId", brandId)
+                .getResultList();
 
+        return Optional.ofNullable(results);
+    }
 }
