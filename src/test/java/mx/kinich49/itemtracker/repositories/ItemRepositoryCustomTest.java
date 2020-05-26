@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.Tuple;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,14 +36,20 @@ public class ItemRepositoryCustomTest {
         //then
         assertNotNull(response);
         assertTrue(response.isPresent());
+
         Tuple tuple = response.get();
-        Store latestStore = tuple.get(0, Store.class);
+        Item item = tuple.get(0, Item.class);
+        assertNotNull(item);
+
+        Store latestStore = tuple.get(1, Store.class);
         assertNotNull(latestStore);
         assertEquals(2, latestStore.getId());
-        LocalDate latestDate = tuple.get(1, LocalDate.class);
+
+        LocalDate latestDate = tuple.get(2, LocalDate.class);
         assertNotNull(latestDate);
         assertEquals("2020-01-26", latestDate.toString());
-        Integer latestPrice = tuple.get(2, Integer.class);
+
+        Integer latestPrice = tuple.get(3, Integer.class);
         assertNotNull(latestPrice);
         assertEquals(2100, latestPrice.intValue());
     }
@@ -56,14 +63,20 @@ public class ItemRepositoryCustomTest {
         //then
         assertNotNull(response);
         assertTrue(response.isPresent());
+
         Tuple tuple = response.get();
-        Store latestStore = tuple.get(0, Store.class);
+        Item item = tuple.get(0, Item.class);
+        assertNotNull(item);
+
+        Store latestStore = tuple.get(1, Store.class);
         assertNotNull(latestStore);
         assertEquals(3, latestStore.getId());
-        LocalDate latestDate = tuple.get(1, LocalDate.class);
+
+        LocalDate latestDate = tuple.get(2, LocalDate.class);
         assertNotNull(latestDate);
         assertEquals("2020-02-02", latestDate.toString());
-        Integer latestPrice = tuple.get(2, Integer.class);
+
+        Integer latestPrice = tuple.get(3, Integer.class);
         assertNotNull(latestPrice);
         assertEquals(1000, latestPrice.intValue());
     }
@@ -87,10 +100,15 @@ public class ItemRepositoryCustomTest {
         //then
         assertNotNull(results);
         assertFalse(results.isEmpty());
+
         Tuple result = results.get(0);
-        Double averagePrice = result.get(0, Double.class);
+        Item item = result.get(0, Item.class);
+        assertNotNull(item);
+
+        Double averagePrice = result.get(1, Double.class);
         assertEquals(2250, averagePrice);
-        String currency = result.get(1, String.class);
+
+        String currency = result.get(2, String.class);
         assertEquals("MXN", currency);
     }
 
@@ -98,11 +116,10 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Get latest store, date and unit price for all items within a category")
     public void shouldReturn_latestDataTuple_whenCategoryIdIsValid() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(1L);
+        List<Tuple> results = itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(1L);
 
         //then
-        assertTrue(optResults.isPresent());
-        List<Tuple> results = optResults.get();
+        assertNotNull(results);
         assertEquals(4, results.size());
 
         assertLatestDataTuple(results.get(0), 1, 2100,
@@ -122,33 +139,32 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Optional Tuple must be empty when category id does not exists")
     public void shouldReturn_emptyLatestDataTuple_whenCategoryIdIdNotValid() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository
+        List<Tuple> results = itemRepository
                 .findLatestStoreAndShoppingDateAndPriceForCategory(Long.MAX_VALUE);
 
         //then
-        assertFalse(optResults.isPresent());
+        assertNull(results);
     }
 
     @Test
     @DisplayName("Optional Tuple must be empty when category has no elements")
     public void shouldReturn_emptyLatestDataTuple_whenCategoryIsEmpty() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository
+        List<Tuple> results = itemRepository
                 .findLatestStoreAndShoppingDateAndPriceForCategory(4);
 
         //then
-        assertFalse(optResults.isPresent());
+        assertNull(results);
     }
 
     @Test
     @DisplayName("Get Average Prices for items in valid category")
     public void shouldReturn_listOfAverageTuple_whenCategoryIsValid() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository.findAverageUnitPriceAndCurrencyForCategory(1L);
+        List<Tuple> results = itemRepository.findAverageUnitPriceAndCurrencyForCategory(1L);
 
         //then
-        assertTrue(optResults.isPresent());
-        List<Tuple> results = optResults.get();
+        assertNotNull(results);
         assertEquals(4, results.size());
         String expectedCurrency = "MXN";
         assertAverageTuple(results.get(0), 1L, 2250, expectedCurrency);
@@ -161,11 +177,10 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Get latest store, date and unit price for all items within a brand")
     public void shouldReturn_latestDataTuple_whenBrandIdIsValid() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(3L);
+        List<Tuple> results = itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(3L);
 
         //then
-        assertTrue(optResults.isPresent());
-        List<Tuple> results = optResults.get();
+        assertNotNull(results);
         assertEquals(2, results.size());
 
         assertLatestDataTuple(results.get(0), 2, 5000,
@@ -179,12 +194,12 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Get Average Prices for items in valid brand")
     public void shouldReturn_listOfAverageTuple_whenBrandIsValid() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository.findAverageUnitPriceAndCurrencyForBrand(4L);
+        List<Tuple> results = itemRepository.findAverageUnitPriceAndCurrencyForBrand(4L);
 
         //then
-        assertTrue(optResults.isPresent());
-        List<Tuple> results = optResults.get();
+        assertNotNull(results);
         assertEquals(3, results.size());
+
         String expectedCurrency = "MXN";
         assertAverageTuple(results.get(0), 4L, 1000, expectedCurrency);
         assertAverageTuple(results.get(1), 7L, 1000, expectedCurrency);
@@ -196,22 +211,22 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Optional Tuple must be empty when brand has no elements")
     public void shouldReturn_emptyLatestDataTuple_whenBrandIsEmpty() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository
+        Collection<Tuple> results = itemRepository
                 .findLatestStoreAndShoppingDateAndPriceForBrand(5);
 
         //then
-        assertFalse(optResults.isPresent());
+        assertNull(results);
     }
 
     @Test
     @DisplayName("Optional Tuple must be empty when brand id does not exists")
     public void shouldReturn_emptyLatestDataTuple_whenBrandIdIsNotValid() {
         //when
-        Optional<List<Tuple>> optResults = itemRepository
+        Collection<Tuple> results = itemRepository
                 .findLatestStoreAndShoppingDateAndPriceForBrand(Long.MAX_VALUE);
 
         //then
-        assertFalse(optResults.isPresent());
+        assertNull(results);
     }
 
     private void assertLatestDataTuple(Tuple tuple,
@@ -221,16 +236,21 @@ public class ItemRepositoryCustomTest {
                                        long expectedStoreId) {
         String errorMessage = String.format("Test failed for expected Item Id: %d", expectedItemId);
         assertNotNull(tuple, errorMessage);
-        Store store = tuple.get(0, Store.class);
+
+        Item item = tuple.get(0, Item.class);
+        assertNotNull(item);
+        assertEquals(expectedItemId, item.getId());
+
+        Store store = tuple.get(1, Store.class);
         assertNotNull(store, errorMessage);
         assertEquals(expectedStoreId, store.getId(), errorMessage);
-        LocalDate localDate = tuple.get(1, LocalDate.class);
+
+        LocalDate localDate = tuple.get(2, LocalDate.class);
         assertNotNull(localDate, errorMessage);
         assertEquals(expectedDate.toString(), localDate.toString(), errorMessage);
-        Integer unitPrice = tuple.get(2, Integer.class);
+
+        Integer unitPrice = tuple.get(3, Integer.class);
         assertEquals(expectedPrice, unitPrice, errorMessage);
-        Long itemId = tuple.get(3, Long.class);
-        assertEquals(expectedItemId, itemId, errorMessage);
     }
 
     private void assertAverageTuple(Tuple tuple,
@@ -239,12 +259,15 @@ public class ItemRepositoryCustomTest {
                                     String expectedCurrency) {
         String errorMessage = String.format("Test failed for expected Item Id: %d", expectedItemId);
         assertNotNull(tuple, errorMessage);
+
         Item item = tuple.get(0, Item.class);
         assertNotNull(item, errorMessage);
         assertEquals(expectedItemId, item.getId(), errorMessage);
+
         Double averageUnitPrice = tuple.get(1, Double.class);
         assertNotNull(averageUnitPrice, errorMessage);
         assertEquals(expectedAverageUnitPrice, averageUnitPrice, errorMessage);
+
         String currency = tuple.get(2, String.class);
         assertNotNull(currency, errorMessage);
         assertEquals(expectedCurrency, currency, errorMessage);

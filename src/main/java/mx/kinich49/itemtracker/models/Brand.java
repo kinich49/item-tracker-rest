@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "Brands")
 @ToString(exclude = {"items"})
+@EqualsAndHashCode(exclude = {"items"})
 public class Brand {
 
     @Id

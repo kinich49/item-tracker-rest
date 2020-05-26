@@ -12,5 +12,7 @@ public interface ItemService {
 
     Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId);
 
-    Optional<List<ItemAnalyticsDto>> getAnalyticsForCategory(long categoryId);
+    List<ItemAnalyticsDto> getAnalyticsForCategory(long categoryId);
+
+    List<ItemAnalyticsDto> getAnalyticsForBrand(long brandId);
 }

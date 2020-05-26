@@ -39,14 +39,12 @@ public class SuggestionServiceTest {
     @Mock
     CategoryRepository categoryRepository;
 
-
     Brand testBrandA;
     Category testCategoryA;
     Brand testBrandB;
     Category testCategoryB;
     Brand testBrandC;
     Category testCategoryC;
-
 
     @BeforeEach
     void setUp() {

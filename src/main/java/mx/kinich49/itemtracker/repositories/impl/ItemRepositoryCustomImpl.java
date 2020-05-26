@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.repositories.impl;
 
+import mx.kinich49.itemtracker.models.Item;
 import mx.kinich49.itemtracker.repositories.ItemRepositoryCustom;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     @Override
     @Transactional(readOnly = true)
     public Optional<Tuple> findLatestStoreAndShoppingDateAndPrice(long itemId) {
-        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice FROM ShoppingList sl JOIN sl.shoppingItems si " +
+        String query = "SELECT si.item, sl.store, sl.shoppingDate, si.unitPrice " +
+                "FROM ShoppingList sl JOIN sl.shoppingItems si " +
                 "WHERE si.item.id =:itemId ORDER BY sl.shoppingDate DESC";
         List<Tuple> results = entityManager.createQuery(query, Tuple.class)
                 .setParameter("itemId", itemId)
@@ -29,8 +31,19 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForCategory(long categoryId) {
-        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id " +
+    public List<Tuple> findAverageUnitPriceAndCurrency(long itemId) {
+        String query = "SELECT si.item, avg(si.unitPrice), si.currency " +
+                "FROM ShoppingItem si " +
+                "WHERE si.item.id =:itemId GROUP BY si.currency";
+        return entityManager.createQuery(query, Tuple.class)
+                .setParameter("itemId", itemId)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Tuple> findLatestStoreAndShoppingDateAndPriceForCategory(long categoryId) {
+        String query = "SELECT si.item, sl.store, sl.shoppingDate, si.unitPrice " +
                 "FROM ShoppingList sl JOIN sl.shoppingItems si " +
                 "WHERE si.item.category.id =:categoryId ORDER BY sl.shoppingDate DESC";
 
@@ -39,17 +52,20 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .getResultList();
 
         if (result == null || result.isEmpty())
-            return Optional.empty();
+            return null;
 
         Map<Long, Tuple> map = new HashMap<>();
-        result.forEach(tuple -> map.putIfAbsent(tuple.get(3, Long.class), tuple));
-        return Optional.of(new ArrayList<>(map.values()));
+        result.forEach(tuple -> {
+            Item item = tuple.get(0, Item.class);
+            map.putIfAbsent(item.getId(), tuple);
+        });
+        return new ArrayList<>(map.values());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Tuple>> findLatestStoreAndShoppingDateAndPriceForBrand(long brandId) {
-        String query = "SELECT sl.store, sl.shoppingDate, si.unitPrice, si.item.id " +
+    public List<Tuple> findLatestStoreAndShoppingDateAndPriceForBrand(long brandId) {
+        String query = "SELECT si.item, sl.store, sl.shoppingDate, si.unitPrice " +
                 "FROM ShoppingList sl JOIN sl.shoppingItems si " +
                 "WHERE si.item.brand.id =:brandId ORDER BY sl.shoppingDate DESC";
 
@@ -58,43 +74,34 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .getResultList();
 
         if (result == null || result.isEmpty())
-            return Optional.empty();
+            return null;
 
         Map<Long, Tuple> map = new HashMap<>();
-        result.forEach(tuple -> map.putIfAbsent(tuple.get(3, Long.class), tuple));
-        return Optional.of(new ArrayList<>(map.values()));
+        result.forEach(tuple -> {
+            Item item = tuple.get(0, Item.class);
+            map.putIfAbsent(item.getId(), tuple);
+        });
+        return new ArrayList<>(map.values());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Tuple> findAverageUnitPriceAndCurrency(long itemId) {
-        String query = "SELECT avg(si.unitPrice), si.currency FROM ShoppingItem si" +
-                " WHERE si.item.id =:itemId  GROUP BY si.currency";
-        return entityManager.createQuery(query, Tuple.class)
-                .setParameter("itemId", itemId)
-                .getResultList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForCategory(long categoryId) {
+    public List<Tuple> findAverageUnitPriceAndCurrencyForCategory(long categoryId) {
         String query = "SELECT si.item, avg(si.unitPrice), si.currency FROM ShoppingItem si" +
                 " WHERE si.item.category.id =:categoryId GROUP BY si.item.id, si.currency";
-        List<Tuple> results = entityManager.createQuery(query, Tuple.class)
+
+        return entityManager.createQuery(query, Tuple.class)
                 .setParameter("categoryId", categoryId)
                 .getResultList();
-
-        return Optional.ofNullable(results);
     }
 
     @Override
-    public Optional<List<Tuple>> findAverageUnitPriceAndCurrencyForBrand(long brandId) {
+    public List<Tuple> findAverageUnitPriceAndCurrencyForBrand(long brandId) {
         String query = "SELECT si.item, avg(si.unitPrice), si.currency FROM ShoppingItem si" +
                 " WHERE si.item.brand.id =:brandId GROUP BY si.item.id, si.currency";
-        List<Tuple> results = entityManager.createQuery(query, Tuple.class)
+        return entityManager.createQuery(query, Tuple.class)
                 .setParameter("brandId", brandId)
                 .getResultList();
 
-        return Optional.ofNullable(results);
     }
 }
