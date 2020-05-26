@@ -10,6 +10,9 @@ import java.text.DecimalFormat;
 @Data
 public final class ShoppingItemDto {
 
+    private static final DecimalFormat unitQuantityFormat = new DecimalFormat("#,###");
+    private static final DecimalFormat weightQuantityFormat = new DecimalFormat("#0.0##");
+    private static final DecimalFormat priceFormat = new DecimalFormat("#,##0.00");
     private final long id;
     private final String name;
     private final String quantity;
@@ -17,10 +20,6 @@ public final class ShoppingItemDto {
     private final String totalPrice;
     private final CategoryDto category;
     private final BrandDto brand;
-
-    private static final DecimalFormat unitQuantityFormat = new DecimalFormat("#,###");
-    private static final DecimalFormat weightQuantityFormat = new DecimalFormat("#0.0##");
-    private static final DecimalFormat priceFormat = new DecimalFormat("#,##0.00");
 
     public static ShoppingItemDto from(ShoppingItem shoppingItem) {
         if (shoppingItem == null)
