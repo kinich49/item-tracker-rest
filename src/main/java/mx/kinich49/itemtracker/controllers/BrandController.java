@@ -46,7 +46,7 @@ public class BrandController {
     public ResponseEntity<List<BrandDto>> getBrandsLikeName(@RequestParam String name) {
         return brandService.findLike(name)
                 .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @DeleteMapping(value = "/{id}")

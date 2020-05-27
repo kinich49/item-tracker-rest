@@ -24,6 +24,6 @@ public class SuggestionController {
     public ResponseEntity<SuggestionsDto> getSuggestionsLike(@RequestParam String name) {
         return suggestionService.findSuggestionsLike(name)
                 .map(suggestions -> new ResponseEntity<>(suggestions, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 }

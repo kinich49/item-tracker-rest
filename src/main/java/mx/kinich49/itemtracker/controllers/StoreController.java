@@ -22,9 +22,9 @@ public class StoreController {
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<List<StoreDto>> getItemsLike(@RequestParam String name) {
+    public ResponseEntity<List<StoreDto>> getStoresLike(@RequestParam String name) {
         return storeService.findLike(name)
                 .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 }
