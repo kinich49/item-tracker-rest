@@ -14,7 +14,7 @@ public interface BrandService {
 
     Optional<BrandDto> saveBrand(Brand fromRequest);
 
-    Optional<List<BrandDto>> findLike(String name);
+    List<BrandDto> findLike(String name);
 
     void delete(long id);
 

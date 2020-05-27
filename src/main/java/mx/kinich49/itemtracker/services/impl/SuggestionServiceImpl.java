@@ -31,24 +31,27 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     @Override
-    public Optional<List<ItemDto>> findItemsLike(String name) {
+    public List<ItemDto> findItemsLike(String name) {
         return Optional.of(itemRepository.findByNameStartsWithIgnoreCase(name))
                 .filter(list -> !list.isEmpty())
-                .map(ItemDto::from);
+                .map(ItemDto::from)
+                .orElse(null);
     }
 
     @Override
-    public Optional<List<CategoryDto>> findCategoriesLike(String name) {
+    public List<CategoryDto> findCategoriesLike(String name) {
         return Optional.of(categoryRepository.findByNameStartsWithIgnoreCase(name))
                 .filter(list -> !list.isEmpty())
-                .map(CategoryDto::from);
+                .map(CategoryDto::from)
+                .orElse(null);
     }
 
     @Override
-    public Optional<List<BrandDto>> findBrandsLike(String name) {
+    public List<BrandDto> findBrandsLike(String name) {
         return Optional.of(brandRepository.findByNameStartsWithIgnoreCase(name))
                 .filter(list -> !list.isEmpty())
-                .map(BrandDto::from);
+                .map(BrandDto::from)
+                .orElse(null);
     }
 
     @Override
@@ -56,19 +59,20 @@ public class SuggestionServiceImpl implements SuggestionService {
         if (name == null || name.length() < 3)
             return Optional.empty();
 
-        Optional<List<ItemDto>> itemDtos = findItemsLike(name);
-        Optional<List<CategoryDto>> categoryDtos = findCategoriesLike(name);
-        Optional<List<BrandDto>> brandDtos = findBrandsLike(name);
+        List<ItemDto> itemDtos = findItemsLike(name);
+        List<CategoryDto> categoryDtos = findCategoriesLike(name);
+        List<BrandDto> brandDtos = findBrandsLike(name);
 
-        if (!itemDtos.isPresent() &&
-                !categoryDtos.isPresent() &&
-                !brandDtos.isPresent())
+        if ((itemDtos == null || itemDtos.isEmpty()) &&
+                (categoryDtos == null || categoryDtos.isEmpty()) &&
+                (brandDtos == null || brandDtos.isEmpty())) {
             return Optional.empty();
+        }
 
         SuggestionsDto.SuggestionsDtoBuilder builder = SuggestionsDto.builder();
-        builder.items(itemDtos.orElse(null));
-        builder.brands(brandDtos.orElse(null));
-        builder.categories(categoryDtos.orElse(null));
+        builder.items(itemDtos);
+        builder.brands(brandDtos);
+        builder.categories(categoryDtos);
 
         return Optional.of(builder.build());
     }

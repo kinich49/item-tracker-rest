@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<List<ItemDto>> findLike(String name) {
+    public List<ItemDto> findLike(String name) {
         return suggestionService.findItemsLike(name);
     }
 

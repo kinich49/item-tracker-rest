@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/categories")
@@ -41,7 +42,8 @@ public class CategoryController {
 
     @GetMapping(params = "name")
     public ResponseEntity<List<CategoryDto>> getCategoriesLike(@RequestParam String name) {
-        return categoryService.findLike(name)
+        return Optional.ofNullable(categoryService.findLike(name))
+                .filter(list -> !list.isEmpty())
                 .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }

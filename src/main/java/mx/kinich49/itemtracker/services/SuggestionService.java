@@ -10,11 +10,11 @@ import java.util.Optional;
 
 public interface SuggestionService {
 
-    Optional<List<ItemDto>> findItemsLike(String name);
+    List<ItemDto> findItemsLike(String name);
 
-    Optional<List<CategoryDto>> findCategoriesLike(String name);
+    List<CategoryDto> findCategoriesLike(String name);
 
-    Optional<List<BrandDto>> findBrandsLike(String name);
+    List<BrandDto> findBrandsLike(String name);
 
     Optional<SuggestionsDto> findSuggestionsLike(String name);
 }

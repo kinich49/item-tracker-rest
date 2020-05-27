@@ -104,11 +104,10 @@ public class SuggestionServiceTest {
                 .thenReturn(items);
 
         //when
-        Optional<List<ItemDto>> optDtos = subject.findItemsLike("Test");
+        List<ItemDto> dtos = subject.findItemsLike("Test");
 
         //then
-        assertTrue(optDtos.isPresent());
-        List<ItemDto> dtos = optDtos.get();
+        assertNotNull(dtos);
         assertEquals(3, dtos.size());
 
         ItemDto dtoA = dtos.get(0);
@@ -150,10 +149,8 @@ public class SuggestionServiceTest {
                 .thenReturn(brands);
 
         //when
-        Optional<List<BrandDto>> optBrands = subject.findBrandsLike("Test");
-
-        assertTrue(optBrands.isPresent());
-        List<BrandDto> dtos = optBrands.get();
+        List<BrandDto> dtos = subject.findBrandsLike("Test");
+        assertNotNull(dtos);
         assertEquals(3, dtos.size());
 
         BrandDto dtoA = dtos.get(0);
@@ -189,10 +186,9 @@ public class SuggestionServiceTest {
                 .thenReturn(categories);
 
         //when
-        Optional<List<CategoryDto>> optBrands = subject.findCategoriesLike("Test");
+        List<CategoryDto> dtos = subject.findCategoriesLike("Test");
 
-        assertTrue(optBrands.isPresent());
-        List<CategoryDto> dtos = optBrands.get();
+        assertNotNull(dtos);
         assertEquals(3, dtos.size());
 
         CategoryDto dtoA = dtos.get(0);

@@ -59,7 +59,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Optional<List<BrandDto>> findLike(String name) {
+    public List<BrandDto> findLike(String name) {
         return suggestionService.findBrandsLike(name);
     }
 

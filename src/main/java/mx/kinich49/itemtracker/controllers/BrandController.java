@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("api/brands")
@@ -44,7 +45,8 @@ public class BrandController {
 
     @GetMapping(params = "name")
     public ResponseEntity<List<BrandDto>> getBrandsLikeName(@RequestParam String name) {
-        return brandService.findLike(name)
+        return Optional.ofNullable(brandService.findLike(name))
+                .filter(list -> !list.isEmpty())
                 .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }

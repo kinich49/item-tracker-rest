@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<List<CategoryDto>> findLike(String name) {
+    public List<CategoryDto> findLike(String name) {
         return suggestionService.findCategoriesLike(name);
     }
 

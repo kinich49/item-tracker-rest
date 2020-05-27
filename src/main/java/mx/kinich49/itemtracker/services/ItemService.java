@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ItemService {
 
-    Optional<List<ItemDto>> findLike(String name);
+    List<ItemDto> findLike(String name);
 
     Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId);
 

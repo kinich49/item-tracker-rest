@@ -12,7 +12,7 @@ public interface CategoryService {
 
     Optional<CategoryDto> findById(long id);
 
-    Optional<List<CategoryDto>> findLike(String name);
+    List<CategoryDto> findLike(String name);
 
     Optional<CategoryDto> saveCategory(Category fromRequest);
 }
