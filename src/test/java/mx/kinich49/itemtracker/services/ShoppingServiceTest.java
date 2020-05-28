@@ -31,7 +31,7 @@ public class ShoppingServiceTest {
     @Mock
     ShoppingListRepository shoppingListRepository;
     @Mock
-    TransformShoppingListService transformShoppingListService;
+    DtoEntityService dtoEntityService;
 
     Brand testBrand;
     Category testCategory;
@@ -60,7 +60,7 @@ public class ShoppingServiceTest {
         testBrand.addItem(testItem);
         testCategory.addItem(testItem);
 
-        subject = new ShoppingServiceImpl(transformShoppingListService, shoppingListRepository);
+        subject = new ShoppingServiceImpl(dtoEntityService, shoppingListRepository);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class ShoppingServiceTest {
         ShoppingListDto dto = new ShoppingListDto(1, LocalDate.now(),
                 storeDto, itemDtos);
 
-        when(transformShoppingListService.from(any(ShoppingListRequest.class)))
+        when(dtoEntityService.from(any(ShoppingListRequest.class)))
                 .thenReturn(shoppingList);
 
         when(shoppingListRepository.save(any(ShoppingList.class)))
@@ -119,7 +119,7 @@ public class ShoppingServiceTest {
         verify(shoppingListRepository, times(1))
                 .save(any(ShoppingList.class));
 
-        verify(transformShoppingListService, times(1))
+        verify(dtoEntityService, times(1))
                 .from(any(ShoppingListRequest.class));
 
         assertTrue(optDto.isPresent());

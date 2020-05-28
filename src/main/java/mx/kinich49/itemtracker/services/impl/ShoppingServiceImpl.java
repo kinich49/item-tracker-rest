@@ -4,7 +4,7 @@ import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
-import mx.kinich49.itemtracker.services.TransformShoppingListService;
+import mx.kinich49.itemtracker.services.DtoEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class ShoppingServiceImpl implements ShoppingService {
 
-    private final TransformShoppingListService transformShoppingListService;
+    private final DtoEntityService dtoEntityService;
     private final ShoppingListRepository shoppingListRepository;
 
     @Autowired
-    public ShoppingServiceImpl(TransformShoppingListService transformShoppingListService,
+    public ShoppingServiceImpl(DtoEntityService dtoEntityService,
                                ShoppingListRepository shoppingListRepository) {
-        this.transformShoppingListService = transformShoppingListService;
+        this.dtoEntityService = dtoEntityService;
         this.shoppingListRepository = shoppingListRepository;
     }
 
@@ -36,7 +36,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     @Override
     @Transactional
     public Optional<ShoppingListDto> save(ShoppingListRequest request) {
-        return Optional.of(transformShoppingListService.from(request))
+        return Optional.of(dtoEntityService.from(request))
                 .map(shoppingListRepository::save)
                 .map(ShoppingListDto::from);
     }

@@ -3,12 +3,12 @@ package mx.kinich49.itemtracker.services.impl;
 import mx.kinich49.itemtracker.models.*;
 import mx.kinich49.itemtracker.repositories.*;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
-import mx.kinich49.itemtracker.services.TransformShoppingListService;
+import mx.kinich49.itemtracker.services.DtoEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TransformShoppingListServiceImpl implements TransformShoppingListService {
+public class DtoEntityServiceImpl implements DtoEntityService {
 
     private final ShoppingListRepository shoppingListRepository;
     private final StoreRepository storeRepository;
@@ -17,11 +17,11 @@ public class TransformShoppingListServiceImpl implements TransformShoppingListSe
     private final ItemRepository itemRepository;
 
     @Autowired
-    public TransformShoppingListServiceImpl(ShoppingListRepository shoppingListRepository,
-                                            StoreRepository storeRepository,
-                                            BrandRepository brandRepository,
-                                            CategoryRepository categoryRepository,
-                                            ItemRepository itemRepository) {
+    public DtoEntityServiceImpl(ShoppingListRepository shoppingListRepository,
+                                StoreRepository storeRepository,
+                                BrandRepository brandRepository,
+                                CategoryRepository categoryRepository,
+                                ItemRepository itemRepository) {
         this.shoppingListRepository = shoppingListRepository;
         this.storeRepository = storeRepository;
         this.brandRepository = brandRepository;

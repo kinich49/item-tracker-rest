@@ -3,7 +3,7 @@ package mx.kinich49.itemtracker.services;
 import mx.kinich49.itemtracker.models.*;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 
-public interface TransformShoppingListService {
+public interface DtoEntityService {
 
     ShoppingList from(ShoppingListRequest request);
 
