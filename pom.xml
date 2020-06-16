@@ -11,12 +11,30 @@
 	<groupId>mx.kinich49</groupId>
 	<artifactId>item-tracker</artifactId>
 	<version>1.0</version>
-	<name>item-tracker</name>
+	<name>item-tracker-rest</name>
 	<description>An ideal way to track where you buy each item</description>
 
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<activeProperty>development</activeProperty>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<activeProperty>test</activeProperty>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
