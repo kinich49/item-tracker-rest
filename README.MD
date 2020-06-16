@@ -11,7 +11,7 @@ You can also fork the front end (It's a vue app), which is located in another re
 
 For building and running the application you need:
 
-- [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [JDK 1.8](https://openjdk.java.net/install/)
 - [Maven 3](https://maven.apache.org)
 
 ## Running the application locally
