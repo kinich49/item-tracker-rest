@@ -14,7 +14,7 @@ For building and running the application you need:
 - [JDK 1.8](https://openjdk.java.net/install/)
 - [Maven 3](https://maven.apache.org)
 
-Or alternative, Docker.
+Or alternative, [Docker](https://docs.docker.com/desktop/) 
 
 ## Running the service
 
@@ -33,10 +33,7 @@ Alternative, you can run this service with Docker. I added a simple and
 (most probably) poorly optimized Dockerfile to run this service. This is helpful if you don't have
 the appropriate JDK and Maven installed and configured into your PATH.
 
-Just follow these steps 
-#### Download and install [Docker Desktop](https://docs.docker.com/desktop/) 
-Make sure to install the correct version for your OS(Windows 10 Home/Windows 10 Pro/Linux/Mac)
-
+Just follow these steps:
 
 #### Build the docker image
 ```shell
