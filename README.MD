@@ -14,16 +14,44 @@ For building and running the application you need:
 - [JDK 1.8](https://openjdk.java.net/install/)
 - [Maven 3](https://maven.apache.org)
 
-## Running the application locally
+## Running the service
 
-
-To run locally, you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) like so:
+###Maven
+To run locally, you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) 
+like so:
 
 ```shell
 mvn spring-boot:run
 ```
 
 This project is configured to run at Port 9000
+
+###Docker
+Alternative, you can run this service with Docker. I added a simple and 
+(most probably) poorly optimized Dockerfile to run this service. This is helpful if you don't have
+the appropriate JDK and Maven installed and configured into your PATH.
+
+Just follow these steps 
+#### Download and install [Docker Desktop](https://docs.docker.com/desktop/) 
+Make sure to install the correct version for your OS(Windows 10 Home/Windows 10 Pro/Linux/Mac)
+
+
+#### Build the docker image
+```shell
+docker build -t item-tracker-rest .
+```
+
+The project root folder should be the context
+#### Run the container
+```shell
+docker run --name item-tracker-rest -p9000:9000 --rm item-tracker-rest
+```
+
+#### Stop the container
+Once you're finished, don't forget to stop the container
+```shell
+docker stop item-tracker-rest
+```
 ##Bugs and Enhancements
 If you find any bug, please raise an issue with the steps and conditions
 to reproduce it. If you want to contribute to this project, 
