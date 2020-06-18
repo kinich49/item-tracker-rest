@@ -14,6 +14,8 @@ For building and running the application you need:
 - [JDK 1.8](https://openjdk.java.net/install/)
 - [Maven 3](https://maven.apache.org)
 
+Or alternative, Docker.
+
 ## Running the service
 
 ### Maven
@@ -26,7 +28,7 @@ mvn spring-boot:run
 
 This project is configured to run at Port 9000
 
-###Docker
+### Docker
 Alternative, you can run this service with Docker. I added a simple and 
 (most probably) poorly optimized Dockerfile to run this service. This is helpful if you don't have
 the appropriate JDK and Maven installed and configured into your PATH.
