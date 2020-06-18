@@ -16,7 +16,7 @@ For building and running the application you need:
 
 ## Running the service
 
-###Maven
+### Maven
 To run locally, you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) 
 like so:
 
@@ -52,7 +52,7 @@ Once you're finished, don't forget to stop the container
 ```shell
 docker stop item-tracker-rest
 ```
-##Bugs and Enhancements
+## Bugs and Enhancements
 If you find any bug, please raise an issue with the steps and conditions
 to reproduce it. If you want to contribute to this project, 
 feel free to fork this repo and submit a pull request. 
