@@ -20,13 +20,34 @@ Or alternative, [Docker](https://docs.docker.com/desktop/)
 
 ### Maven
 To run locally, you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) 
-like so:
 
-```shell
+The simplest command is
+```shell 
 mvn spring-boot:run
 ```
+which will run with default profile ```development```, which uses in-memory H2 as RDBMS with create-drop set as 
+Hibernate ddl-auto, and will start with predefined values from resources/development.sql. 
 
-This project is configured to run at Port 9000
+To run ```production``` profile, you must execute
+
+```shell
+mvn spring-boot:run -Dspring-boot.run.arguments=--app.datasource.password=myDatabasePassword -Pproduction
+```
+Replace myPassword with your database password, otherwise Spring won't be able to connect to the db server.
+If a password is not configured in your database, omit:
+
+```
+-Dspring-boot.run.arguments=--app.datasource.password=myDatabasePassword
+```
+
+The database username is declared inside application-production.properties.
+
+MariaDB is the selected RDBMS for Production profile, and Hibernate ddl-auto is set to verify.
+
+
+This project uses Port 9000 as default, but can be changed application.properties.
+
+To see other available profiles, check pom.xml. 
 
 ### Docker
 Alternative, you can run this service with Docker. I added a simple and 
