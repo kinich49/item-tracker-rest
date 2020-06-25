@@ -20,7 +20,7 @@ public class JpaTest {
     private final ItemRepository itemRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
-
+    private final UserRepository userRepository;
     private Brand testBrand;
     private Category testCategory;
     private Store testStore;
@@ -31,12 +31,14 @@ public class JpaTest {
                    StoreRepository storeRepository,
                    ItemRepository itemRepository,
                    BrandRepository brandRepository,
-                   CategoryRepository categoryRepository) {
+                   CategoryRepository categoryRepository,
+                   UserRepository userRepository) {
         this.shoppingListRepository = shoppingListRepository;
         this.storeRepository = storeRepository;
         this.itemRepository = itemRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     @BeforeEach
@@ -66,6 +68,9 @@ public class JpaTest {
     @Test
     public void shouldInsert_newShoppingList_with_oneItem() {
         long testItemId = testItem.getId();
+        User user = userRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("User with id 1 not found"));
+
         ShoppingList shoppingList = new ShoppingList();
         ShoppingItem shoppingItem = new ShoppingItem();
 
@@ -76,6 +81,9 @@ public class JpaTest {
         shoppingItem.setUnitPrice(100);
         testItem.addShoppingItem(shoppingItem);
         shoppingList.addShoppingItem(shoppingItem);
+
+        user.addShoppingList(shoppingList);
+        user.addShoppingItem(shoppingItem);
 
         shoppingListRepository.save(shoppingList);
         assertTrue(shoppingList.getId() > 0);

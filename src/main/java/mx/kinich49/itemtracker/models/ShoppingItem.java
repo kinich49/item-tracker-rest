@@ -1,6 +1,7 @@
 package mx.kinich49.itemtracker.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,7 +10,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity
 @Table(name = "ShoppingItems")
-@ToString(exclude = {"shoppingList"})
+@ToString(exclude = {"shoppingList", "user"})
+@EqualsAndHashCode(exclude = {"shoppingList", "user"})
 public class ShoppingItem {
 
     @Id
@@ -27,4 +29,9 @@ public class ShoppingItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shoppingList_id")
     private ShoppingList shoppingList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @NotNull
+    private User user;
+
 }
