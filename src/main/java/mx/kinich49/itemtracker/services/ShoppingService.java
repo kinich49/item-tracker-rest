@@ -9,9 +9,11 @@ import java.util.Optional;
 
 public interface ShoppingService {
 
-    Optional<ShoppingListDto> findBy(long id);
+    Optional<ShoppingListDto> findBy(long shoppingListId, long userId);
 
     Optional<ShoppingListDto> save(ShoppingListRequest request);
 
-    List<ShoppingListDto> findBy(LocalDate date);
+    List<ShoppingListDto> findBy(LocalDate date, long userId);
+
+    void deleteBy(long shoppingListId);
 }

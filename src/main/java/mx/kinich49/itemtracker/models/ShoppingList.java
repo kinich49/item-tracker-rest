@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +11,11 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "ShoppingLists")
-@ToString(exclude = {"shoppingItems"})
+@ToString(exclude = {"shoppingItems", "user"})
 public class ShoppingList {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate shoppingDate = LocalDate.now();
@@ -28,10 +28,8 @@ public class ShoppingList {
             orphanRemoval = true
     )
     private List<ShoppingItem> shoppingItems = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotNull
     private User user;
 
     public void addShoppingItem(ShoppingItem shoppingItem) {

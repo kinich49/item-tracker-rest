@@ -142,10 +142,10 @@ public class ShoppingServiceTest {
         LocalDate localDate = LocalDate.now();
         List<ShoppingList> shoppingLists = new ArrayList<>();
         shoppingLists.add(shoppingList);
-        when(shoppingListRepository.findByShoppingDate(eq(localDate)))
+        when(shoppingListRepository.findByShoppingDateAndUserId(eq(localDate), eq(1L)))
                 .thenReturn(shoppingLists);
         //when
-        List<ShoppingListDto> response = subject.findBy(localDate);
+        List<ShoppingListDto> response = subject.findBy(localDate, 1L);
 
         //then
         assertNotNull(response);
@@ -181,10 +181,10 @@ public class ShoppingServiceTest {
         shoppingItem.setUnitPrice(100);
         shoppingList.addShoppingItem(shoppingItem);
 
-        when(shoppingListRepository.findById(eq(1L)))
+        when(shoppingListRepository.findByIdAndUserId(eq(1L), eq(1L)))
                 .thenReturn(Optional.of(shoppingList));
         //when
-        Optional<ShoppingListDto> response = subject.findBy(1L);
+        Optional<ShoppingListDto> response = subject.findBy(1L, 1L);
 
         //then
         assertNotNull(response);
@@ -209,11 +209,11 @@ public class ShoppingServiceTest {
     @Test
     public void should_notFind_byDate() {
         //given
-        when(shoppingListRepository.findByShoppingDate(any(LocalDate.class)))
+        when(shoppingListRepository.findByShoppingDateAndUserId(any(LocalDate.class), eq(1L)))
                 .thenReturn(Collections.emptyList());
 
         //when
-        List<ShoppingListDto> response = subject.findBy(LocalDate.now());
+        List<ShoppingListDto> response = subject.findBy(LocalDate.now(), 1L);
 
         //then
         assertNotNull(response);
@@ -224,11 +224,11 @@ public class ShoppingServiceTest {
     @Test
     public void should_notFind_byId() {
         //given
-        when(shoppingListRepository.findById(anyLong()))
+        when(shoppingListRepository.findByIdAndUserId(anyLong(), anyLong()))
                 .thenReturn(Optional.empty());
 
         //when
-        Optional<ShoppingListDto> response = subject.findBy(1);
+        Optional<ShoppingListDto> response = subject.findBy(1L, 1L);
 
         //then
         assertFalse(response.isPresent());

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @DataJpaTest
+@ActiveProfiles(profiles = {"test"})
 public class JpaTest {
 
     private final ShoppingListRepository shoppingListRepository;
@@ -74,6 +76,7 @@ public class JpaTest {
         ShoppingList shoppingList = new ShoppingList();
         ShoppingItem shoppingItem = new ShoppingItem();
 
+        shoppingList.setUser(user);
         shoppingList.setShoppingDate(LocalDate.now());
         testStore.addShoppingList(shoppingList);
 
@@ -82,8 +85,6 @@ public class JpaTest {
         testItem.addShoppingItem(shoppingItem);
         shoppingList.addShoppingItem(shoppingItem);
 
-        user.addShoppingList(shoppingList);
-        user.addShoppingItem(shoppingItem);
 
         shoppingListRepository.save(shoppingList);
         assertTrue(shoppingList.getId() > 0);

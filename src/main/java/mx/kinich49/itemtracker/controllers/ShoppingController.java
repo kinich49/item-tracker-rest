@@ -1,7 +1,6 @@
 package mx.kinich49.itemtracker.controllers;
 
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
-import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +19,16 @@ import java.util.Optional;
 @CrossOrigin
 public class ShoppingController {
 
-    private final ShoppingListRepository repository;
     private final ShoppingService shoppingListService;
 
     @Autowired
-    public ShoppingController(ShoppingListRepository repository,
-                              ShoppingService shoppingListService) {
-        this.repository = repository;
+    public ShoppingController(ShoppingService shoppingListService) {
         this.shoppingListService = shoppingListService;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ShoppingListDto> getShopping(@PathVariable("id") long shoppingId) {
-        return shoppingListService.findBy(shoppingId)
+        return shoppingListService.findBy(shoppingId, 1L)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -41,7 +37,7 @@ public class ShoppingController {
     public ResponseEntity<List<ShoppingListDto>> getShoppingLists(@RequestParam
                                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                           LocalDate shoppingDate) {
-        return Optional.ofNullable(shoppingListService.findBy(shoppingDate))
+        return Optional.ofNullable(shoppingListService.findBy(shoppingDate, 1L))
                 .filter(dtos -> !dtos.isEmpty())
                 .map(dtos -> new ResponseEntity<>(dtos, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -57,6 +53,6 @@ public class ShoppingController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteShopping(@PathVariable("id") long shoppingListId) {
-        repository.deleteById(shoppingListId);
+        shoppingListService.deleteBy(shoppingListId);
     }
 }

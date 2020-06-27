@@ -3,8 +3,8 @@ package mx.kinich49.itemtracker.services.impl;
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
-import mx.kinich49.itemtracker.services.ShoppingService;
 import mx.kinich49.itemtracker.services.DtoEntityService;
+import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +28,8 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Optional<ShoppingListDto> findBy(long id) {
-        return shoppingListRepository.findById(id)
+    public Optional<ShoppingListDto> findBy(long shoppingId, long userId) {
+        return shoppingListRepository.findByIdAndUserId(shoppingId, userId)
                 .map(ShoppingListDto::from);
     }
 
@@ -42,10 +42,16 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public List<ShoppingListDto> findBy(LocalDate date) {
-        return shoppingListRepository.findByShoppingDate(date)
+    public List<ShoppingListDto> findBy(LocalDate date, long userId) {
+        return shoppingListRepository.findByShoppingDateAndUserId(date, userId)
                 .stream().parallel()
                 .map(ShoppingListDto::from)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteBy(long shoppingListId) {
+        shoppingListRepository.deleteById(shoppingListId);
+    }
+
 }
