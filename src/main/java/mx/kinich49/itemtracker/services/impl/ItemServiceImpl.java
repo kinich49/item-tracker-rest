@@ -35,13 +35,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId) {
+    public Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId, long userId) {
         if (!itemRepository.existsById(itemId))
             return Optional.empty();
 
-        List<Tuple> averageTuples = itemRepository.findAverageUnitPriceAndCurrency(itemId);
+        List<Tuple> averageTuples = itemRepository.findAverageUnitPriceAndCurrency(itemId, userId);
         List<Tuple> latestTuples = new ArrayList<>();
-        itemRepository.findLatestStoreAndShoppingDateAndPrice(itemId)
+        itemRepository.findLatestStoreAndShoppingDateAndPrice(itemId, userId)
                 .ifPresent(latestTuples::add);
 
         return Optional.ofNullable(getAnalyticsFor(averageTuples, latestTuples))
@@ -49,15 +49,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemAnalyticsDto> getAnalyticsForCategory(long categoryId) {
-        return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForCategory(categoryId),
-                itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(categoryId));
+    public List<ItemAnalyticsDto> getAnalyticsForCategory(long categoryId, long userId) {
+        return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForCategory(categoryId, 1L),
+                itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(categoryId, userId));
     }
 
     @Override
-    public List<ItemAnalyticsDto> getAnalyticsForBrand(long brandId) {
-        return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForBrand(brandId),
-                itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(brandId));
+    public List<ItemAnalyticsDto> getAnalyticsForBrand(long brandId, long userId) {
+        return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForBrand(brandId, userId),
+                itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(brandId, userId));
     }
 
     private List<ItemAnalyticsDto> getAnalyticsFor(Collection<Tuple> averageTuples,

@@ -35,7 +35,7 @@ public class ItemController {
 
     @GetMapping(path = "/{id}/analytics")
     public ResponseEntity<List<ItemAnalyticsDto>> getAnalyticsForItem(@PathVariable(value = "id") long itemId) {
-        return itemService.getAnalyticsFor(itemId)
+        return itemService.getAnalyticsFor(itemId, 1L)
                 .map(analytics -> {
                     List<ItemAnalyticsDto> list = new ArrayList<>();
                     list.add(analytics);
@@ -48,7 +48,7 @@ public class ItemController {
     @GetMapping(path = "/category/{id}/analytics")
     public ResponseEntity<List<ItemAnalyticsDto>> getAnalyticsForCategory(
             @PathVariable(value = "id") long categoryId) {
-        return Optional.ofNullable(itemService.getAnalyticsForCategory(categoryId))
+        return Optional.ofNullable(itemService.getAnalyticsForCategory(categoryId, 1))
                 .filter(list -> !list.isEmpty())
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -57,7 +57,7 @@ public class ItemController {
     @GetMapping(path = "/brand/{id}/analytics")
     public ResponseEntity<List<ItemAnalyticsDto>> getAnalyticsForBrand(
             @PathVariable(value = "id") long brandId) {
-        return Optional.ofNullable(itemService.getAnalyticsForBrand(brandId))
+        return Optional.ofNullable(itemService.getAnalyticsForBrand(brandId, 1))
                 .filter(list -> !list.isEmpty())
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

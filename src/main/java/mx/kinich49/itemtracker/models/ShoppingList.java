@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ShoppingList {
     private List<ShoppingItem> shoppingItems = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     public void addShoppingItem(ShoppingItem shoppingItem) {
