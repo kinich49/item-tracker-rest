@@ -60,4 +60,11 @@ public class CategoryController {
     public void deleteCategory(@PathVariable long id) {
         categoryRepository.deleteById(id);
     }
+
+    @PutMapping
+    public ResponseEntity<CategoryDto> putCategory(@RequestBody Category category) {
+        return categoryService.updateCategory(category)
+                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

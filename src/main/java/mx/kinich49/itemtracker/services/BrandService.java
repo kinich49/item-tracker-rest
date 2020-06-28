@@ -16,6 +16,8 @@ public interface BrandService {
 
     List<BrandDto> findLike(String name);
 
+    Optional<BrandDto> updateBrand(Brand dto);
+
     void delete(long id);
 
 }

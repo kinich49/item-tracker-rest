@@ -56,4 +56,11 @@ public class BrandController {
     public void deleteBrand(@PathVariable long id) {
         brandService.delete(id);
     }
+
+    @PutMapping
+    public ResponseEntity<BrandDto> updateBrand(@RequestBody Brand brand) {
+        return brandService.updateBrand(brand)
+                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

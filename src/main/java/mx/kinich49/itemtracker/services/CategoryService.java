@@ -15,4 +15,6 @@ public interface CategoryService {
     List<CategoryDto> findLike(String name);
 
     Optional<CategoryDto> saveCategory(Category fromRequest);
+
+    Optional<CategoryDto> updateCategory(Category fromRequest);
 }
