@@ -34,8 +34,8 @@ public class CategoryController {
     }
 
     @GetMapping(params = "id")
-    public ResponseEntity<Category> getCategoryById(@RequestParam long id) {
-        return categoryRepository.findById(id)
+    public ResponseEntity<CategoryDto> getCategoryById(@RequestParam long id) {
+        return categoryService.findById(id)
                 .map(category -> new ResponseEntity<>(category, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
