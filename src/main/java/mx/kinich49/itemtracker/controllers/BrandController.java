@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.controllers;
 
+import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.BrandDto;
 import mx.kinich49.itemtracker.models.Brand;
 import mx.kinich49.itemtracker.services.BrandService;
@@ -25,28 +26,34 @@ public class BrandController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BrandDto>> getAllBrands() {
-        return new ResponseEntity<>(brandService.findAll(), HttpStatus.OK);
+    public ResponseEntity<JsonApi<List<BrandDto>>> getAllBrands() {
+        return Optional.of(brandService.findAll())
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(params = "id")
-    public ResponseEntity<BrandDto> getBrandById(@RequestParam long id) {
+    public ResponseEntity<JsonApi<BrandDto>> getBrandById(@RequestParam long id) {
         return brandService.findById(id)
-                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<BrandDto> postBrand(@RequestBody Brand request) {
+    public ResponseEntity<JsonApi<BrandDto>> postBrand(@RequestBody Brand request) {
         return brandService.saveBrand(request)
-                .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<List<BrandDto>> getBrandsLikeName(@RequestParam String name) {
+    public ResponseEntity<JsonApi<List<BrandDto>>> getBrandsLikeName(@RequestParam String name) {
         return Optional.ofNullable(brandService.findLike(name))
                 .filter(list -> !list.isEmpty())
+                .map(JsonApi::new)
                 .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
@@ -58,9 +65,10 @@ public class BrandController {
     }
 
     @PutMapping
-    public ResponseEntity<BrandDto> updateBrand(@RequestBody Brand brand) {
+    public ResponseEntity<JsonApi<BrandDto>> updateBrand(@RequestBody Brand brand) {
         return brandService.updateBrand(brand)
-                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

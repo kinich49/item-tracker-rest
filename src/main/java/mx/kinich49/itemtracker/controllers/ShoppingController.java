@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.controllers;
 
+import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
@@ -27,26 +28,29 @@ public class ShoppingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShoppingListDto> getShopping(@PathVariable("id") long shoppingId) {
+    public ResponseEntity<JsonApi<ShoppingListDto>> getShopping(@PathVariable("id") long shoppingId) {
         return shoppingListService.findBy(shoppingId, 1L)
-                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(params = "shoppingDate")
-    public ResponseEntity<List<ShoppingListDto>> getShoppingLists(@RequestParam
-                                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                                          LocalDate shoppingDate) {
+    public ResponseEntity<JsonApi<List<ShoppingListDto>>> getShoppingLists(@RequestParam
+                                                                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                                   LocalDate shoppingDate) {
         return Optional.ofNullable(shoppingListService.findBy(shoppingDate, 1L))
                 .filter(dtos -> !dtos.isEmpty())
-                .map(dtos -> new ResponseEntity<>(dtos, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingListDto> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
+    public ResponseEntity<JsonApi<ShoppingListDto>> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
         return shoppingListService.save(shoppingList)
-                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 

@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.controllers;
 
+import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.StoreDto;
 import mx.kinich49.itemtracker.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,11 @@ public class StoreController {
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<List<StoreDto>> getStoresLike(@RequestParam String name) {
+    public ResponseEntity<JsonApi<List<StoreDto>>> getStoresLike(@RequestParam String name) {
         return Optional.ofNullable(storeService.findLike(name))
                 .filter(list -> !list.isEmpty())
-                .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 }
