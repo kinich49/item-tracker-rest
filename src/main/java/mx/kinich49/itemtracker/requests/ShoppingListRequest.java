@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ShoppingListRequest {
 
+    private long userId;
     private Store store;
     private LocalDate shoppingDate;
     private List<ShoppingItem> shoppingItems = new ArrayList<>();

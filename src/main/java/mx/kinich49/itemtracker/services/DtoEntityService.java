@@ -1,11 +1,12 @@
 package mx.kinich49.itemtracker.services;
 
+import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.*;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 
 public interface DtoEntityService {
 
-    ShoppingList from(ShoppingListRequest request);
+    ShoppingList from(ShoppingListRequest request) throws UserNotFoundException;
 
     ShoppingItem from(ShoppingListRequest.ShoppingItem request,
                       Brand brand,

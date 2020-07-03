@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.controllers;
 
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
+import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +48,17 @@ public class ShoppingController {
     }
 
     @PostMapping
+    @CrossOrigin
     public ResponseEntity<JsonApi<ShoppingListDto>> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
-        return shoppingListService.save(shoppingList)
-                .map(JsonApi::new)
-                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        try {
+            shoppingList.setUserId(1L);
+            return shoppingListService.save(shoppingList)
+                    .map(JsonApi::new)
+                    .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @DeleteMapping("/{id}")

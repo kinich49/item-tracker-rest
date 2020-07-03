@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.services.impl;
 
+import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.*;
 import mx.kinich49.itemtracker.repositories.*;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
@@ -15,24 +16,34 @@ public class DtoEntityServiceImpl implements DtoEntityService {
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public DtoEntityServiceImpl(ShoppingListRepository shoppingListRepository,
                                 StoreRepository storeRepository,
                                 BrandRepository brandRepository,
                                 CategoryRepository categoryRepository,
-                                ItemRepository itemRepository) {
+                                ItemRepository itemRepository,
+                                UserRepository userRepository) {
         this.shoppingListRepository = shoppingListRepository;
         this.storeRepository = storeRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public ShoppingList from(ShoppingListRequest request) {
+    public ShoppingList from(ShoppingListRequest request) throws UserNotFoundException {
+        if (request == null)
+            return null;
+
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
+
         Store store = from(request.getStore());
         ShoppingList shoppingList = new ShoppingList();
+        shoppingList.setUser(user);
         shoppingList.setShoppingDate(request.getShoppingDate());
         store.addShoppingList(shoppingList);
         for (ShoppingListRequest.ShoppingItem itemRequest : request.getShoppingItems()) {
