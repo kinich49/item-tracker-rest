@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @DataJpaTest
+@ActiveProfiles(profiles = {"test"})
 public class JpaTest {
 
     private final ShoppingListRepository shoppingListRepository;
@@ -20,7 +22,7 @@ public class JpaTest {
     private final ItemRepository itemRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
-
+    private final UserRepository userRepository;
     private Brand testBrand;
     private Category testCategory;
     private Store testStore;
@@ -31,12 +33,14 @@ public class JpaTest {
                    StoreRepository storeRepository,
                    ItemRepository itemRepository,
                    BrandRepository brandRepository,
-                   CategoryRepository categoryRepository) {
+                   CategoryRepository categoryRepository,
+                   UserRepository userRepository) {
         this.shoppingListRepository = shoppingListRepository;
         this.storeRepository = storeRepository;
         this.itemRepository = itemRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     @BeforeEach
@@ -66,9 +70,13 @@ public class JpaTest {
     @Test
     public void shouldInsert_newShoppingList_with_oneItem() {
         long testItemId = testItem.getId();
+        User user = userRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("User with id 1 not found"));
+
         ShoppingList shoppingList = new ShoppingList();
         ShoppingItem shoppingItem = new ShoppingItem();
 
+        shoppingList.setUser(user);
         shoppingList.setShoppingDate(LocalDate.now());
         testStore.addShoppingList(shoppingList);
 
@@ -76,6 +84,7 @@ public class JpaTest {
         shoppingItem.setUnitPrice(100);
         testItem.addShoppingItem(shoppingItem);
         shoppingList.addShoppingItem(shoppingItem);
+
 
         shoppingListRepository.save(shoppingList);
         assertTrue(shoppingList.getId() > 0);

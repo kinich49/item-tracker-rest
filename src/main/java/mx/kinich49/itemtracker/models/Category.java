@@ -26,7 +26,6 @@ public class Category {
             mappedBy = "category",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonIgnore
     private List<Item> items = new ArrayList<>();
 
     public void addItem(Item item) {

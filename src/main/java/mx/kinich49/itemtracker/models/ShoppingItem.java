@@ -1,6 +1,7 @@
 package mx.kinich49.itemtracker.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "ShoppingItems")
 @ToString(exclude = {"shoppingList"})
+@EqualsAndHashCode(exclude = {"shoppingList"})
 public class ShoppingItem {
 
     @Id

@@ -1,3 +1,6 @@
+INSERT INTO Users(username) VALUES ('User A')
+INSERT INTO Users(username) VALUES ('User B')
+
 INSERT INTO Brands(name) VALUES ('Test Brand 1')
 INSERT INTO Brands(name) VALUES ('Test Brand 2')
 INSERT INTO Brands(name) VALUES ('Test Brand 3')
@@ -23,11 +26,13 @@ INSERT INTO Stores(name) VALUES('Test Store 1')
 INSERT INTO Stores(name) VALUES('Test Store 2')
 INSERT INTO Stores(name) VALUES('Test Store 3')
 
-INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-01-05',1)
-INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-01-12',2)
-INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-01-19',1)
-INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-01-26',2)
-INSERT INTO Shopping_Lists(shopping_date, store_id) VALUES('2020-02-02',3)
+INSERT INTO Shopping_Lists(shopping_date, store_id, user_id) VALUES('2020-01-05',1, 1)
+INSERT INTO Shopping_Lists(shopping_date, store_id, user_id) VALUES('2020-01-12',2, 1)
+INSERT INTO Shopping_Lists(shopping_date, store_id, user_id) VALUES('2020-01-19',1, 1)
+INSERT INTO Shopping_Lists(shopping_date, store_id, user_id) VALUES('2020-01-26',2, 1)
+INSERT INTO Shopping_Lists(shopping_date, store_id, user_id) VALUES('2020-02-02',3, 1)
+INSERT INTO Shopping_Lists(shopping_date, store_id, user_id) VALUES('2020-02-16',1, 2)
+INSERT INTO Shopping_Lists(shopping_date, store_id, user_id) VALUES('2020-02-23',3, 2)
 
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(1, 1.0, 2200, 1,'Unit', 'MXN')
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(2, 1.0, 5000, 1,'Unit', 'MXN')
@@ -47,3 +52,12 @@ INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(1, 1.0, 2100, 4,'Unit', 'MXN')
 
 INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(4, 1.0, 1000, 5,'Unit', 'MXN')
+
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(1, 1.0, 1000, 6,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(3, 1.0, 2000, 6,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(5, 1.0, 5000, 6,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(8, 1.0, 4500, 6,'Unit', 'MXN')
+
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(1, 1.0, 3500, 7,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(3, 1.0, 2000, 7,'Unit', 'MXN')
+INSERT INTO shopping_items(item_id, quantity, unit_price, shopping_list_id, unit, currency) VALUES(6, 1.0, 4000, 7,'Unit', 'MXN')

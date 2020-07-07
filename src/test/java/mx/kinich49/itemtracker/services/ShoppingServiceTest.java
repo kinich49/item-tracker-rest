@@ -3,15 +3,17 @@ package mx.kinich49.itemtracker.services;
 import mx.kinich49.itemtracker.dtos.ShoppingItemDto;
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.dtos.StoreDto;
+import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.*;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.impl.ShoppingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -27,7 +29,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class ShoppingServiceTest {
 
-    private ShoppingService subject;
+    @InjectMocks
+    private ShoppingServiceImpl subject;
     @Mock
     ShoppingListRepository shoppingListRepository;
     @Mock
@@ -40,7 +43,6 @@ public class ShoppingServiceTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
 
         testBrand = new Brand();
         testBrand.setId(1);
@@ -59,19 +61,19 @@ public class ShoppingServiceTest {
         testItem.setName("Test Item");
         testBrand.addItem(testItem);
         testCategory.addItem(testItem);
-
-        subject = new ShoppingServiceImpl(dtoEntityService, shoppingListRepository);
     }
 
-    @Test
-    public void should_create_newDto() {
+    @Test()
+    @DisplayName("Should return an exception when user does not exists")
+    public void should_throwException_when_userDoesNotExist() {
         //given
-        ShoppingListRequest shoppingListRequest = new ShoppingListRequest();
+        ShoppingListRequest request = new ShoppingListRequest();
         ShoppingListRequest.Brand brandRequest = new ShoppingListRequest.Brand();
         ShoppingListRequest.Category categoryRequest = new ShoppingListRequest.Category();
         ShoppingListRequest.Store storeRequest = new ShoppingListRequest.Store();
         ShoppingListRequest.ShoppingItem itemRequest = new ShoppingListRequest.ShoppingItem();
 
+        request.setUserId(Long.MAX_VALUE);
         brandRequest.setName("Test Brand");
         categoryRequest.setName("Test Category");
         storeRequest.setName("Test Store");
@@ -83,9 +85,46 @@ public class ShoppingServiceTest {
         itemRequest.setBrand(brandRequest);
         itemRequest.setCategory(categoryRequest);
 
-        shoppingListRequest.getShoppingItems().add(itemRequest);
-        shoppingListRequest.setStore(storeRequest);
-        shoppingListRequest.setShoppingDate(LocalDate.now());
+        request.getShoppingItems().add(itemRequest);
+        request.setStore(storeRequest);
+        request.setShoppingDate(LocalDate.now());
+
+        //when
+        Exception exception = assertThrows(UserNotFoundException.class,
+                () -> {
+                    when(dtoEntityService.from(any(ShoppingListRequest.class)))
+                            .thenThrow(new UserNotFoundException(Long.MAX_VALUE));
+                    subject.save(request);
+                });
+
+        assertEquals(String.format("User with id %d not found", Long.MAX_VALUE),
+                exception.getMessage());
+    }
+
+    @Test
+    public void should_create_newDto() throws UserNotFoundException {
+        //given
+        ShoppingListRequest request = new ShoppingListRequest();
+        ShoppingListRequest.Brand brandRequest = new ShoppingListRequest.Brand();
+        ShoppingListRequest.Category categoryRequest = new ShoppingListRequest.Category();
+        ShoppingListRequest.Store storeRequest = new ShoppingListRequest.Store();
+        ShoppingListRequest.ShoppingItem itemRequest = new ShoppingListRequest.ShoppingItem();
+
+        request.setUserId(1L);
+        brandRequest.setName("Test Brand");
+        categoryRequest.setName("Test Category");
+        storeRequest.setName("Test Store");
+        itemRequest.setName("Test item");
+        itemRequest.setCurrency("MXN");
+        itemRequest.setQuantity(1);
+        itemRequest.setUnitPrice(100);
+
+        itemRequest.setBrand(brandRequest);
+        itemRequest.setCategory(categoryRequest);
+
+        request.getShoppingItems().add(itemRequest);
+        request.setStore(storeRequest);
+        request.setShoppingDate(LocalDate.now());
 
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.setStore(testStore);
@@ -113,7 +152,7 @@ public class ShoppingServiceTest {
                     return shoppingList;
                 });
         //when
-        Optional<ShoppingListDto> optDto = subject.save(shoppingListRequest);
+        Optional<ShoppingListDto> optDto = subject.save(request);
 
         //then
         verify(shoppingListRepository, times(1))
@@ -142,10 +181,10 @@ public class ShoppingServiceTest {
         LocalDate localDate = LocalDate.now();
         List<ShoppingList> shoppingLists = new ArrayList<>();
         shoppingLists.add(shoppingList);
-        when(shoppingListRepository.findByShoppingDate(eq(localDate)))
+        when(shoppingListRepository.findByShoppingDateAndUserId(eq(localDate), eq(1L)))
                 .thenReturn(shoppingLists);
         //when
-        List<ShoppingListDto> response = subject.findBy(localDate);
+        List<ShoppingListDto> response = subject.findBy(localDate, 1L);
 
         //then
         assertNotNull(response);
@@ -181,10 +220,10 @@ public class ShoppingServiceTest {
         shoppingItem.setUnitPrice(100);
         shoppingList.addShoppingItem(shoppingItem);
 
-        when(shoppingListRepository.findById(eq(1L)))
+        when(shoppingListRepository.findByIdAndUserId(eq(1L), eq(1L)))
                 .thenReturn(Optional.of(shoppingList));
         //when
-        Optional<ShoppingListDto> response = subject.findBy(1L);
+        Optional<ShoppingListDto> response = subject.findBy(1L, 1L);
 
         //then
         assertNotNull(response);
@@ -209,11 +248,11 @@ public class ShoppingServiceTest {
     @Test
     public void should_notFind_byDate() {
         //given
-        when(shoppingListRepository.findByShoppingDate(any(LocalDate.class)))
+        when(shoppingListRepository.findByShoppingDateAndUserId(any(LocalDate.class), eq(1L)))
                 .thenReturn(Collections.emptyList());
 
         //when
-        List<ShoppingListDto> response = subject.findBy(LocalDate.now());
+        List<ShoppingListDto> response = subject.findBy(LocalDate.now(), 1L);
 
         //then
         assertNotNull(response);
@@ -224,11 +263,11 @@ public class ShoppingServiceTest {
     @Test
     public void should_notFind_byId() {
         //given
-        when(shoppingListRepository.findById(anyLong()))
+        when(shoppingListRepository.findByIdAndUserId(anyLong(), anyLong()))
                 .thenReturn(Optional.empty());
 
         //when
-        Optional<ShoppingListDto> response = subject.findBy(1);
+        Optional<ShoppingListDto> response = subject.findBy(1L, 1L);
 
         //then
         assertFalse(response.isPresent());

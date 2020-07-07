@@ -1,7 +1,8 @@
 package mx.kinich49.itemtracker.controllers;
 
+import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
-import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
+import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,43 +21,49 @@ import java.util.Optional;
 @CrossOrigin
 public class ShoppingController {
 
-    private final ShoppingListRepository repository;
     private final ShoppingService shoppingListService;
 
     @Autowired
-    public ShoppingController(ShoppingListRepository repository,
-                              ShoppingService shoppingListService) {
-        this.repository = repository;
+    public ShoppingController(ShoppingService shoppingListService) {
         this.shoppingListService = shoppingListService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShoppingListDto> getShopping(@PathVariable("id") long shoppingId) {
-        return shoppingListService.findBy(shoppingId)
-                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+    public ResponseEntity<JsonApi<ShoppingListDto>> getShopping(@PathVariable("id") long shoppingId) {
+        return shoppingListService.findBy(shoppingId, 1L)
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(params = "shoppingDate")
-    public ResponseEntity<List<ShoppingListDto>> getShoppingLists(@RequestParam
-                                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                                          LocalDate shoppingDate) {
-        return Optional.ofNullable(shoppingListService.findBy(shoppingDate))
+    public ResponseEntity<JsonApi<List<ShoppingListDto>>> getShoppingLists(@RequestParam
+                                                                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                                   LocalDate shoppingDate) {
+        return Optional.ofNullable(shoppingListService.findBy(shoppingDate, 1L))
                 .filter(dtos -> !dtos.isEmpty())
-                .map(dtos -> new ResponseEntity<>(dtos, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingListDto> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
-        return shoppingListService.save(shoppingList)
-                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    @CrossOrigin
+    public ResponseEntity<JsonApi<ShoppingListDto>> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
+        try {
+            shoppingList.setUserId(1L);
+            return shoppingListService.save(shoppingList)
+                    .map(JsonApi::new)
+                    .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteShopping(@PathVariable("id") long shoppingListId) {
-        repository.deleteById(shoppingListId);
+        shoppingListService.deleteBy(shoppingListId);
     }
 }

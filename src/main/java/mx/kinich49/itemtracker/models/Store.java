@@ -26,7 +26,6 @@ public class Store {
             mappedBy = "store",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonIgnore
     private List<ShoppingList> shoppingLists = new ArrayList<>();
 
     public void addShoppingList(ShoppingList shoppingList) {

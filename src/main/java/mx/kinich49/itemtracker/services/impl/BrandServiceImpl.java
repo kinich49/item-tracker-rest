@@ -64,6 +64,22 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public Optional<BrandDto> updateBrand(Brand fromRequest) {
+        if (fromRequest == null)
+            return Optional.empty();
+        Optional<Brand> optBrand = brandRepository.findById(fromRequest.getId());
+
+        if (!optBrand.isPresent())
+            return Optional.empty();
+
+        Brand fromPersistence = optBrand.get();
+        fromPersistence.setName(fromRequest.getName());
+
+        return Optional.of(brandRepository.save(fromPersistence))
+                .map(BrandDto::from);
+    }
+
+    @Override
     public void delete(long id) {
         brandRepository.deleteById(id);
     }

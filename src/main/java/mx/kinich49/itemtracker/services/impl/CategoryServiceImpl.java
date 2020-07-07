@@ -53,4 +53,20 @@ public class CategoryServiceImpl implements CategoryService {
         return Optional.of(categoryRepository.save(fromRequest))
                 .map(CategoryDto::from);
     }
+
+    @Override
+    public Optional<CategoryDto> updateCategory(Category fromRequest) {
+        if (fromRequest == null)
+            return Optional.empty();
+
+        Optional<Category> optCategory = categoryRepository.findById(fromRequest.getId());
+        if (!optCategory.isPresent())
+            return Optional.empty();
+
+        Category fromPersistence = optCategory.get();
+
+        fromPersistence.setName(fromRequest.getName());
+        return Optional.of(categoryRepository.save(fromPersistence))
+                .map(CategoryDto::from);
+    }
 }

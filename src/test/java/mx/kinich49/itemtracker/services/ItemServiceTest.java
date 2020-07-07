@@ -74,7 +74,7 @@ public class ItemServiceTest {
                 .thenReturn(false);
 
         //when
-        Optional<ItemAnalyticsDto> result = subject.getAnalyticsFor(1);
+        Optional<ItemAnalyticsDto> result = subject.getAnalyticsFor(1, 1L);
 
         //then
         assertFalse(result.isPresent());
@@ -112,14 +112,14 @@ public class ItemServiceTest {
 
         when(itemRepository.existsById(eq(1L)))
                 .thenReturn(true);
-        when(itemRepository.findLatestStoreAndShoppingDateAndPrice(anyLong()))
+        when(itemRepository.findLatestStoreAndShoppingDateAndPrice(anyLong(), eq(1L)))
                 .thenReturn(Optional.of(storeAndDateAndPriceMock));
 
-        when(itemRepository.findAverageUnitPriceAndCurrency(anyLong()))
+        when(itemRepository.findAverageUnitPriceAndCurrency(anyLong(), eq(1L)))
                 .thenReturn(averageTuples);
 
         //when
-        Optional<ItemAnalyticsDto> result = subject.getAnalyticsFor(1L);
+        Optional<ItemAnalyticsDto> result = subject.getAnalyticsFor(1L, 1L);
 
         //then
         assertTrue(result.isPresent());
@@ -188,13 +188,13 @@ public class ItemServiceTest {
         List<Tuple> averageTuples = getValidAverageTuples(items, averagePrices, testCurrency);
         List<Tuple> latestTuples = getValidLatestTuples(items, testStore, latestDates, latestPrices);
 
-        when(itemRepository.findAverageUnitPriceAndCurrencyForCategory(anyLong()))
+        when(itemRepository.findAverageUnitPriceAndCurrencyForCategory(anyLong(), eq(1L)))
                 .thenReturn(averageTuples);
-        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(anyLong()))
+        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(anyLong(), eq(1L)))
                 .thenReturn(latestTuples);
 
         //when
-        List<ItemAnalyticsDto> results = subject.getAnalyticsForCategory(1L);
+        List<ItemAnalyticsDto> results = subject.getAnalyticsForCategory(1L, 1);
 
         //then
         //then
@@ -204,14 +204,14 @@ public class ItemServiceTest {
     @Test
     public void shouldReturn_null_whenCategoryIdDoesNotExist() {
         //given
-        when(itemRepository.findAverageUnitPriceAndCurrencyForCategory(eq(Long.MAX_VALUE)))
+        when(itemRepository.findAverageUnitPriceAndCurrencyForCategory(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(null);
 
-        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(eq(Long.MAX_VALUE)))
+        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(null);
 
         //when
-        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForCategory(Long.MAX_VALUE);
+        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForCategory(Long.MAX_VALUE, 1);
 
         //then
         assertNull(dtos);
@@ -220,14 +220,14 @@ public class ItemServiceTest {
     @Test
     public void shouldReturn_null_whenCategoryIsEmpty() {
         //given
-        when(itemRepository.findAverageUnitPriceAndCurrencyForCategory(eq(Long.MAX_VALUE)))
+        when(itemRepository.findAverageUnitPriceAndCurrencyForCategory(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(Collections.emptyList());
 
-        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(eq(Long.MAX_VALUE)))
+        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(Collections.emptyList());
 
         //when
-        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForCategory(Long.MAX_VALUE);
+        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForCategory(Long.MAX_VALUE, 1);
 
         //then
         assertNull(dtos);
@@ -276,13 +276,13 @@ public class ItemServiceTest {
         List<Tuple> averageTuples = getValidAverageTuples(items, averagePrices, testCurrency);
         List<Tuple> latestTuples = getValidLatestTuples(items, testStore, latestDates, latestPrices);
 
-        when(itemRepository.findAverageUnitPriceAndCurrencyForBrand(anyLong()))
+        when(itemRepository.findAverageUnitPriceAndCurrencyForBrand(anyLong(), eq(1L)))
                 .thenReturn(averageTuples);
-        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(anyLong()))
+        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(anyLong(), eq(1L)))
                 .thenReturn(latestTuples);
 
         //when
-        List<ItemAnalyticsDto> results = subject.getAnalyticsForBrand(1L);
+        List<ItemAnalyticsDto> results = subject.getAnalyticsForBrand(1L, 1);
 
         //then
         assertDtoResult(results, items, latestPrices, latestDates, averagePrices, testStore);
@@ -292,14 +292,14 @@ public class ItemServiceTest {
     @Test
     public void shouldReturn_null_whenBrandIdDoesNotExists() {
         //given
-        when(itemRepository.findAverageUnitPriceAndCurrencyForBrand(eq(Long.MAX_VALUE)))
+        when(itemRepository.findAverageUnitPriceAndCurrencyForBrand(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(null);
 
-        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(eq(Long.MAX_VALUE)))
+        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(null);
 
         //when
-        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForBrand(Long.MAX_VALUE);
+        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForBrand(Long.MAX_VALUE, 1);
 
         //then
         assertNull(dtos);
@@ -308,14 +308,14 @@ public class ItemServiceTest {
     @Test
     public void shouldReturn_null_whenBrandIsEmpty() {
         //given
-        when(itemRepository.findAverageUnitPriceAndCurrencyForBrand(eq(Long.MAX_VALUE)))
+        when(itemRepository.findAverageUnitPriceAndCurrencyForBrand(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(Collections.emptyList());
 
-        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(eq(Long.MAX_VALUE)))
+        when(itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(eq(Long.MAX_VALUE), eq(1L)))
                 .thenReturn(Collections.emptyList());
 
         //when
-        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForBrand(Long.MAX_VALUE);
+        List<ItemAnalyticsDto> dtos = subject.getAnalyticsForBrand(Long.MAX_VALUE, 1);
 
         //then
         assertNull(dtos);

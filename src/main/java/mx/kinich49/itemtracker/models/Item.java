@@ -32,7 +32,6 @@ public class Item {
             mappedBy = "item",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonIgnore
     private List<ShoppingItem> items = new ArrayList<>();
 
     public void addShoppingItem(ShoppingItem shoppingItem) {

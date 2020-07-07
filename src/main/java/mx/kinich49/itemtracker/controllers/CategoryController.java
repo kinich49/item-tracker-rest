@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.controllers;
 
+import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.CategoryDto;
 import mx.kinich49.itemtracker.models.Category;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
@@ -29,29 +30,35 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
-        return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<JsonApi<List<Category>>> getAllCategories() {
+        return Optional.of(categoryRepository.findAll())
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(params = "id")
-    public ResponseEntity<Category> getCategoryById(@RequestParam long id) {
-        return categoryRepository.findById(id)
-                .map(category -> new ResponseEntity<>(category, HttpStatus.OK))
+    public ResponseEntity<JsonApi<CategoryDto>> getCategoryById(@RequestParam long id) {
+        return categoryService.findById(id)
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<List<CategoryDto>> getCategoriesLike(@RequestParam String name) {
+    public ResponseEntity<JsonApi<List<CategoryDto>>> getCategoriesLike(@RequestParam String name) {
         return Optional.ofNullable(categoryService.findLike(name))
                 .filter(list -> !list.isEmpty())
-                .map(brand -> new ResponseEntity<>(brand, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDto> postCategory(@RequestBody Category category) {
+    public ResponseEntity<JsonApi<CategoryDto>> postCategory(@RequestBody Category category) {
         return categoryService.saveCategory(category)
-                .map(persistedCategory -> new ResponseEntity<>(persistedCategory, HttpStatus.OK))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
@@ -59,5 +66,13 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable long id) {
         categoryRepository.deleteById(id);
+    }
+
+    @PutMapping
+    public ResponseEntity<JsonApi<CategoryDto>> putCategory(@RequestBody Category category) {
+        return categoryService.updateCategory(category)
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
