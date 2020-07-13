@@ -52,7 +52,7 @@ public class DtoEntityServiceImpl implements DtoEntityService {
             ShoppingItem shoppingItem = from(itemRequest, brand, category);
             shoppingList.addShoppingItem(shoppingItem);
         }
-        return shoppingListRepository.save(shoppingList);
+        return shoppingList;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class DtoEntityServiceImpl implements DtoEntityService {
                 .orElseGet(() -> {
                     Brand brand = new Brand();
                     brand.setName(request.getName());
-                    return brandRepository.save(brand);
+                    return brand;
                 });
     }
 
@@ -71,34 +71,32 @@ public class DtoEntityServiceImpl implements DtoEntityService {
                 .orElseGet(() -> {
                     Category category = new Category();
                     category.setName(request.getName());
-                    return categoryRepository.save(category);
+                    return category;
                 });
     }
 
     @Override
-    public ShoppingItem from(ShoppingListRequest.ShoppingItem request,
+    public ShoppingItem from(ShoppingListRequest.ShoppingItem itemRequest,
                              Brand brand, Category category) {
-        Item item = itemRepository.findById(request.getItemId())
+        Item item = itemRepository.findById(itemRequest.getId())
                 .orElseGet(() -> {
                     Item newItem = new Item();
-                    newItem.setName(request.getName());
+                    newItem.setName(itemRequest.getName());
                     if (brand != null) {
                         brand.addItem(newItem);
-                        brandRepository.save(brand);
                     }
 
                     if (category != null) {
                         category.addItem(newItem);
-                        categoryRepository.save(category);
                     }
-                    return itemRepository.save(newItem);
+                    return newItem;
                 });
 
         ShoppingItem shoppingItem = new ShoppingItem();
-        shoppingItem.setCurrency(request.getCurrency());
-        shoppingItem.setUnit(request.getUnit());
-        shoppingItem.setQuantity(request.getQuantity());
-        shoppingItem.setUnitPrice(request.getUnitPrice() * 100);
+        shoppingItem.setCurrency(itemRequest.getCurrency());
+        shoppingItem.setUnit(itemRequest.getUnit());
+        shoppingItem.setQuantity(itemRequest.getQuantity());
+        shoppingItem.setUnitPrice(itemRequest.getUnitPrice() * 100);
         item.addShoppingItem(shoppingItem);
         return shoppingItem;
     }

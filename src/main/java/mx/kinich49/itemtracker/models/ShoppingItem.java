@@ -23,10 +23,10 @@ public class ShoppingItem {
     private int unitPrice;
     @NotNull
     private String currency;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "item_id")
     private Item item;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "shoppingList_id")
     private ShoppingList shoppingList;
 }

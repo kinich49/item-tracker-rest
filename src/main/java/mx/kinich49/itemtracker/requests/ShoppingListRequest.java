@@ -19,9 +19,9 @@ public class ShoppingListRequest {
     @Data
     @NoArgsConstructor
     public static class ShoppingItem {
-        private long itemId;
+        private long id;
         private String unit;
-        private int quantity;
+        private double quantity;
         private int unitPrice;
         private String currency;
         private String name;
