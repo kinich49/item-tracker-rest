@@ -37,6 +37,12 @@
                 <activeProperty>production</activeProperty>
             </properties>
         </profile>
+        <profile>
+            <id>local</id>
+            <properties>
+                <activeProperty>local</activeProperty>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencies>

@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @Configuration()
-@Profile(value = {"production"})
+@Profile(value = {"production", "local"})
 public class DataSourceConfiguration {
 
     Environment environment;
