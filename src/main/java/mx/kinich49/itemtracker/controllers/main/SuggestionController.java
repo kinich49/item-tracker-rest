@@ -1,5 +1,6 @@
-package mx.kinich49.itemtracker.controllers;
+package mx.kinich49.itemtracker.controllers.main;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.SuggestionsDto;
 import mx.kinich49.itemtracker.services.SuggestionService;
@@ -8,18 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("mainSuggestionController")
 @RequestMapping("api/suggestions")
-@SuppressWarnings("unused")
 @CrossOrigin
+@RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class SuggestionController {
 
-    private final SuggestionService suggestionService;
-
     @Autowired
-    public SuggestionController(SuggestionService suggestionService) {
-        this.suggestionService = suggestionService;
-    }
+    private final SuggestionService suggestionService;
 
     @GetMapping(params = "name")
     public ResponseEntity<JsonApi<SuggestionsDto>> getSuggestionsLike(@RequestParam String name) {

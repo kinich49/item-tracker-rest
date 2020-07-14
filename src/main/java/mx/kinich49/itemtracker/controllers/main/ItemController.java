@@ -1,5 +1,6 @@
-package mx.kinich49.itemtracker.controllers;
+package mx.kinich49.itemtracker.controllers.main;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.ItemAnalyticsDto;
 import mx.kinich49.itemtracker.dtos.ItemDto;
@@ -13,18 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@RestController("mainItemController")
 @RequestMapping("api/items")
 @CrossOrigin
+@RequiredArgsConstructor
 @SuppressWarnings("unused")
 public class ItemController {
 
-    private final ItemService itemService;
-
     @Autowired
-    public ItemController(ItemService itemService) {
-        this.itemService = itemService;
-    }
+    private final ItemService itemService;
 
     @GetMapping(params = "name")
     public ResponseEntity<JsonApi<List<ItemDto>>> getItemsLike(@RequestParam String name) {

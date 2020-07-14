@@ -1,5 +1,6 @@
-package mx.kinich49.itemtracker.controllers;
+package mx.kinich49.itemtracker.controllers.main;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
@@ -15,18 +16,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@RestController("mainShoppingListController")
 @RequestMapping("api/shoppingLists")
-@SuppressWarnings("unused")
 @CrossOrigin
+@RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class ShoppingController {
 
-    private final ShoppingService shoppingListService;
-
     @Autowired
-    public ShoppingController(ShoppingService shoppingListService) {
-        this.shoppingListService = shoppingListService;
-    }
+    private final ShoppingService shoppingListService;
 
     @GetMapping("/{id}")
     public ResponseEntity<JsonApi<ShoppingListDto>> getShopping(@PathVariable("id") long shoppingId) {

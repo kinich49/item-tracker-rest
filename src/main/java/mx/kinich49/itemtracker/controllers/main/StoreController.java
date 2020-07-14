@@ -1,5 +1,6 @@
-package mx.kinich49.itemtracker.controllers;
+package mx.kinich49.itemtracker.controllers.main;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.StoreDto;
 import mx.kinich49.itemtracker.services.StoreService;
@@ -11,17 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@RestController("mainStoreController")
 @RequestMapping("api/stores")
 @CrossOrigin
+@RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class StoreController {
 
-    private final StoreService storeService;
-
     @Autowired
-    public StoreController(StoreService storeService) {
-        this.storeService = storeService;
-    }
+    private final StoreService storeService;
 
     @GetMapping(params = "name")
     public ResponseEntity<JsonApi<List<StoreDto>>> getStoresLike(@RequestParam String name) {

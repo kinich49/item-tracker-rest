@@ -1,5 +1,6 @@
-package mx.kinich49.itemtracker.controllers;
+package mx.kinich49.itemtracker.controllers.main;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.BrandDto;
 import mx.kinich49.itemtracker.models.Brand;
@@ -12,18 +13,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController()
+@RestController("mainBrandController")
 @RequestMapping("api/brands")
 @CrossOrigin
+@RequiredArgsConstructor
 @SuppressWarnings("unused")
 public class BrandController {
 
-    private final BrandService brandService;
-
     @Autowired
-    public BrandController(BrandService brandService) {
-        this.brandService = brandService;
-    }
+    private final BrandService brandService;
 
     @GetMapping
     public ResponseEntity<JsonApi<List<BrandDto>>> getAllBrands() {

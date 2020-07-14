@@ -1,5 +1,6 @@
-package mx.kinich49.itemtracker.controllers;
+package mx.kinich49.itemtracker.controllers.main;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.dtos.CategoryDto;
 import mx.kinich49.itemtracker.models.Category;
@@ -13,21 +14,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@RestController("mainCategoryController")
 @RequestMapping("api/categories")
 @CrossOrigin
+@RequiredArgsConstructor
 @SuppressWarnings("unused")
 public class CategoryController {
 
-    private final CategoryRepository categoryRepository;
-    private final CategoryService categoryService;
-
     @Autowired
-    public CategoryController(CategoryRepository categoryRepository,
-                              CategoryService categoryService) {
-        this.categoryRepository = categoryRepository;
-        this.categoryService = categoryService;
-    }
+    private final CategoryRepository categoryRepository;
+    @Autowired
+    private final CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<JsonApi<List<Category>>> getAllCategories() {
