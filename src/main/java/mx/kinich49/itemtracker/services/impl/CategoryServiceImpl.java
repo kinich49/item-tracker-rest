@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.dtos.CategoryDto;
-import mx.kinich49.itemtracker.models.Category;
+import mx.kinich49.itemtracker.models.database.Category;
+import mx.kinich49.itemtracker.models.front.FrontCategory;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
 import mx.kinich49.itemtracker.services.CategoryService;
 import mx.kinich49.itemtracker.services.SuggestionService;
@@ -27,35 +27,35 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findAll() {
+    public List<FrontCategory> findAll() {
         return categoryRepository.findAll()
                 .stream().parallel()
-                .map(CategoryDto::from)
+                .map(FrontCategory::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<CategoryDto> findById(long id) {
+    public Optional<FrontCategory> findById(long id) {
         return categoryRepository.findById(id)
-                .map(CategoryDto::from);
+                .map(FrontCategory::from);
     }
 
     @Override
-    public List<CategoryDto> findLike(String name) {
+    public List<FrontCategory> findLike(String name) {
         return suggestionService.findCategoriesLike(name);
     }
 
     @Override
-    public Optional<CategoryDto> saveCategory(Category fromRequest) {
+    public Optional<FrontCategory> saveCategory(Category fromRequest) {
         if (fromRequest == null)
             return Optional.empty();
 
         return Optional.of(categoryRepository.save(fromRequest))
-                .map(CategoryDto::from);
+                .map(FrontCategory::from);
     }
 
     @Override
-    public Optional<CategoryDto> updateCategory(Category fromRequest) {
+    public Optional<FrontCategory> updateCategory(Category fromRequest) {
         if (fromRequest == null)
             return Optional.empty();
 
@@ -67,6 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
 
         fromPersistence.setName(fromRequest.getName());
         return Optional.of(categoryRepository.save(fromPersistence))
-                .map(CategoryDto::from);
+                .map(FrontCategory::from);
     }
 }

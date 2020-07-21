@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
+import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.DtoEntityService;
@@ -29,24 +29,24 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Optional<ShoppingListDto> findBy(long shoppingId, long userId) {
+    public Optional<FrontShoppingList> findBy(long shoppingId, long userId) {
         return shoppingListRepository.findByIdAndUserId(shoppingId, userId)
-                .map(ShoppingListDto::from);
+                .map(FrontShoppingList::from);
     }
 
     @Override
     @Transactional
-    public Optional<ShoppingListDto> save(ShoppingListRequest request) throws UserNotFoundException {
+    public Optional<FrontShoppingList> save(ShoppingListRequest request) throws UserNotFoundException {
         return Optional.ofNullable(dtoEntityService.from(request))
                 .map(shoppingListRepository::save)
-                .map(ShoppingListDto::from);
+                .map(FrontShoppingList::from);
     }
 
     @Override
-    public List<ShoppingListDto> findBy(LocalDate date, long userId) {
+    public List<FrontShoppingList> findBy(LocalDate date, long userId) {
         return shoppingListRepository.findByShoppingDateAndUserId(date, userId)
                 .stream().parallel()
-                .map(ShoppingListDto::from)
+                .map(FrontShoppingList::from)
                 .collect(Collectors.toList());
     }
 

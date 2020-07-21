@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.models;
+package mx.kinich49.itemtracker.models.database;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

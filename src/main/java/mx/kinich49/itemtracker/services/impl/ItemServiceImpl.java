@@ -1,10 +1,10 @@
 package mx.kinich49.itemtracker.services.impl;
 
 import mx.kinich49.itemtracker.dtos.ItemAnalyticsDto;
-import mx.kinich49.itemtracker.dtos.ItemDto;
-import mx.kinich49.itemtracker.dtos.ShoppingItemDto;
-import mx.kinich49.itemtracker.models.Item;
-import mx.kinich49.itemtracker.models.Store;
+import mx.kinich49.itemtracker.models.database.Item;
+import mx.kinich49.itemtracker.models.database.Store;
+import mx.kinich49.itemtracker.models.front.FrontItem;
+import mx.kinich49.itemtracker.models.front.FrontShoppingItem;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
 import mx.kinich49.itemtracker.services.ItemService;
 import mx.kinich49.itemtracker.services.SuggestionService;
@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> findLike(String name) {
+    public List<FrontItem> findLike(String name) {
         return suggestionService.findItemsLike(name);
     }
 
@@ -107,11 +107,11 @@ public class ItemServiceImpl implements ItemService {
                                                Tuple averageTuple,
                                                Tuple latestTuple) {
         ItemAnalyticsDto.ItemAnalyticsDtoBuilder builder = ItemAnalyticsDto.builder();
-        builder.item(ItemDto.from(item));
+        builder.item(FrontItem.from(item));
         if (averageTuple != null) {
             Double averagePrice = averageTuple.get(1, Double.class);
             String currency = averageTuple.get(2, String.class);
-            builder.averagePrice(ShoppingItemDto.transformAndFormatPrice(averagePrice, currency));
+            builder.averagePrice(FrontShoppingItem.transformAndFormatPrice(averagePrice, currency));
         }
 
         if (latestTuple != null) {
@@ -124,7 +124,7 @@ public class ItemServiceImpl implements ItemService {
                     .ifPresent(builder::latestDate);
 
             Optional.ofNullable(latestTuple.get(3, Integer.class))
-                    .map(latestPrice -> ShoppingItemDto.transformAndFormatPrice(latestPrice, "MXN"))
+                    .map(latestPrice -> FrontShoppingItem.transformAndFormatPrice(latestPrice, "MXN"))
                     .ifPresent(builder::latestPrice);
         }
         return builder.build();

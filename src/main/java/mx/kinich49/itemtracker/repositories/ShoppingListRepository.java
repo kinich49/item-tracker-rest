@@ -1,6 +1,6 @@
 package mx.kinich49.itemtracker.repositories;
 
-import mx.kinich49.itemtracker.models.ShoppingList;
+import mx.kinich49.itemtracker.models.database.ShoppingList;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

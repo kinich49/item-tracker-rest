@@ -1,6 +1,6 @@
-package mx.kinich49.itemtracker.dtos;
+package mx.kinich49.itemtracker.models.front;
 
-import mx.kinich49.itemtracker.models.*;
+import mx.kinich49.itemtracker.models.database.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ShoppingItemDtoTest {
+public class FrontShoppingItemTest {
 
     Brand testBrand;
     Category testCategory;
@@ -50,7 +50,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setCurrency("USD");
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);
@@ -68,7 +68,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setCurrency("MXN");
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);
@@ -86,7 +86,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setCurrency("GBP");
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);
@@ -104,7 +104,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setCurrency("YEN");
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);
@@ -122,7 +122,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setQuantity(0.485);
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);
@@ -140,7 +140,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setQuantity(1);
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);
@@ -157,7 +157,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setQuantity(1);
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);
@@ -174,7 +174,7 @@ public class ShoppingItemDtoTest {
         shoppingItem.setQuantity(1000);
 
         //when
-        ShoppingItemDto result = ShoppingItemDto.from(shoppingItem);
+        FrontShoppingItem result = FrontShoppingItem.from(shoppingItem);
 
         //then
         assertNotNull(result);

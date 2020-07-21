@@ -2,7 +2,7 @@ package mx.kinich49.itemtracker.controllers.main;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
-import mx.kinich49.itemtracker.dtos.StoreDto;
+import mx.kinich49.itemtracker.models.front.FrontStore;
 import mx.kinich49.itemtracker.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping(params = "name")
-    public ResponseEntity<JsonApi<List<StoreDto>>> getStoresLike(@RequestParam String name) {
+    public ResponseEntity<JsonApi<List<FrontStore>>> getStoresLike(@RequestParam String name) {
         return Optional.ofNullable(storeService.findLike(name))
                 .filter(list -> !list.isEmpty())
                 .map(JsonApi::new)

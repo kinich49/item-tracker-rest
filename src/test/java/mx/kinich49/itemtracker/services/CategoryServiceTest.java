@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.CategoryDto;
-import mx.kinich49.itemtracker.models.Category;
+import mx.kinich49.itemtracker.models.front.FrontCategory;
+import mx.kinich49.itemtracker.models.database.Category;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
 import mx.kinich49.itemtracker.services.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ public class CategoryServiceTest {
         when(categoryRepository.save(any(Category.class)))
                 .thenReturn(fromPersistence);
         //when
-        Optional<CategoryDto> result = subject.updateCategory(fromRequest);
+        Optional<FrontCategory> result = subject.updateCategory(fromRequest);
 
 
         //then
@@ -65,7 +65,7 @@ public class CategoryServiceTest {
                 .thenReturn(Optional.empty());
 
         //when
-        Optional<CategoryDto> result = subject.updateCategory(fromRequest);
+        Optional<FrontCategory> result = subject.updateCategory(fromRequest);
 
         assertFalse(result.isPresent());
     }
@@ -74,7 +74,7 @@ public class CategoryServiceTest {
     @DisplayName("Result should be empty when request is null")
     public void shouldReturn_emptyOptional_whenRequestIsNotValid() {
         //when
-        Optional<CategoryDto> result = subject.updateCategory(null);
+        Optional<FrontCategory> result = subject.updateCategory(null);
 
         //then
         assertFalse(result.isPresent());

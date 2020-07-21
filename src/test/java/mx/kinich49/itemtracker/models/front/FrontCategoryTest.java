@@ -1,6 +1,6 @@
-package mx.kinich49.itemtracker.dtos;
+package mx.kinich49.itemtracker.models.front;
 
-import mx.kinich49.itemtracker.models.Category;
+import mx.kinich49.itemtracker.models.database.Category;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CategoryDtoTest {
+public class FrontCategoryTest {
 
 
     @Test
@@ -19,15 +19,15 @@ public class CategoryDtoTest {
         //given
         Category category = null;
         //then
-        assertNull(CategoryDto.from(category));
+        assertNull(FrontCategory.from(category));
         //given
         List<Category> categories = null;
         //then
-        assertNull(CategoryDto.from(categories));
+        assertNull(FrontCategory.from(categories));
         //given
         categories = Collections.emptyList();
         //then
-        assertNull(CategoryDto.from(categories));
+        assertNull(FrontCategory.from(categories));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class CategoryDtoTest {
         category.setId(1);
 
         //when
-        CategoryDto dto = CategoryDto.from(category);
+        FrontCategory dto = FrontCategory.from(category);
 
         //then
         assertNotNull(dto);
@@ -69,7 +69,7 @@ public class CategoryDtoTest {
         categories.add(categoryC);
 
         //when
-        List<CategoryDto> dtos = CategoryDto.from(categories);
+        List<FrontCategory> dtos = FrontCategory.from(categories);
 
         //then
         assertNotNull(dtos);
@@ -80,7 +80,7 @@ public class CategoryDtoTest {
         assertDto(categoryC, dtos.get(2));
     }
 
-    private void assertDto(Category expected, CategoryDto actual) {
+    private void assertDto(Category expected, FrontCategory actual) {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getId(), actual.getId());
     }

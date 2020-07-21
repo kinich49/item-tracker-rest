@@ -1,9 +1,9 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.dtos.BrandDto;
-import mx.kinich49.itemtracker.dtos.CategoryDto;
-import mx.kinich49.itemtracker.dtos.ItemDto;
 import mx.kinich49.itemtracker.dtos.SuggestionsDto;
+import mx.kinich49.itemtracker.models.front.FrontBrand;
+import mx.kinich49.itemtracker.models.front.FrontCategory;
+import mx.kinich49.itemtracker.models.front.FrontItem;
 import mx.kinich49.itemtracker.repositories.BrandRepository;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
@@ -31,26 +31,26 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     @Override
-    public List<ItemDto> findItemsLike(String name) {
+    public List<FrontItem> findItemsLike(String name) {
         return Optional.of(itemRepository.findByNameStartsWithIgnoreCase(name))
                 .filter(list -> !list.isEmpty())
-                .map(ItemDto::from)
+                .map(FrontItem::from)
                 .orElse(null);
     }
 
     @Override
-    public List<CategoryDto> findCategoriesLike(String name) {
+    public List<FrontCategory> findCategoriesLike(String name) {
         return Optional.of(categoryRepository.findByNameStartsWithIgnoreCase(name))
                 .filter(list -> !list.isEmpty())
-                .map(CategoryDto::from)
+                .map(FrontCategory::from)
                 .orElse(null);
     }
 
     @Override
-    public List<BrandDto> findBrandsLike(String name) {
+    public List<FrontBrand> findBrandsLike(String name) {
         return Optional.of(brandRepository.findByNameStartsWithIgnoreCase(name))
                 .filter(list -> !list.isEmpty())
-                .map(BrandDto::from)
+                .map(FrontBrand::from)
                 .orElse(null);
     }
 
@@ -59,20 +59,20 @@ public class SuggestionServiceImpl implements SuggestionService {
         if (name == null || name.length() < 3)
             return Optional.empty();
 
-        List<ItemDto> itemDtos = findItemsLike(name);
-        List<CategoryDto> categoryDtos = findCategoriesLike(name);
-        List<BrandDto> brandDtos = findBrandsLike(name);
+        List<FrontItem> frontItems = findItemsLike(name);
+        List<FrontCategory> frontCategories = findCategoriesLike(name);
+        List<FrontBrand> frontBrands = findBrandsLike(name);
 
-        if ((itemDtos == null || itemDtos.isEmpty()) &&
-                (categoryDtos == null || categoryDtos.isEmpty()) &&
-                (brandDtos == null || brandDtos.isEmpty())) {
+        if ((frontItems == null || frontItems.isEmpty()) &&
+                (frontCategories == null || frontCategories.isEmpty()) &&
+                (frontBrands == null || frontBrands.isEmpty())) {
             return Optional.empty();
         }
 
         SuggestionsDto.SuggestionsDtoBuilder builder = SuggestionsDto.builder();
-        builder.items(itemDtos);
-        builder.brands(brandDtos);
-        builder.categories(categoryDtos);
+        builder.items(frontItems);
+        builder.brands(frontBrands);
+        builder.categories(frontCategories);
 
         return Optional.of(builder.build());
     }

@@ -2,8 +2,8 @@ package mx.kinich49.itemtracker.controllers.main;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
-import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
+import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class ShoppingController {
     private final ShoppingService shoppingListService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<JsonApi<ShoppingListDto>> getShopping(@PathVariable("id") long shoppingId) {
+    public ResponseEntity<JsonApi<FrontShoppingList>> getShopping(@PathVariable("id") long shoppingId) {
         return shoppingListService.findBy(shoppingId, 1L)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
@@ -35,7 +35,7 @@ public class ShoppingController {
     }
 
     @GetMapping(params = "shoppingDate")
-    public ResponseEntity<JsonApi<List<ShoppingListDto>>> getShoppingLists(@RequestParam
+    public ResponseEntity<JsonApi<List<FrontShoppingList>>> getShoppingLists(@RequestParam
                                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                                    LocalDate shoppingDate) {
         return Optional.ofNullable(shoppingListService.findBy(shoppingDate, 1L))
@@ -47,7 +47,7 @@ public class ShoppingController {
 
     @PostMapping
     @CrossOrigin
-    public ResponseEntity<JsonApi<ShoppingListDto>> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
+    public ResponseEntity<JsonApi<FrontShoppingList>> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
         try {
             shoppingList.setUserId(1L);
             return shoppingListService.save(shoppingList)

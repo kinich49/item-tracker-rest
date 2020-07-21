@@ -1,20 +1,20 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.CategoryDto;
-import mx.kinich49.itemtracker.models.Category;
+import mx.kinich49.itemtracker.models.database.Category;
+import mx.kinich49.itemtracker.models.front.FrontCategory;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
 
-    List<CategoryDto> findAll();
+    List<FrontCategory> findAll();
 
-    Optional<CategoryDto> findById(long id);
+    Optional<FrontCategory> findById(long id);
 
-    List<CategoryDto> findLike(String name);
+    List<FrontCategory> findLike(String name);
 
-    Optional<CategoryDto> saveCategory(Category fromRequest);
+    Optional<FrontCategory> saveCategory(Category fromRequest);
 
-    Optional<CategoryDto> updateCategory(Category fromRequest);
+    Optional<FrontCategory> updateCategory(Category fromRequest);
 }

@@ -2,8 +2,8 @@ package mx.kinich49.itemtracker.controllers.main;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
-import mx.kinich49.itemtracker.dtos.CategoryDto;
-import mx.kinich49.itemtracker.models.Category;
+import mx.kinich49.itemtracker.models.database.Category;
+import mx.kinich49.itemtracker.models.front.FrontCategory;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
 import mx.kinich49.itemtracker.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class CategoryController {
     }
 
     @GetMapping(params = "id")
-    public ResponseEntity<JsonApi<CategoryDto>> getCategoryById(@RequestParam long id) {
+    public ResponseEntity<JsonApi<FrontCategory>> getCategoryById(@RequestParam long id) {
         return categoryService.findById(id)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
@@ -43,7 +43,7 @@ public class CategoryController {
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<JsonApi<List<CategoryDto>>> getCategoriesLike(@RequestParam String name) {
+    public ResponseEntity<JsonApi<List<FrontCategory>>> getCategoriesLike(@RequestParam String name) {
         return Optional.ofNullable(categoryService.findLike(name))
                 .filter(list -> !list.isEmpty())
                 .map(JsonApi::new)
@@ -52,7 +52,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<JsonApi<CategoryDto>> postCategory(@RequestBody Category category) {
+    public ResponseEntity<JsonApi<FrontCategory>> postCategory(@RequestBody Category category) {
         return categoryService.saveCategory(category)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
@@ -66,7 +66,7 @@ public class CategoryController {
     }
 
     @PutMapping
-    public ResponseEntity<JsonApi<CategoryDto>> putCategory(@RequestBody Category category) {
+    public ResponseEntity<JsonApi<FrontCategory>> putCategory(@RequestBody Category category) {
         return categoryService.updateCategory(category)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))

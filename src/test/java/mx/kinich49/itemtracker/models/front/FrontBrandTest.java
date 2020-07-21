@@ -1,6 +1,6 @@
-package mx.kinich49.itemtracker.dtos;
+package mx.kinich49.itemtracker.models.front;
 
-import mx.kinich49.itemtracker.models.Brand;
+import mx.kinich49.itemtracker.models.database.Brand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BrandDtoTest {
+public class FrontBrandTest {
 
     @Test
     @DisplayName("Brand Dto must be null")
@@ -18,15 +18,15 @@ public class BrandDtoTest {
         //given
         Brand brand = null;
         //then
-        assertNull(BrandDto.from(brand));
+        assertNull(FrontBrand.from(brand));
         //given
         List<Brand> brands = null;
         //then
-        assertNull(BrandDto.from(brands));
+        assertNull(FrontBrand.from(brands));
         //given
         brands = Collections.emptyList();
         //then
-        assertNull(BrandDto.from(brands));
+        assertNull(FrontBrand.from(brands));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class BrandDtoTest {
         brand.setId(1);
 
         //when
-        BrandDto dto = BrandDto.from(brand);
+        FrontBrand dto = FrontBrand.from(brand);
 
         //then
         assertNotNull(dto);
@@ -68,7 +68,7 @@ public class BrandDtoTest {
         brands.add(brandC);
 
         //when
-        List<BrandDto> dtos = BrandDto.from(brands);
+        List<FrontBrand> dtos = FrontBrand.from(brands);
 
         //then
         assertNotNull(dtos);
@@ -79,7 +79,7 @@ public class BrandDtoTest {
         assertDto(brandC, dtos.get(2));
     }
 
-    private void assertDto(Brand expected, BrandDto actual) {
+    private void assertDto(Brand expected, FrontBrand actual) {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getId(), actual.getId());
     }

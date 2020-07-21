@@ -2,8 +2,8 @@ package mx.kinich49.itemtracker.controllers.mobile;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
-import mx.kinich49.itemtracker.dtos.mobile.MobileStore;
-import mx.kinich49.itemtracker.models.Store;
+import mx.kinich49.itemtracker.models.database.Store;
+import mx.kinich49.itemtracker.models.mobile.MobileStore;
 import mx.kinich49.itemtracker.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

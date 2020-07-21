@@ -1,29 +1,29 @@
-package mx.kinich49.itemtracker.dtos;
+package mx.kinich49.itemtracker.models.front;
 
 import lombok.Data;
-import mx.kinich49.itemtracker.models.Store;
+import mx.kinich49.itemtracker.models.database.Store;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public final class StoreDto {
+public final class FrontStore {
 
     public final long id;
     public final String name;
 
-    public static StoreDto from(Store store) {
+    public static FrontStore from(Store store) {
         if (store == null)
             return null;
-        return new StoreDto(store.getId(), store.getName());
+        return new FrontStore(store.getId(), store.getName());
     }
 
-    public static List<StoreDto> from(List<Store> stores) {
+    public static List<FrontStore> from(List<Store> stores) {
         if (stores == null || stores.isEmpty())
             return null;
 
         return stores.stream()
-                .map(StoreDto::from)
+                .map(FrontStore::from)
                 .collect(Collectors.toList());
     }
 

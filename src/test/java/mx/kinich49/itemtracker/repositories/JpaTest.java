@@ -1,6 +1,6 @@
 package mx.kinich49.itemtracker.repositories;
 
-import mx.kinich49.itemtracker.models.*;
+import mx.kinich49.itemtracker.models.database.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,10 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.ShoppingItemDto;
-import mx.kinich49.itemtracker.dtos.ShoppingListDto;
-import mx.kinich49.itemtracker.dtos.StoreDto;
+import mx.kinich49.itemtracker.models.front.FrontShoppingItem;
+import mx.kinich49.itemtracker.models.front.FrontShoppingList;
+import mx.kinich49.itemtracker.models.front.FrontStore;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
-import mx.kinich49.itemtracker.models.*;
+import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.impl.ShoppingServiceImpl;
@@ -135,13 +135,13 @@ public class ShoppingServiceTest {
         shoppingItem.setUnitPrice(100);
         shoppingList.addShoppingItem(shoppingItem);
 
-        StoreDto storeDto = StoreDto.from(testStore);
-        ShoppingItemDto itemDto = ShoppingItemDto.from(shoppingItem);
+        FrontStore frontStore = FrontStore.from(testStore);
+        FrontShoppingItem itemDto = FrontShoppingItem.from(shoppingItem);
 
-        List<ShoppingItemDto> itemDtos = new ArrayList<>();
+        List<FrontShoppingItem> itemDtos = new ArrayList<>();
         itemDtos.add(itemDto);
-        ShoppingListDto dto = new ShoppingListDto(1, LocalDate.now(),
-                storeDto, itemDtos);
+        FrontShoppingList dto = new FrontShoppingList(1, LocalDate.now(),
+                frontStore, itemDtos);
 
         when(dtoEntityService.from(any(ShoppingListRequest.class)))
                 .thenReturn(shoppingList);
@@ -152,7 +152,7 @@ public class ShoppingServiceTest {
                     return shoppingList;
                 });
         //when
-        Optional<ShoppingListDto> optDto = subject.save(request);
+        Optional<FrontShoppingList> optDto = subject.save(request);
 
         //then
         verify(shoppingListRepository, times(1))
@@ -162,7 +162,7 @@ public class ShoppingServiceTest {
                 .from(any(ShoppingListRequest.class));
 
         assertTrue(optDto.isPresent());
-        ShoppingListDto result = optDto.get();
+        FrontShoppingList result = optDto.get();
         assertEquals(dto, result);
     }
 
@@ -184,19 +184,19 @@ public class ShoppingServiceTest {
         when(shoppingListRepository.findByShoppingDateAndUserId(eq(localDate), eq(1L)))
                 .thenReturn(shoppingLists);
         //when
-        List<ShoppingListDto> response = subject.findBy(localDate, 1L);
+        List<FrontShoppingList> response = subject.findBy(localDate, 1L);
 
         //then
         assertNotNull(response);
         assertFalse(response.isEmpty());
         assertEquals(1, response.size());
 
-        ShoppingListDto listDto = response.get(0);
-        List<ShoppingItemDto> itemDtos = listDto.getItems();
+        FrontShoppingList listDto = response.get(0);
+        List<FrontShoppingItem> itemDtos = listDto.getItems();
         assertNotNull(itemDtos);
         assertFalse(itemDtos.isEmpty());
 
-        ShoppingItemDto itemDto = itemDtos.get(0);
+        FrontShoppingItem itemDto = itemDtos.get(0);
 
         assertEquals("1", itemDto.getQuantity());
         assertNotNull(itemDto.getBrand());
@@ -223,18 +223,18 @@ public class ShoppingServiceTest {
         when(shoppingListRepository.findByIdAndUserId(eq(1L), eq(1L)))
                 .thenReturn(Optional.of(shoppingList));
         //when
-        Optional<ShoppingListDto> response = subject.findBy(1L, 1L);
+        Optional<FrontShoppingList> response = subject.findBy(1L, 1L);
 
         //then
         assertNotNull(response);
         assertTrue(response.isPresent());
 
-        ShoppingListDto listDto = response.get();
-        List<ShoppingItemDto> itemDtos = listDto.getItems();
+        FrontShoppingList listDto = response.get();
+        List<FrontShoppingItem> itemDtos = listDto.getItems();
         assertNotNull(itemDtos);
         assertFalse(itemDtos.isEmpty());
 
-        ShoppingItemDto itemDto = itemDtos.get(0);
+        FrontShoppingItem itemDto = itemDtos.get(0);
 
         assertEquals("1", itemDto.getQuantity());
         assertNotNull(itemDto.getBrand());
@@ -252,7 +252,7 @@ public class ShoppingServiceTest {
                 .thenReturn(Collections.emptyList());
 
         //when
-        List<ShoppingListDto> response = subject.findBy(LocalDate.now(), 1L);
+        List<FrontShoppingList> response = subject.findBy(LocalDate.now(), 1L);
 
         //then
         assertNotNull(response);
@@ -267,7 +267,7 @@ public class ShoppingServiceTest {
                 .thenReturn(Optional.empty());
 
         //when
-        Optional<ShoppingListDto> response = subject.findBy(1L, 1L);
+        Optional<FrontShoppingList> response = subject.findBy(1L, 1L);
 
         //then
         assertFalse(response.isPresent());

@@ -2,8 +2,8 @@ package mx.kinich49.itemtracker.controllers.main;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
-import mx.kinich49.itemtracker.dtos.BrandDto;
-import mx.kinich49.itemtracker.models.Brand;
+import mx.kinich49.itemtracker.models.database.Brand;
+import mx.kinich49.itemtracker.models.front.FrontBrand;
 import mx.kinich49.itemtracker.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class BrandController {
     private final BrandService brandService;
 
     @GetMapping
-    public ResponseEntity<JsonApi<List<BrandDto>>> getAllBrands() {
+    public ResponseEntity<JsonApi<List<FrontBrand>>> getAllBrands() {
         return Optional.of(brandService.findAll())
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
@@ -32,7 +32,7 @@ public class BrandController {
     }
 
     @GetMapping(params = "id")
-    public ResponseEntity<JsonApi<BrandDto>> getBrandById(@RequestParam long id) {
+    public ResponseEntity<JsonApi<FrontBrand>> getBrandById(@RequestParam long id) {
         return brandService.findById(id)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
@@ -40,7 +40,7 @@ public class BrandController {
     }
 
     @PostMapping
-    public ResponseEntity<JsonApi<BrandDto>> postBrand(@RequestBody Brand request) {
+    public ResponseEntity<JsonApi<FrontBrand>> postBrand(@RequestBody Brand request) {
         return brandService.saveBrand(request)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
@@ -48,7 +48,7 @@ public class BrandController {
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<JsonApi<List<BrandDto>>> getBrandsLikeName(@RequestParam String name) {
+    public ResponseEntity<JsonApi<List<FrontBrand>>> getBrandsLikeName(@RequestParam String name) {
         return Optional.ofNullable(brandService.findLike(name))
                 .filter(list -> !list.isEmpty())
                 .map(JsonApi::new)
@@ -63,7 +63,7 @@ public class BrandController {
     }
 
     @PutMapping
-    public ResponseEntity<JsonApi<BrandDto>> updateBrand(@RequestBody Brand brand) {
+    public ResponseEntity<JsonApi<FrontBrand>> updateBrand(@RequestBody Brand brand) {
         return brandService.updateBrand(brand)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))

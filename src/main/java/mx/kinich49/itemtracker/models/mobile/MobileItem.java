@@ -1,7 +1,7 @@
-package mx.kinich49.itemtracker.dtos.mobile;
+package mx.kinich49.itemtracker.models.mobile;
 
 import lombok.Data;
-import mx.kinich49.itemtracker.models.Item;
+import mx.kinich49.itemtracker.models.database.Item;
 
 import java.util.ArrayList;
 import java.util.List;

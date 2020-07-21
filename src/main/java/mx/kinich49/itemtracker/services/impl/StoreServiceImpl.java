@@ -1,6 +1,6 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.dtos.StoreDto;
+import mx.kinich49.itemtracker.models.front.FrontStore;
 import mx.kinich49.itemtracker.repositories.StoreRepository;
 import mx.kinich49.itemtracker.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,13 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<StoreDto> findLike(String name) {
+    public List<FrontStore> findLike(String name) {
         if (name == null || name.length() == 0)
             return null;
 
         return Optional.ofNullable(storeRepository.findByNameStartsWithIgnoreCase(name))
                 .filter(list -> !list.isEmpty())
-                .map(StoreDto::from)
+                .map(FrontStore::from)
                 .orElse(null);
     }
 }

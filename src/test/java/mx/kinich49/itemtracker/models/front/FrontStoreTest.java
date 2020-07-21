@@ -1,6 +1,6 @@
-package mx.kinich49.itemtracker.dtos;
+package mx.kinich49.itemtracker.models.front;
 
-import mx.kinich49.itemtracker.models.Store;
+import mx.kinich49.itemtracker.models.database.Store;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StoreDtoTest {
+public class FrontStoreTest {
 
     @Test
     @DisplayName("Store Dto must be null")
@@ -18,15 +18,15 @@ public class StoreDtoTest {
         //given
         Store store = null;
         //then
-        assertNull(StoreDto.from(store));
+        assertNull(FrontStore.from(store));
         //given
         List<Store> stores = null;
         //then
-        assertNull(StoreDto.from(stores));
+        assertNull(FrontStore.from(stores));
         //given
         stores = Collections.emptyList();
         //then
-        assertNull(StoreDto.from(stores));
+        assertNull(FrontStore.from(stores));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class StoreDtoTest {
         store.setId(1);
 
         //when
-        StoreDto dto = StoreDto.from(store);
+        FrontStore dto = FrontStore.from(store);
         assertNotNull(dto);
         assertEquals(store.getName(), dto.getName());
         assertEquals(store.getId(), dto.getId());
@@ -66,7 +66,7 @@ public class StoreDtoTest {
         stores.add(storeC);
 
         //when
-        List<StoreDto> dtos = StoreDto.from(stores);
+        List<FrontStore> dtos = FrontStore.from(stores);
 
         //then
         assertNotNull(dtos);
@@ -77,7 +77,7 @@ public class StoreDtoTest {
         assertDto(storeC, dtos.get(2));
     }
 
-    private void assertDto(Store expected, StoreDto actual) {
+    private void assertDto(Store expected, FrontStore actual) {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getId(), actual.getId());
     }

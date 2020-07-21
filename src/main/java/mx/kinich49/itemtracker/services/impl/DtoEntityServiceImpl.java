@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.services.impl;
 
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
-import mx.kinich49.itemtracker.models.*;
+import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.*;
 import mx.kinich49.itemtracker.requests.ShoppingListRequest;
 import mx.kinich49.itemtracker.services.DtoEntityService;

@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.dtos.BrandDto;
-import mx.kinich49.itemtracker.models.Brand;
+import mx.kinich49.itemtracker.models.database.Brand;
+import mx.kinich49.itemtracker.models.front.FrontBrand;
 import mx.kinich49.itemtracker.repositories.BrandRepository;
 import mx.kinich49.itemtracker.services.BrandService;
 import mx.kinich49.itemtracker.services.SuggestionService;
@@ -30,23 +30,23 @@ public class BrandServiceImpl implements BrandService {
     // Probably map to Dto can be done
     // via jpql
     @Override
-    public List<BrandDto> findAll() {
+    public List<FrontBrand> findAll() {
         return brandRepository.findAll()
                 .stream().parallel()
-                .map(BrandDto::from)
+                .map(FrontBrand::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<BrandDto> findById(long id) {
+    public Optional<FrontBrand> findById(long id) {
         return brandRepository.findById(id)
-                .map(BrandDto::from);
+                .map(FrontBrand::from);
     }
 
     //TODO revisit this
     // Probably updating a current brand will fail
     @Override
-    public Optional<BrandDto> saveBrand(Brand fromRequest) {
+    public Optional<FrontBrand> saveBrand(Brand fromRequest) {
         if (fromRequest == null)
             return Optional.empty();
 
@@ -55,16 +55,16 @@ public class BrandServiceImpl implements BrandService {
             return Optional.empty();
 
         return Optional.of(brandRepository.save(fromRequest))
-                .map(BrandDto::from);
+                .map(FrontBrand::from);
     }
 
     @Override
-    public List<BrandDto> findLike(String name) {
+    public List<FrontBrand> findLike(String name) {
         return suggestionService.findBrandsLike(name);
     }
 
     @Override
-    public Optional<BrandDto> updateBrand(Brand fromRequest) {
+    public Optional<FrontBrand> updateBrand(Brand fromRequest) {
         if (fromRequest == null)
             return Optional.empty();
         Optional<Brand> optBrand = brandRepository.findById(fromRequest.getId());
@@ -76,7 +76,7 @@ public class BrandServiceImpl implements BrandService {
         fromPersistence.setName(fromRequest.getName());
 
         return Optional.of(brandRepository.save(fromPersistence))
-                .map(BrandDto::from);
+                .map(FrontBrand::from);
     }
 
     @Override

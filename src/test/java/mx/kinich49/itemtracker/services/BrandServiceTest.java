@@ -1,7 +1,7 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.BrandDto;
-import mx.kinich49.itemtracker.models.Brand;
+import mx.kinich49.itemtracker.models.front.FrontBrand;
+import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.repositories.BrandRepository;
 import mx.kinich49.itemtracker.services.impl.BrandServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +44,7 @@ public class BrandServiceTest {
         when(brandRepository.save(any(Brand.class)))
                 .thenReturn(fromPersistence);
         //when
-        Optional<BrandDto> result = subject.updateBrand(fromRequest);
+        Optional<FrontBrand> result = subject.updateBrand(fromRequest);
 
 
         //then
@@ -66,7 +65,7 @@ public class BrandServiceTest {
                 .thenReturn(Optional.empty());
 
         //when
-        Optional<BrandDto> result = subject.updateBrand(fromRequest);
+        Optional<FrontBrand> result = subject.updateBrand(fromRequest);
 
         assertFalse(result.isPresent());
     }
@@ -75,7 +74,7 @@ public class BrandServiceTest {
     @DisplayName("Result should be empty when request is null")
     public void shouldReturn_emptyOptional_whenRequestIsNotValid() {
         //when
-        Optional<BrandDto> result = subject.updateBrand(null);
+        Optional<FrontBrand> result = subject.updateBrand(null);
 
         //then
         assertFalse(result.isPresent());

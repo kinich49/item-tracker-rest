@@ -1,6 +1,6 @@
 package mx.kinich49.itemtracker.repositories.impl;
 
-import mx.kinich49.itemtracker.models.Item;
+import mx.kinich49.itemtracker.models.database.Item;
 import mx.kinich49.itemtracker.repositories.ItemRepositoryCustom;
 import org.springframework.transaction.annotation.Transactional;
 

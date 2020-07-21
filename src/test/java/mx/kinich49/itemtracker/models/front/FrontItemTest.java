@@ -1,8 +1,8 @@
-package mx.kinich49.itemtracker.dtos;
+package mx.kinich49.itemtracker.models.front;
 
-import mx.kinich49.itemtracker.models.Brand;
-import mx.kinich49.itemtracker.models.Category;
-import mx.kinich49.itemtracker.models.Item;
+import mx.kinich49.itemtracker.models.database.Brand;
+import mx.kinich49.itemtracker.models.database.Category;
+import mx.kinich49.itemtracker.models.database.Item;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ItemDtoTest {
+public class FrontItemTest {
 
     @Test
     @DisplayName("Item Dto must be null")
@@ -20,15 +20,15 @@ public class ItemDtoTest {
         //given
         Item item = null;
         //then
-        assertNull(ItemDto.from(item));
+        assertNull(FrontItem.from(item));
         //given
         List<Item> items = null;
         //then
-        assertNull(ItemDto.from(items));
+        assertNull(FrontItem.from(items));
         //given
         items = Collections.emptyList();
         //then
-        assertNull(ItemDto.from(items));
+        assertNull(FrontItem.from(items));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ItemDtoTest {
         brand.addItem(item);
 
         //when
-        ItemDto dto = ItemDto.from(item);
+        FrontItem dto = FrontItem.from(item);
 
         //then
         assertFullDto(item, dto);
@@ -108,7 +108,7 @@ public class ItemDtoTest {
         items.add(itemC);
 
         //when
-        List<ItemDto> dtos = ItemDto.from(items);
+        List<FrontItem> dtos = FrontItem.from(items);
 
         //then
         assertNotNull(dtos);
@@ -119,7 +119,7 @@ public class ItemDtoTest {
         assertFullDto(itemC, dtos.get(2));
     }
 
-    private void assertFullDto(Item expected, ItemDto actual) {
+    private void assertFullDto(Item expected, FrontItem actual) {
         assertNotNull(actual);
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getId(), actual.getId());
@@ -127,13 +127,13 @@ public class ItemDtoTest {
         assertCategoryDto(expected.getCategory(), actual.getCategory());
     }
 
-    private void assertBrandDto(Brand expected, BrandDto actual) {
+    private void assertBrandDto(Brand expected, FrontBrand actual) {
         assertNotNull(actual);
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getId(), actual.getId());
     }
 
-    private void assertCategoryDto(Category expected, CategoryDto actual) {
+    private void assertCategoryDto(Category expected, FrontCategory actual) {
         assertNotNull(actual);
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getId(), actual.getId());

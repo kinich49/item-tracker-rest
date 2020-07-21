@@ -1,14 +1,14 @@
-package mx.kinich49.itemtracker.dtos;
+package mx.kinich49.itemtracker.models.front;
 
 import lombok.Data;
 import mx.kinich49.itemtracker.Constants;
-import mx.kinich49.itemtracker.models.Item;
-import mx.kinich49.itemtracker.models.ShoppingItem;
+import mx.kinich49.itemtracker.models.database.Item;
+import mx.kinich49.itemtracker.models.database.ShoppingItem;
 
 import java.text.DecimalFormat;
 
 @Data
-public final class ShoppingItemDto {
+public final class FrontShoppingItem {
 
     private static final DecimalFormat unitQuantityFormat = new DecimalFormat("#,###");
     private static final DecimalFormat weightQuantityFormat = new DecimalFormat("#0.0##");
@@ -18,16 +18,16 @@ public final class ShoppingItemDto {
     private final String quantity;
     private final String unitPrice;
     private final String totalPrice;
-    private final CategoryDto category;
-    private final BrandDto brand;
+    private final FrontCategory category;
+    private final FrontBrand brand;
 
-    public static ShoppingItemDto from(ShoppingItem shoppingItem) {
+    public static FrontShoppingItem from(ShoppingItem shoppingItem) {
         if (shoppingItem == null)
             return null;
 
         Item item = shoppingItem.getItem();
-        CategoryDto categoryDto = CategoryDto.from(item.getCategory());
-        BrandDto brandDto = BrandDto.from(item.getBrand());
+        FrontCategory frontCategory = FrontCategory.from(item.getCategory());
+        FrontBrand frontBrand = FrontBrand.from(item.getBrand());
 
 
         String quantityDto = transformQuantity(shoppingItem.getQuantity(), shoppingItem.getUnit());
@@ -37,8 +37,8 @@ public final class ShoppingItemDto {
         String unitPriceDto = formatPrice(unitPrice, currency);
         String totalPriceDto = formatPrice(totalPrice, currency);
 
-        return new ShoppingItemDto(item.getId(), item.getName(), quantityDto,
-                unitPriceDto, totalPriceDto, categoryDto, brandDto);
+        return new FrontShoppingItem(item.getId(), item.getName(), quantityDto,
+                unitPriceDto, totalPriceDto, frontCategory, frontBrand);
     }
 
     public static String formatPrice(double price, String currency) {

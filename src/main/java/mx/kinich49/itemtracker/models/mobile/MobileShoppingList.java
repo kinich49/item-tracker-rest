@@ -1,8 +1,8 @@
-package mx.kinich49.itemtracker.dtos.mobile;
+package mx.kinich49.itemtracker.models.mobile;
 
 import lombok.Data;
-import mx.kinich49.itemtracker.models.ShoppingItem;
-import mx.kinich49.itemtracker.models.ShoppingList;
+import mx.kinich49.itemtracker.models.database.ShoppingItem;
+import mx.kinich49.itemtracker.models.database.ShoppingList;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
