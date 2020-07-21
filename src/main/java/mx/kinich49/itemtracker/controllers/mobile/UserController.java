@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("mobileUserController")
 @RequestMapping("api/mobile/users")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class UserController {
 
     @Autowired
     private final UserRepository userRepository;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonApi<User>> getCategoryById(@PathVariable long id) {
+    public ResponseEntity<JsonApi<User>> getUserById(@PathVariable long id) {
         return userRepository.findById(id)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))

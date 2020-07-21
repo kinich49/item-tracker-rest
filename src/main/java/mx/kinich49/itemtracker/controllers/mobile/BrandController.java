@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.controllers.mobile;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
+import mx.kinich49.itemtracker.dtos.mobile.MobileBrand;
 import mx.kinich49.itemtracker.models.Brand;
 import mx.kinich49.itemtracker.repositories.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,18 @@ public class BrandController {
     private final BrandRepository brandRepository;
 
     @GetMapping
-    private ResponseEntity<JsonApi<List<Brand>>> getAllBrands() {
+    private ResponseEntity<JsonApi<List<MobileBrand>>> getAllBrands() {
         return Optional.of(brandRepository.findAll())
+                .map(MobileBrand::from)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonApi<Brand>> getBrandById(@PathVariable long id) {
+    public ResponseEntity<JsonApi<MobileBrand>> getBrandById(@PathVariable long id) {
         return brandRepository.findById(id)
+                .map(MobileBrand::from)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

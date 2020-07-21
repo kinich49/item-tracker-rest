@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.controllers.mobile;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
+import mx.kinich49.itemtracker.dtos.mobile.MobileShoppingList;
 import mx.kinich49.itemtracker.models.ShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,18 @@ public class ShoppingListController {
     private final ShoppingListRepository shoppingListRepository;
 
     @GetMapping
-    private ResponseEntity<JsonApi<List<ShoppingList>>> getAllShoppingLists() {
+    private ResponseEntity<JsonApi<List<MobileShoppingList>>> getAllShoppingLists() {
         return Optional.of(shoppingListRepository.findAll())
+                .map(MobileShoppingList::from)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonApi<ShoppingList>> getShoppingListById(@PathVariable long id) {
+    public ResponseEntity<JsonApi<MobileShoppingList>> getShoppingListById(@PathVariable long id) {
         return shoppingListRepository.findById(id)
+                .map(MobileShoppingList::from)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

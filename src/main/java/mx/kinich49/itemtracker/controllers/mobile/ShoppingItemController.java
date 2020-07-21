@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.controllers.mobile;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
+import mx.kinich49.itemtracker.dtos.mobile.MobileShoppingItem;
 import mx.kinich49.itemtracker.models.ShoppingItem;
 import mx.kinich49.itemtracker.repositories.ShoppingItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,18 @@ public class ShoppingItemController {
     private final ShoppingItemRepository shoppingItemRepository;
 
     @GetMapping
-    private ResponseEntity<JsonApi<List<ShoppingItem>>> getAllShoppingItems() {
+    private ResponseEntity<JsonApi<List<MobileShoppingItem>>> getAllShoppingItems() {
         return Optional.of(shoppingItemRepository.findAll())
+                .map(MobileShoppingItem::from)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonApi<ShoppingItem>> getShoppingItemById(@PathVariable long id) {
+    public ResponseEntity<JsonApi<MobileShoppingItem>> getShoppingItemById(@PathVariable long id) {
         return shoppingItemRepository.findById(id)
+                .map(MobileShoppingItem::from)
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
