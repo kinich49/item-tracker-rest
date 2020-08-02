@@ -14,18 +14,20 @@ public class MobileShoppingItem {
     private final long shoppingListId;
     private final int unitPrice;
     private final double quantity;
+    private final String currency;
 
     public static MobileShoppingItem from(ShoppingItem shoppingItem) {
         if (shoppingItem == null)
             return null;
 
-        long id = shoppingItem.getId();
-        long itemId = shoppingItem.getItem().getId();
-        long shoppingListId = shoppingItem.getShoppingList().getId();
-        int unitPrice = shoppingItem.getUnitPrice();
-        double quantity = shoppingItem.getQuantity();
+        final long id = shoppingItem.getId();
+        final long itemId = shoppingItem.getItem().getId();
+        final long shoppingListId = shoppingItem.getShoppingList().getId();
+        final int unitPrice = shoppingItem.getUnitPrice();
+        final double quantity = shoppingItem.getQuantity();
+        final String currency = shoppingItem.getCurrency();
 
-        return new MobileShoppingItem(id, itemId, shoppingListId, unitPrice, quantity);
+        return new MobileShoppingItem(id, itemId, shoppingListId, unitPrice, quantity, currency);
     }
 
     public static List<MobileShoppingItem> from(List<ShoppingItem> shoppingItems) {
