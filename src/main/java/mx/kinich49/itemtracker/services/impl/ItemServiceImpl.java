@@ -41,6 +41,7 @@ public class ItemServiceImpl implements ItemService {
 
         List<Tuple> averageTuples = itemRepository.findAverageUnitPriceAndCurrency(itemId, userId);
         List<Tuple> latestTuples = new ArrayList<>();
+
         itemRepository.findLatestStoreAndShoppingDateAndPrice(itemId, userId)
                 .ifPresent(latestTuples::add);
 

@@ -41,7 +41,6 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
 
     @Override
     public MobileShoppingListResponse save(MobileShoppingListRequest request) throws UserNotFoundException {
-
         ShoppingList shoppingList = dtoEntityService.from(request);
         Long shoppingListMobileId = request.getMobileId();
         Store store = dtoEntityService.from(request.getStore());
@@ -49,7 +48,6 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
 
         List<Tuple> tuples = new ArrayList<>(request.getShoppingItems().size());
         for (MobileShoppingItemRequest shoppingItemRequest : request.getShoppingItems()) {
-
             Brand brand = dtoEntityService.from(shoppingItemRequest.getBrand());
             Category category = dtoEntityService.from(shoppingItemRequest.getCategory());
             Item item = dtoEntityService.itemFrom(shoppingItemRequest);
@@ -60,10 +58,12 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
             item.addShoppingItem(shoppingItem);
 
             shoppingItemRepository.save(shoppingItem);
+
             Long shoppingItemMobileId = shoppingItemRequest.getShoppingItemMobileId();
             Long itemMobileId = shoppingItemRequest.getItemMobileId();
             Long brandMobileId = shoppingItemRequest.getBrand().getMobileId();
             Long categoryMobileId = shoppingItemRequest.getCategory().getMobileId();
+
             Tuple tuple = new Sextet<>(shoppingItem, shoppingItemMobileId, item,
                     itemMobileId, brandMobileId, categoryMobileId);
             tuples.add(tuple);
