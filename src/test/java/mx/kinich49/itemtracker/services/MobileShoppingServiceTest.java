@@ -25,7 +25,7 @@ public class MobileShoppingServiceTest {
 
     @DisplayName("Should insert brand new shopping item from mobile")
     @Test
-    public void test() throws UserNotFoundException {
+    public void insertBrandNewElements() throws UserNotFoundException {
         //Given
         Long shoppingListMobileId = 10L;
         Long shoppingItemMobileId = 11L;
