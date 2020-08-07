@@ -11,6 +11,8 @@ import mx.kinich49.itemtracker.services.BaseDtoEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("mainDtoEntityService")
 public class DtoEntityServiceImpl extends BaseDtoEntityService {
 
@@ -67,7 +69,9 @@ public class DtoEntityServiceImpl extends BaseDtoEntityService {
     private ShoppingItem from(MainShoppingItemRequest itemRequest,
                               Brand brand,
                               Category category) {
-        Item item = itemRepository.findById(itemRequest.getId())
+
+        Item item = Optional.ofNullable(itemRequest.getId())
+                .flatMap(itemRepository::findById)
                 .orElseGet(() -> {
                     Item newItem = new Item();
                     newItem.setName(itemRequest.getName());
@@ -78,7 +82,7 @@ public class DtoEntityServiceImpl extends BaseDtoEntityService {
                     if (category != null) {
                         category.addItem(newItem);
                     }
-                    return newItem;
+                    return new Item();
                 });
 
         ShoppingItem shoppingItem = new ShoppingItem();

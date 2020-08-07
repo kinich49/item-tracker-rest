@@ -60,8 +60,8 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
             item.addShoppingItem(shoppingItem);
 
             shoppingItemRepository.save(shoppingItem);
-            Long shoppingItemMobileId = shoppingItemRequest.getMobileShoppingItemId();
-            Long itemMobileId = shoppingItemRequest.getMobileItemId();
+            Long shoppingItemMobileId = shoppingItemRequest.getShoppingItemMobileId();
+            Long itemMobileId = shoppingItemRequest.getItemMobileId();
             Long brandMobileId = shoppingItemRequest.getBrand().getMobileId();
             Long categoryMobileId = shoppingItemRequest.getCategory().getMobileId();
             Tuple tuple = new Sextet<>(shoppingItem, shoppingItemMobileId, item,
@@ -72,7 +72,7 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
         store.addShoppingList(shoppingList);
         shoppingList = shoppingListRepository.save(shoppingList);
 
-        return MobileShoppingListResponse.from(shoppingList, request.getMobileId(), store, storeMobileId, tuples);
+        return MobileShoppingListResponse.from(shoppingList, shoppingListMobileId, store, storeMobileId, tuples);
     }
 
 

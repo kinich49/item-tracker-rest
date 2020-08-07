@@ -12,8 +12,8 @@ import mx.kinich49.itemtracker.requests.BaseShoppingItemRequest;
 @EqualsAndHashCode(callSuper = true)
 public class MobileShoppingItemRequest extends BaseShoppingItemRequest {
 
-    private Long mobileShoppingItemId;
-    private Long mobileItemId;
+    private Long shoppingItemMobileId;
+    private Long ItemMobileId;
     private MobileBrandRequest brand;
     private MobileCategoryRequest category;
 }

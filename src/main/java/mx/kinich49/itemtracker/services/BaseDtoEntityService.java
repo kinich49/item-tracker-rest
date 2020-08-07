@@ -16,7 +16,7 @@ import mx.kinich49.itemtracker.requests.main.CategoryRequest;
 import mx.kinich49.itemtracker.requests.main.StoreRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.function.Function;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public abstract class BaseDtoEntityService implements DtoEntityService {
@@ -30,49 +30,46 @@ public abstract class BaseDtoEntityService implements DtoEntityService {
     @Autowired
     protected final UserRepository userRepository;
 
-    protected final Function<BrandRequest, Brand> brandSupplier = request -> {
-        Brand brand = new Brand();
-        brand.setName(request.getName());
-        return brand;
-    };
-
-    protected final Function<CategoryRequest, Category> categorySupplier = request -> {
-        Category category = new Category();
-        category.setName(request.getName());
-        return category;
-    };
-
-    protected final Function<StoreRequest, Store> storeSupplier = request -> {
-        Store store = new Store();
-        store.setName(request.getName());
-        return store;
-    };
-
     @Override
     public Brand from(BrandRequest request) {
-        if (request == null || request.getId() == null)
-            return brandSupplier.apply(request);
+        if (request == null)
+            return null;
 
-        return brandRepository.findById(request.getId())
-                .orElse(brandSupplier.apply(request));
+        return Optional.ofNullable(request.getId())
+                .flatMap(brandRepository::findById)
+                .orElseGet(() -> {
+                    Brand brand = new Brand();
+                    brand.setName(request.getName());
+                    return brand;
+                });
     }
 
     @Override
     public Category from(CategoryRequest request) {
-        if (request == null || request.getId() == null)
-            return categorySupplier.apply(request);
+        if (request == null)
+            return null;
 
-        return categoryRepository.findById(request.getId())
-                .orElse(categorySupplier.apply(request));
+        return Optional.ofNullable(request.getId())
+                .flatMap(categoryRepository::findById)
+                .orElseGet(() -> {
+                    Category category = new Category();
+                    category.setName(request.getName());
+                    return category;
+                });
     }
 
     @Override
     public Store from(StoreRequest request) {
-        if (request == null || request.getId() == null)
-            return storeSupplier.apply(request);
+        if (request == null)
+            return null;
 
-        return storeRepository.findById(request.getId())
-                .orElse(storeSupplier.apply(request));
+        return Optional.ofNullable(request.getId())
+                .flatMap(storeRepository::findById)
+                .orElseGet(() -> {
+                    Store store = new Store();
+                    store.setName(request.getName());
+                    return store;
+                });
     }
 
     protected <T extends BaseShoppingListRequest> User requireExistingUser(T request) throws UserNotFoundException {

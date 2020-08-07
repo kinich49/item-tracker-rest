@@ -13,6 +13,8 @@ import mx.kinich49.itemtracker.services.BaseDtoEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("mobileDtoEntityService")
 @SuppressWarnings("unused")
 public class MobileDtoEntityServiceImpl extends BaseDtoEntityService {
@@ -60,43 +62,14 @@ public class MobileDtoEntityServiceImpl extends BaseDtoEntityService {
 
     @Override
     public <T extends BaseShoppingItemRequest> Item itemFrom(T request) {
-        return itemRepository.findById(request.getId())
+        if (request == null)
+            return null;
+        return Optional.ofNullable(request.getId())
+                .flatMap(itemRepository::findById)
                 .orElseGet(() -> {
-                    Item newItem = new Item();
-                    newItem.setName(request.getName());
-                    return newItem;
+                    Item item = new Item();
+                    item.setName(request.getName());
+                    return item;
                 });
     }
-
-//    @Override
-//    public <T extends BaseShoppingItemRequest> ShoppingItem from(T itemRequest, Brand brand,
-//                                                                 Category category) {
-//
-//        MobileShoppingItemRequest request = (MobileShoppingItemRequest) itemRequest;
-//
-//        Item item = itemRepository.findById(itemRequest.getId())
-//                .orElseGet(() -> {
-//                    Item newItem = new Item();
-//                    newItem.setName(itemRequest.getName());
-//                    if (brand != null) {
-//                        brand.addItem(newItem);
-//                    }
-//
-//                    if (category != null) {
-//                        category.addItem(newItem);
-//                    }
-//                    return newItem;
-//                });
-//
-//        ShoppingItem shoppingItem = new ShoppingItem();
-//        shoppingItem.setCurrency(itemRequest.getCurrency());
-//        shoppingItem.setUnit(itemRequest.getUnit());
-//        shoppingItem.setQuantity(itemRequest.getQuantity());
-//        shoppingItem.setUnitPrice(itemRequest.getUnitPrice());
-//
-//        item.addShoppingItem(shoppingItem);
-//
-//        return shoppingItem;
-//    }
-
 }
