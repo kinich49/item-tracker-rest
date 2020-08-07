@@ -6,6 +6,7 @@ import mx.kinich49.itemtracker.models.mobile.responses.MobileShoppingListRespons
 import mx.kinich49.itemtracker.repositories.ShoppingItemRepository;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.repositories.StoreRepository;
+import mx.kinich49.itemtracker.requests.mobile.MobileBrandRequest;
 import mx.kinich49.itemtracker.requests.mobile.MobileShoppingItemRequest;
 import mx.kinich49.itemtracker.requests.mobile.MobileShoppingListRequest;
 import mx.kinich49.itemtracker.services.DtoEntityService;
@@ -16,8 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class MobileShoppingServiceImpl implements MobileShoppingService {
@@ -40,7 +44,9 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
     }
 
     @Override
+    @Transactional(rollbackOn = {UserNotFoundException.class})
     public MobileShoppingListResponse save(MobileShoppingListRequest request) throws UserNotFoundException {
+        Objects.requireNonNull(request, "Mobile Shopping Request must not be null");
         ShoppingList shoppingList = dtoEntityService.from(request);
         Long shoppingListMobileId = request.getMobileId();
         Store store = dtoEntityService.from(request.getStore());
@@ -48,12 +54,14 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
 
         List<Tuple> tuples = new ArrayList<>(request.getShoppingItems().size());
         for (MobileShoppingItemRequest shoppingItemRequest : request.getShoppingItems()) {
-            Brand brand = dtoEntityService.from(shoppingItemRequest.getBrand());
             Category category = dtoEntityService.from(shoppingItemRequest.getCategory());
             Item item = dtoEntityService.itemFrom(shoppingItemRequest);
             ShoppingItem shoppingItem = dtoEntityService.shoppingItemFrom(shoppingItemRequest);
 
-            brand.addItem(item);
+            Optional<Brand> optBrand = Optional.ofNullable(dtoEntityService.from(shoppingItemRequest.getBrand()));
+            optBrand.ifPresent(
+                    brand -> brand.addItem(item)
+            );
             category.addItem(item);
             item.addShoppingItem(shoppingItem);
 
@@ -61,7 +69,9 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
 
             Long shoppingItemMobileId = shoppingItemRequest.getShoppingItemMobileId();
             Long itemMobileId = shoppingItemRequest.getItemMobileId();
-            Long brandMobileId = shoppingItemRequest.getBrand().getMobileId();
+            Long brandMobileId = Optional.ofNullable(shoppingItemRequest.getBrand())
+                    .map(MobileBrandRequest::getMobileId)
+                    .orElse(null);
             Long categoryMobileId = shoppingItemRequest.getCategory().getMobileId();
 
             Tuple tuple = new Sextet<>(shoppingItem, shoppingItemMobileId, item,
