@@ -2,9 +2,12 @@ package mx.kinich49.itemtracker.controllers.mobile;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
-import mx.kinich49.itemtracker.models.database.ShoppingList;
+import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.mobile.MobileShoppingList;
+import mx.kinich49.itemtracker.models.mobile.responses.MobileShoppingListResponse;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
+import mx.kinich49.itemtracker.requests.mobile.MobileShoppingListRequest;
+import mx.kinich49.itemtracker.services.MobileShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,8 @@ public class ShoppingListController {
 
     @Autowired
     private final ShoppingListRepository shoppingListRepository;
+    @Autowired
+    private final MobileShoppingService shoppingListService;
 
     @GetMapping
     private ResponseEntity<JsonApi<List<MobileShoppingList>>> getAllShoppingLists() {
@@ -41,11 +46,18 @@ public class ShoppingListController {
     }
 
     @PostMapping
-    public ResponseEntity<JsonApi<ShoppingList>> insertShoppingList(@RequestBody ShoppingList shoppingList) {
-        return Optional.of(shoppingListRepository.save(shoppingList))
-                .map(JsonApi::new)
-                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    @CrossOrigin
+    public ResponseEntity<JsonApi<MobileShoppingListResponse>>
+    insertShopping(@RequestBody MobileShoppingListRequest shoppingList) {
+        try {
+            shoppingList.setUserId(1L);
+            return Optional.of(shoppingListService.save(shoppingList))
+                    .map(JsonApi::new)
+                    .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @DeleteMapping(value = "/{id}")

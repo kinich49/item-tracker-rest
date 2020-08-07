@@ -6,7 +6,8 @@ import mx.kinich49.itemtracker.models.front.FrontStore;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
-import mx.kinich49.itemtracker.requests.ShoppingListRequest;
+import mx.kinich49.itemtracker.repositories.StoreRepository;
+import mx.kinich49.itemtracker.requests.main.*;
 import mx.kinich49.itemtracker.services.impl.ShoppingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -67,11 +68,11 @@ public class ShoppingServiceTest {
     @DisplayName("Should return an exception when user does not exists")
     public void should_throwException_when_userDoesNotExist() {
         //given
-        ShoppingListRequest request = new ShoppingListRequest();
-        ShoppingListRequest.Brand brandRequest = new ShoppingListRequest.Brand();
-        ShoppingListRequest.Category categoryRequest = new ShoppingListRequest.Category();
-        ShoppingListRequest.Store storeRequest = new ShoppingListRequest.Store();
-        ShoppingListRequest.ShoppingItem itemRequest = new ShoppingListRequest.ShoppingItem();
+        MainShoppingListRequest request = new MainShoppingListRequest();
+        BrandRequest brandRequest = new BrandRequest();
+        CategoryRequest categoryRequest = new CategoryRequest();
+        StoreRequest storeRequest = new StoreRequest();
+        MainShoppingItemRequest itemRequest = new MainShoppingItemRequest();
 
         request.setUserId(Long.MAX_VALUE);
         brandRequest.setName("Test Brand");
@@ -92,7 +93,7 @@ public class ShoppingServiceTest {
         //when
         Exception exception = assertThrows(UserNotFoundException.class,
                 () -> {
-                    when(dtoEntityService.from(any(ShoppingListRequest.class)))
+                    when(dtoEntityService.from(any(MainShoppingListRequest.class)))
                             .thenThrow(new UserNotFoundException(Long.MAX_VALUE));
                     subject.save(request);
                 });
@@ -104,11 +105,11 @@ public class ShoppingServiceTest {
     @Test
     public void should_create_newDto() throws UserNotFoundException {
         //given
-        ShoppingListRequest request = new ShoppingListRequest();
-        ShoppingListRequest.Brand brandRequest = new ShoppingListRequest.Brand();
-        ShoppingListRequest.Category categoryRequest = new ShoppingListRequest.Category();
-        ShoppingListRequest.Store storeRequest = new ShoppingListRequest.Store();
-        ShoppingListRequest.ShoppingItem itemRequest = new ShoppingListRequest.ShoppingItem();
+        MainShoppingListRequest request = new MainShoppingListRequest();
+        BrandRequest brandRequest = new BrandRequest();
+        CategoryRequest categoryRequest = new CategoryRequest();
+        StoreRequest storeRequest = new StoreRequest();
+        MainShoppingItemRequest itemRequest = new MainShoppingItemRequest();
 
         request.setUserId(1L);
         brandRequest.setName("Test Brand");
@@ -143,7 +144,7 @@ public class ShoppingServiceTest {
         FrontShoppingList dto = new FrontShoppingList(1, LocalDate.now(),
                 frontStore, itemDtos);
 
-        when(dtoEntityService.from(any(ShoppingListRequest.class)))
+        when(dtoEntityService.from(any(MainShoppingListRequest.class)))
                 .thenReturn(shoppingList);
 
         when(shoppingListRepository.save(any(ShoppingList.class)))
@@ -159,7 +160,7 @@ public class ShoppingServiceTest {
                 .save(any(ShoppingList.class));
 
         verify(dtoEntityService, times(1))
-                .from(any(ShoppingListRequest.class));
+                .from(any(MainShoppingListRequest.class));
 
         assertTrue(optDto.isPresent());
         FrontShoppingList result = optDto.get();

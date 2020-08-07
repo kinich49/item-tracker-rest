@@ -2,7 +2,7 @@ package mx.kinich49.itemtracker.services;
 
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
-import mx.kinich49.itemtracker.requests.ShoppingListRequest;
+import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +12,7 @@ public interface ShoppingService {
 
     Optional<FrontShoppingList> findBy(long shoppingListId, long userId);
 
-    Optional<FrontShoppingList> save(ShoppingListRequest request) throws UserNotFoundException;
+    Optional<FrontShoppingList> save(MainShoppingListRequest request) throws UserNotFoundException;
 
     List<FrontShoppingList> findBy(LocalDate date, long userId);
 

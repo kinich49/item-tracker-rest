@@ -3,81 +3,70 @@ package mx.kinich49.itemtracker.services.impl;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.*;
-import mx.kinich49.itemtracker.requests.ShoppingListRequest;
-import mx.kinich49.itemtracker.services.DtoEntityService;
+import mx.kinich49.itemtracker.requests.BaseShoppingItemRequest;
+import mx.kinich49.itemtracker.requests.BaseShoppingListRequest;
+import mx.kinich49.itemtracker.requests.main.MainShoppingItemRequest;
+import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
+import mx.kinich49.itemtracker.services.BaseDtoEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
-public class DtoEntityServiceImpl implements DtoEntityService {
+@Service("mainDtoEntityService")
+public class DtoEntityServiceImpl extends BaseDtoEntityService {
 
     private final ShoppingListRepository shoppingListRepository;
-    private final StoreRepository storeRepository;
-    private final BrandRepository brandRepository;
-    private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public DtoEntityServiceImpl(ShoppingListRepository shoppingListRepository,
-                                StoreRepository storeRepository,
-                                BrandRepository brandRepository,
+    public DtoEntityServiceImpl(BrandRepository brandRepository,
                                 CategoryRepository categoryRepository,
+                                StoreRepository storeRepository,
+                                ShoppingListRepository shoppingListRepository,
                                 ItemRepository itemRepository,
                                 UserRepository userRepository) {
+        super(brandRepository, categoryRepository, storeRepository, userRepository);
         this.shoppingListRepository = shoppingListRepository;
-        this.storeRepository = storeRepository;
-        this.brandRepository = brandRepository;
-        this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
-    public ShoppingList from(ShoppingListRequest request) throws UserNotFoundException {
+    public <T extends BaseShoppingListRequest> ShoppingList from(T request) throws UserNotFoundException {
         if (request == null)
             return null;
 
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
+        User user = requireExistingUser(request);
+        MainShoppingListRequest shoppingListRequest = (MainShoppingListRequest) request;
 
-        Store store = from(request.getStore());
+        Store store = from(shoppingListRequest.getStore());
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.setUser(user);
         shoppingList.setShoppingDate(request.getShoppingDate());
         store.addShoppingList(shoppingList);
-        for (ShoppingListRequest.ShoppingItem itemRequest : request.getShoppingItems()) {
+
+        for (MainShoppingItemRequest itemRequest : shoppingListRequest.getShoppingItems()) {
             Category category = from(itemRequest.getCategory());
             Brand brand = from(itemRequest.getBrand());
             ShoppingItem shoppingItem = from(itemRequest, brand, category);
             shoppingList.addShoppingItem(shoppingItem);
         }
+
         return shoppingList;
     }
 
     @Override
-    public Brand from(ShoppingListRequest.Brand request) {
-        return brandRepository.findById(request.getId())
-                .orElseGet(() -> {
-                    Brand brand = new Brand();
-                    brand.setName(request.getName());
-                    return brand;
-                });
+    public <T extends BaseShoppingItemRequest> ShoppingItem shoppingItemFrom(T request) {
+        throw new IllegalStateException("Method not implemented");
     }
 
     @Override
-    public Category from(ShoppingListRequest.Category request) {
-        return categoryRepository.findById(request.getId())
-                .orElseGet(() -> {
-                    Category category = new Category();
-                    category.setName(request.getName());
-                    return category;
-                });
+    public <T extends BaseShoppingItemRequest> Item itemFrom(T request) {
+        throw new IllegalStateException("Method not implemented");
     }
 
-    @Override
-    public ShoppingItem from(ShoppingListRequest.ShoppingItem itemRequest,
-                             Brand brand, Category category) {
+
+    private ShoppingItem from(MainShoppingItemRequest itemRequest,
+                              Brand brand,
+                              Category category) {
         Item item = itemRepository.findById(itemRequest.getId())
                 .orElseGet(() -> {
                     Item newItem = new Item();
@@ -97,17 +86,9 @@ public class DtoEntityServiceImpl implements DtoEntityService {
         shoppingItem.setUnit(itemRequest.getUnit());
         shoppingItem.setQuantity(itemRequest.getQuantity());
         shoppingItem.setUnitPrice(itemRequest.getUnitPrice() * 100);
-        item.addShoppingItem(shoppingItem);
-        return shoppingItem;
-    }
 
-    @Override
-    public Store from(ShoppingListRequest.Store request) {
-        return storeRepository.findById(request.getId())
-                .orElseGet(() -> {
-                    Store store = new Store();
-                    store.setName(request.getName());
-                    return storeRepository.save(store);
-                });
+        item.addShoppingItem(shoppingItem);
+
+        return shoppingItem;
     }
 }

@@ -3,10 +3,11 @@ package mx.kinich49.itemtracker.services.impl;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
-import mx.kinich49.itemtracker.requests.ShoppingListRequest;
+import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
 import mx.kinich49.itemtracker.services.DtoEntityService;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,8 @@ public class ShoppingServiceImpl implements ShoppingService {
     private final ShoppingListRepository shoppingListRepository;
 
     @Autowired
-    public ShoppingServiceImpl(DtoEntityService dtoEntityService,
+    public ShoppingServiceImpl(@Qualifier("mainDtoEntityService")
+                                       DtoEntityService dtoEntityService,
                                ShoppingListRepository shoppingListRepository) {
         this.dtoEntityService = dtoEntityService;
         this.shoppingListRepository = shoppingListRepository;
@@ -36,7 +38,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     @Transactional
-    public Optional<FrontShoppingList> save(ShoppingListRequest request) throws UserNotFoundException {
+    public Optional<FrontShoppingList> save(MainShoppingListRequest request) throws UserNotFoundException {
         return Optional.ofNullable(dtoEntityService.from(request))
                 .map(shoppingListRepository::save)
                 .map(FrontShoppingList::from);

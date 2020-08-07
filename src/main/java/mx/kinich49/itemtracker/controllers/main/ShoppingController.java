@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
-import mx.kinich49.itemtracker.requests.ShoppingListRequest;
+import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -47,7 +47,7 @@ public class ShoppingController {
 
     @PostMapping
     @CrossOrigin
-    public ResponseEntity<JsonApi<FrontShoppingList>> insertShopping(@RequestBody ShoppingListRequest shoppingList) {
+    public ResponseEntity<JsonApi<FrontShoppingList>> insertShopping(@RequestBody MainShoppingListRequest shoppingList) {
         try {
             shoppingList.setUserId(1L);
             return shoppingListService.save(shoppingList)
