@@ -25,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MobileShoppingServiceTest {
 
     private final MobileShoppingService shoppingService;
-    private final ItemRepository itemRepository;
-    private final StoreRepository storeRepository;
 
     /**
      * This test tries to insert a shopping List

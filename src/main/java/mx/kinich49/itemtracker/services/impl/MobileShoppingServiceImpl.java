@@ -65,7 +65,8 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
             category.addItem(item);
             item.addShoppingItem(shoppingItem);
 
-            shoppingItemRepository.save(shoppingItem);
+            shoppingItem = shoppingItemRepository.save(shoppingItem);
+            shoppingList.addShoppingItem(shoppingItem);
 
             Long shoppingItemMobileId = shoppingItemRequest.getShoppingItemMobileId();
             Long itemMobileId = shoppingItemRequest.getItemMobileId();

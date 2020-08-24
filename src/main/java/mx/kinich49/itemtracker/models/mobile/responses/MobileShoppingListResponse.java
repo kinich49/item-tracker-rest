@@ -5,6 +5,7 @@ import mx.kinich49.itemtracker.models.database.ShoppingList;
 import mx.kinich49.itemtracker.models.database.Store;
 import org.javatuples.Tuple;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ public class MobileShoppingListResponse {
 
     private final long id;
     private final Long mobileId;
+    private final LocalDate shoppingDate;
     private final MobileStoreResponse store;
     private final List<MobileShoppingItemResponse> shoppingItems;
 
@@ -23,6 +25,7 @@ public class MobileShoppingListResponse {
                                                   List<Tuple> shoppingItems) {
 
         long shoppingListId = shoppingList.getId();
+        LocalDate shoppingDate = shoppingList.getShoppingDate();
         MobileStoreResponse storeResponse = MobileStoreResponse.from(store, storeMobileId);
 
         List<MobileShoppingItemResponse> shoppingItemResponses = shoppingItems.stream()
@@ -30,6 +33,6 @@ public class MobileShoppingListResponse {
                 .collect(Collectors.toList());
 
         return new MobileShoppingListResponse(shoppingListId, shoppingListMobileId,
-                storeResponse, shoppingItemResponses);
+                shoppingDate, storeResponse, shoppingItemResponses);
     }
 }
