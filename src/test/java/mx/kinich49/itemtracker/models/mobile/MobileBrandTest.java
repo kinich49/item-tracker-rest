@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.models.mobile.responses;
+package mx.kinich49.itemtracker.models.mobile;
 
 import mx.kinich49.itemtracker.models.database.Brand;
 import org.junit.jupiter.api.DisplayName;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MobileBrandResponseTest {
+public class MobileBrandTest {
 
     @Test
     @DisplayName("Should Return a brand response with null mobile id")
@@ -17,12 +17,12 @@ public class MobileBrandResponseTest {
         brand.setId(20L);
 
         //when
-        MobileBrandResponse response = MobileBrandResponse.from(brand, null);
+        MobileBrand response = MobileBrand.from(brand, null);
 
         //then
         assertNotNull(response);
         assertEquals(brand.getName(), response.getName());
-        assertEquals(brand.getId(), response.getId());
+        assertEquals(brand.getId(), response.getRemoteId());
         assertNull(response.getMobileId());
     }
 
@@ -31,7 +31,7 @@ public class MobileBrandResponseTest {
     @DisplayName("Should return null response")
     public void shouldReturnNullResponse() {
         //when
-        MobileBrandResponse response = MobileBrandResponse.from(null, null);
+        MobileBrand response = MobileBrand.from(null, null);
 
         //then
         assertNull(response);
@@ -47,11 +47,11 @@ public class MobileBrandResponseTest {
         Long mobileId = 1L;
 
         //when
-        MobileBrandResponse response = MobileBrandResponse.from(brand, mobileId);
+        MobileBrand response = MobileBrand.from(brand, mobileId);
 
         //then
         assertNotNull(response);
-        assertEquals(brand.getId(), response.getId());
+        assertEquals(brand.getId(), response.getRemoteId());
         assertEquals(brand.getName(), response.getName());
         assertEquals(mobileId, response.getMobileId());
     }

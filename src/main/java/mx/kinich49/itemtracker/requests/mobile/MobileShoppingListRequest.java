@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.kinich49.itemtracker.models.mobile.responses.MobileStoreResponse;
 import mx.kinich49.itemtracker.requests.BaseShoppingListRequest;
 
 import java.util.List;

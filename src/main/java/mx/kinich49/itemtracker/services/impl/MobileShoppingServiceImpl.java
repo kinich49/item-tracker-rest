@@ -2,7 +2,7 @@ package mx.kinich49.itemtracker.services.impl;
 
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.*;
-import mx.kinich49.itemtracker.models.mobile.responses.MobileShoppingListResponse;
+import mx.kinich49.itemtracker.models.mobile.MobileShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingItemRepository;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.repositories.StoreRepository;
@@ -45,7 +45,7 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
 
     @Override
     @Transactional(rollbackOn = {UserNotFoundException.class})
-    public MobileShoppingListResponse save(MobileShoppingListRequest request) throws UserNotFoundException {
+    public MobileShoppingList save(MobileShoppingListRequest request) throws UserNotFoundException {
         Objects.requireNonNull(request, "Mobile Shopping Request must not be null");
         ShoppingList shoppingList = dtoEntityService.from(request);
         Long shoppingListMobileId = request.getMobileId();
@@ -83,7 +83,7 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
         store.addShoppingList(shoppingList);
         shoppingList = shoppingListRepository.save(shoppingList);
 
-        return MobileShoppingListResponse.from(shoppingList, shoppingListMobileId, store, storeMobileId, tuples);
+        return MobileShoppingList.from(shoppingList, shoppingListMobileId, store, storeMobileId, tuples);
     }
 
 

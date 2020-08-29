@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.models.mobile.responses;
+package mx.kinich49.itemtracker.models.mobile;
 
 import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.models.database.Category;
@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MobileItemResponseTest {
+public class MobileItemTest {
 
     @Test
     @DisplayName("Should return an item response with null mobile id and non-null category and brand")
@@ -31,12 +31,12 @@ public class MobileItemResponseTest {
         category.addItem(item);
 
         //when
-        MobileItemResponse response = MobileItemResponse.from(item, null, null, null);
+        MobileItem response = MobileItem.from(item, null, null, null);
 
         //then
         assertNotNull(response);
         assertEquals(item.getName(), response.getName());
-        assertEquals(item.getId(), response.getId());
+        assertEquals(item.getId(), response.getRemoteId());
         assertNull(response.getMobileId());
 
         verifyBrand(brand, null, response.getBrand());
@@ -57,13 +57,13 @@ public class MobileItemResponseTest {
         category.addItem(item);
 
         //when
-        MobileItemResponse response = MobileItemResponse.from(item, null,
+        MobileItem response = MobileItem.from(item, null,
                 null, null);
 
         //then
         assertNotNull(response);
         assertEquals(item.getName(), response.getName());
-        assertEquals(item.getId(), response.getId());
+        assertEquals(item.getId(), response.getRemoteId());
         assertNull(response.getMobileId());
 
         verifyBrand(null, null, response.getBrand());
@@ -75,7 +75,7 @@ public class MobileItemResponseTest {
     @DisplayName("Should return null response")
     public void shouldReturnNullResponse() {
         //when
-        MobileItemResponse response = MobileItemResponse.from(null, null,
+        MobileItem response = MobileItem.from(null, null,
                 null, null);
 
         //then
@@ -102,12 +102,12 @@ public class MobileItemResponseTest {
         category.addItem(item);
 
         //when
-        MobileItemResponse response = MobileItemResponse.from(item, mobileId, null, null);
+        MobileItem response = MobileItem.from(item, mobileId, null, null);
 
         //then
         assertNotNull(response);
         assertEquals(item.getName(), response.getName());
-        assertEquals(item.getId(), response.getId());
+        assertEquals(item.getId(), response.getRemoteId());
         assertEquals(mobileId, response.getMobileId());
 
         verifyBrand(brand, null, response.getBrand());
@@ -129,34 +129,34 @@ public class MobileItemResponseTest {
         category.addItem(item);
 
         //when
-        MobileItemResponse response = MobileItemResponse.from(item, mobileId, null, null);
+        MobileItem response = MobileItem.from(item, mobileId, null, null);
 
         //then
         assertNotNull(response);
         assertEquals(item.getName(), response.getName());
-        assertEquals(item.getId(), response.getId());
+        assertEquals(item.getId(), response.getRemoteId());
         assertEquals(mobileId, response.getMobileId());
 
         verifyBrand(null, null, response.getBrand());
         verifyCategory(category, null, response.getCategory());
     }
 
-    private void verifyBrand(Brand expected, Long mobileId, MobileBrandResponse actual) {
+    private void verifyBrand(Brand expected, Long mobileId, MobileBrand actual) {
         if (expected == null) {
             assertNull(actual);
         } else {
             assertNotNull(expected);
-            assertEquals(expected.getId(), actual.getId());
+            assertEquals(expected.getId(), actual.getRemoteId());
             assertEquals(expected.getName(), actual.getName());
             assertEquals(mobileId, actual.getMobileId());
         }
     }
 
-    private void verifyCategory(Category expected, Long mobileId, MobileCategoryResponse actual) {
+    private void verifyCategory(Category expected, Long mobileId, MobileCategory actual) {
         Objects.requireNonNull(expected, "An item must have a category");
 
         assertNotNull(expected);
-        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getId(), actual.getRemoteId());
         assertEquals(expected.getName(), actual.getName());
         assertEquals(mobileId, actual.getMobileId());
     }

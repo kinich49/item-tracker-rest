@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.mobile.MobileShoppingList;
-import mx.kinich49.itemtracker.models.mobile.responses.MobileShoppingListResponse;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.mobile.MobileShoppingListRequest;
 import mx.kinich49.itemtracker.services.MobileShoppingService;
@@ -47,7 +46,7 @@ public class ShoppingListController {
 
     @PostMapping
     @CrossOrigin
-    public ResponseEntity<JsonApi<MobileShoppingListResponse>>
+    public ResponseEntity<JsonApi<MobileShoppingList>>
     insertShopping(@RequestBody MobileShoppingListRequest shoppingList) {
         try {
             shoppingList.setUserId(1L);

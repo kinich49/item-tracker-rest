@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.models.mobile.responses;
+package mx.kinich49.itemtracker.models.mobile;
 
 import mx.kinich49.itemtracker.models.database.Category;
 import org.junit.jupiter.api.DisplayName;
@@ -17,12 +17,12 @@ public class MobileCategoryResponseTest {
         category.setId(20L);
 
         //when
-        MobileCategoryResponse response = MobileCategoryResponse.from(category, null);
+        MobileCategory response = MobileCategory.from(category, null);
 
         //then
         assertNotNull(response);
         assertEquals(category.getName(), response.getName());
-        assertEquals(category.getId(), response.getId());
+        assertEquals(category.getId(), response.getRemoteId());
         assertNull(response.getMobileId());
     }
 
@@ -31,7 +31,7 @@ public class MobileCategoryResponseTest {
     @DisplayName("Should return null response")
     public void shouldReturnNullResponse() {
         //when
-        MobileCategoryResponse response = MobileCategoryResponse.from(null, null);
+        MobileCategory response = MobileCategory.from(null, null);
 
         //then
         assertNull(response);
@@ -47,11 +47,11 @@ public class MobileCategoryResponseTest {
         Long mobileId = 1L;
 
         //when
-        MobileCategoryResponse response = MobileCategoryResponse.from(category, mobileId);
+        MobileCategory response = MobileCategory.from(category, mobileId);
 
         //then
         assertNotNull(response);
-        assertEquals(category.getId(), response.getId());
+        assertEquals(category.getId(), response.getRemoteId());
         assertEquals(category.getName(), response.getName());
         assertEquals(mobileId, response.getMobileId());
     }

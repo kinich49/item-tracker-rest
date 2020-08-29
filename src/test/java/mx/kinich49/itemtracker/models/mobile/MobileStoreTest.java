@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.models.mobile.responses;
+package mx.kinich49.itemtracker.models.mobile;
 
 import mx.kinich49.itemtracker.models.database.Store;
 import org.junit.jupiter.api.DisplayName;
@@ -17,12 +17,12 @@ public class MobileStoreTest {
         store.setId(23L);
 
         //when
-        MobileStoreResponse response = MobileStoreResponse.from(store, null);
+        MobileStore response = MobileStore.from(store, null);
 
         //then
         assertNotNull(response);
         assertEquals(store.getName(), response.getName());
-        assertEquals(store.getId(), response.getId());
+        assertEquals(store.getId(), response.getRemoteId());
         assertNull(response.getMobileId());
     }
 
@@ -31,7 +31,7 @@ public class MobileStoreTest {
     @DisplayName("Should return null response")
     public void shouldReturnNullResponse() {
         //when
-        MobileStoreResponse response = MobileStoreResponse.from(null, null);
+        MobileStore response = MobileStore.from(null, null);
 
         //then
         assertNull(response);
@@ -47,11 +47,11 @@ public class MobileStoreTest {
         Long mobileId = 1L;
 
         //when
-        MobileStoreResponse response = MobileStoreResponse.from(store, mobileId);
+        MobileStore response = MobileStore.from(store, mobileId);
 
         //then
         assertNotNull(response);
-        assertEquals(store.getId(), response.getId());
+        assertEquals(store.getId(), response.getRemoteId());
         assertEquals(store.getName(), response.getName());
         assertEquals(mobileId, response.getMobileId());
     }

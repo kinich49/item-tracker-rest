@@ -2,9 +2,8 @@ package mx.kinich49.itemtracker.services;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
+import mx.kinich49.itemtracker.models.mobile.*;
 import mx.kinich49.itemtracker.models.mobile.responses.*;
-import mx.kinich49.itemtracker.repositories.ItemRepository;
-import mx.kinich49.itemtracker.repositories.StoreRepository;
 import mx.kinich49.itemtracker.requests.mobile.*;
 import org.assertj.core.annotations.NonNull;
 import org.junit.jupiter.api.DisplayName;
@@ -87,11 +86,11 @@ public class MobileShoppingServiceTest {
         shoppingListRequest.setUserId(1L);
 
         //when
-        MobileShoppingListResponse response = shoppingService.save(shoppingListRequest);
+        MobileShoppingList response = shoppingService.save(shoppingListRequest);
 
         //then
         verifyShoppingList(shoppingListRequest, response);
-        for (MobileShoppingItemResponse shoppingItem : response.getShoppingItems()) {
+        for (MobileShoppingItem shoppingItem : response.getShoppingItems()) {
             verifyShoppingItem(shoppingItemRequest, shoppingItem);
         }
     }
@@ -157,12 +156,12 @@ public class MobileShoppingServiceTest {
         shoppingListRequest.setShoppingItems(shoppingItemRequests);
 
         //when
-        MobileShoppingListResponse response = shoppingService.save(shoppingListRequest);
+        MobileShoppingList response = shoppingService.save(shoppingListRequest);
 
         //then
         verifyShoppingList(shoppingListRequest, response);
 
-        for (MobileShoppingItemResponse itemResponse : response.getShoppingItems()) {
+        for (MobileShoppingItem itemResponse : response.getShoppingItems()) {
             verifyShoppingItem(shoppingItemRequest, itemResponse);
         }
     }
@@ -251,13 +250,13 @@ public class MobileShoppingServiceTest {
         shoppingListRequest.setUserId(1L);
 
         //when
-        MobileShoppingListResponse response = shoppingService.save(shoppingListRequest);
+        MobileShoppingList response = shoppingService.save(shoppingListRequest);
 
         //then
         verifyShoppingList(shoppingListRequest, response);
 
         assertEquals(shoppingListRequest.getShoppingItems().size(), response.getShoppingItems().size());
-        List<MobileShoppingItemResponse> shoppingItemResponses = response.getShoppingItems();
+        List<MobileShoppingItem> shoppingItemResponses = response.getShoppingItems();
 
         verifyShoppingItem(shoppingItemRequest_A, shoppingItemResponses.get(0));
         verifyShoppingItem(shoppingItemRequest_B, shoppingItemResponses.get(1));
@@ -317,12 +316,12 @@ public class MobileShoppingServiceTest {
         shoppingListRequest.setUserId(1L);
 
         //when
-        MobileShoppingListResponse response = shoppingService.save(shoppingListRequest);
+        MobileShoppingList response = shoppingService.save(shoppingListRequest);
 
         //then
         verifyShoppingList(shoppingListRequest, response);
 
-        for (MobileShoppingItemResponse itemResponse : response.getShoppingItems()) {
+        for (MobileShoppingItem itemResponse : response.getShoppingItems()) {
             verifyShoppingItem(shoppingItemRequest, itemResponse);
         }
     }
@@ -406,10 +405,10 @@ public class MobileShoppingServiceTest {
                 () -> shoppingService.save(null));
     }
 
-    private void verifyShoppingList(MobileShoppingListRequest request, MobileShoppingListResponse response) {
+    private void verifyShoppingList(MobileShoppingListRequest request, MobileShoppingList response) {
         assertNotNull(response);
         assertEquals(request.getMobileId(), response.getMobileId());
-        assertTrue(response.getId() > 0);
+        assertTrue(response.getRemoteId() > 0);
 
         verifyStore(request.getStore(), response.getStore());
 
@@ -418,7 +417,7 @@ public class MobileShoppingServiceTest {
     }
 
     private void verifyShoppingItem(MobileShoppingItemRequest shoppingItemRequest,
-                                    MobileShoppingItemResponse shoppingItemResponse) {
+                                    MobileShoppingItem shoppingItemResponse) {
 
         String name = shoppingItemRequest.getName();
         Long shoppingItemMobileId = shoppingItemRequest.getShoppingItemMobileId();
@@ -430,17 +429,17 @@ public class MobileShoppingServiceTest {
 
         assertNotNull(shoppingItemResponse);
         assertNotNull(shoppingItemResponse.getItem());
-        MobileItemResponse itemResponse = shoppingItemResponse.getItem();
+        MobileItem itemResponse = shoppingItemResponse.getItem();
 
         assertEquals(shoppingItemMobileId, shoppingItemResponse.getMobileId());
-        assertTrue(shoppingItemResponse.getId() > 0);
+        assertTrue(shoppingItemResponse.getRemoteId() > 0);
         assertEquals(currency, shoppingItemResponse.getCurrency());
         assertEquals(unit, shoppingItemResponse.getUnit());
         assertEquals(quantity, shoppingItemResponse.getQuantity());
         assertEquals(unitPrice, shoppingItemResponse.getUnitPrice());
 
         assertEquals(itemMobileId, itemResponse.getMobileId());
-        assertTrue(itemResponse.getId() > 0);
+        assertTrue(itemResponse.getRemoteId() > 0);
         assertEquals(name, itemResponse.getName());
 
         if (shoppingItemRequest.getBrand() == null) {
@@ -452,33 +451,33 @@ public class MobileShoppingServiceTest {
         verifyCategory(shoppingItemRequest.getCategory(), itemResponse.getCategory());
     }
 
-    private void verifyBrand(MobileBrandRequest request, @NonNull MobileBrandResponse response) {
+    private void verifyBrand(MobileBrandRequest request, @NonNull MobileBrand response) {
         Long mobileId = request.getMobileId();
         String name = request.getName();
 
         assertNotNull(response);
         assertEquals(mobileId, response.getMobileId());
         assertEquals(name, response.getName());
-        assertTrue(response.getId() > 0);
+        assertTrue(response.getRemoteId() > 0);
     }
 
-    private void verifyCategory(MobileCategoryRequest request, @NonNull MobileCategoryResponse response) {
+    private void verifyCategory(MobileCategoryRequest request, @NonNull MobileCategory response) {
         Long mobileId = request.getMobileId();
         String name = request.getName();
 
         assertNotNull(response);
         assertEquals(mobileId, response.getMobileId());
         assertEquals(name, response.getName());
-        assertTrue(response.getId() > 0);
+        assertTrue(response.getRemoteId() > 0);
     }
 
-    private void verifyStore(MobileStoreRequest request, @NonNull MobileStoreResponse response) {
+    private void verifyStore(MobileStoreRequest request, @NonNull MobileStore response) {
         Long mobileId = request.getMobileId();
         String name = request.getName();
 
         assertNotNull(response);
         assertEquals(mobileId, response.getMobileId());
         assertEquals(name, response.getName());
-        assertTrue(response.getId() > 0);
+        assertTrue(response.getRemoteId() > 0);
     }
 }

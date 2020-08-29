@@ -1,47 +1,58 @@
 package mx.kinich49.itemtracker.models.mobile;
 
 import lombok.Data;
-import mx.kinich49.itemtracker.models.database.ShoppingItem;
 import mx.kinich49.itemtracker.models.database.ShoppingList;
+import mx.kinich49.itemtracker.models.database.Store;
+import org.javatuples.Tuple;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
-public final class MobileShoppingList {
+public class MobileShoppingList {
 
-    private final long id;
-    private final long storeId;
+    private final long remoteId;
+    private final Long mobileId;
     private final LocalDate shoppingDate;
+    private final MobileStore store;
     private final List<MobileShoppingItem> shoppingItems;
+
+    public static MobileShoppingList from(ShoppingList shoppingList,
+                                          Long shoppingListMobileId,
+                                          Store store,
+                                          Long storeMobileId,
+                                          List<Tuple> shoppingItems) {
+
+        long shoppingListId = shoppingList.getId();
+        LocalDate shoppingDate = shoppingList.getShoppingDate();
+        MobileStore storeResponse = MobileStore.from(store, storeMobileId);
+
+        List<MobileShoppingItem> shoppingItemResponses = shoppingItems.stream()
+                .map(tuple -> MobileShoppingItem.from(tuple, shoppingListId))
+                .collect(Collectors.toList());
+
+        return new MobileShoppingList(shoppingListId, shoppingListMobileId,
+                shoppingDate, storeResponse, shoppingItemResponses);
+    }
 
     public static MobileShoppingList from(ShoppingList shoppingList) {
         if (shoppingList == null)
             return null;
 
-        long id = shoppingList.getId();
-        long storeId = shoppingList.getStore().getId();
+        MobileStore storeResponse = MobileStore.from(shoppingList.getStore());
         LocalDate shoppingDate = shoppingList.getShoppingDate();
-        List<MobileShoppingItem> shoppingItems = null;
-        if (shoppingList.getShoppingItems() != null && !shoppingList.getShoppingItems().isEmpty()) {
-            shoppingItems = new ArrayList<>();
-            for (ShoppingItem shoppingItem : shoppingList.getShoppingItems()) {
-                shoppingItems.add(MobileShoppingItem.from(shoppingItem));
-            }
-        }
-        return new MobileShoppingList(id, storeId, shoppingDate, shoppingItems);
+
+        return new MobileShoppingList(shoppingList.getId(), null, shoppingDate,
+                storeResponse, null);
     }
 
     public static List<MobileShoppingList> from(List<ShoppingList> shoppingLists) {
         if (shoppingLists == null || shoppingLists.isEmpty())
             return null;
 
-        List<MobileShoppingList> mobileShoppingLists = new ArrayList<>(shoppingLists.size());
-        for (ShoppingList shoppingList : shoppingLists) {
-            mobileShoppingLists.add(MobileShoppingList.from(shoppingList));
-        }
-
-        return mobileShoppingLists;
+        return shoppingLists.stream()
+                .map(MobileShoppingList::from)
+                .collect(Collectors.toList());
     }
 }
