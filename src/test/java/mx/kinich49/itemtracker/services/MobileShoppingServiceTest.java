@@ -3,7 +3,7 @@ package mx.kinich49.itemtracker.services;
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.mobile.*;
-import mx.kinich49.itemtracker.models.mobile.responses.*;
+import mx.kinich49.itemtracker.models.mobile.*;
 import mx.kinich49.itemtracker.requests.mobile.*;
 import org.assertj.core.annotations.NonNull;
 import org.junit.jupiter.api.DisplayName;

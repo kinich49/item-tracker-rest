@@ -13,7 +13,7 @@ import mx.kinich49.itemtracker.requests.BaseShoppingItemRequest;
 public class MobileShoppingItemRequest extends BaseShoppingItemRequest {
 
     private Long shoppingItemMobileId;
-    private Long ItemMobileId;
+    private Long itemMobileId;
     private MobileBrandRequest brand;
     private MobileCategoryRequest category;
 }
