@@ -82,7 +82,7 @@ public class DtoEntityServiceImpl extends BaseDtoEntityService {
                     if (category != null) {
                         category.addItem(newItem);
                     }
-                    return new Item();
+                    return newItem;
                 });
 
         ShoppingItem shoppingItem = new ShoppingItem();
