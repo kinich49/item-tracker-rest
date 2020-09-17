@@ -21,10 +21,10 @@ public class Item {
     private long id;
     @NotNull
     private String name;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
     @OneToMany(

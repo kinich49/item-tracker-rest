@@ -35,13 +35,18 @@ public abstract class BaseDtoEntityService implements DtoEntityService {
         if (request == null)
             return null;
 
+        //Search by id if it's not null
+        //Or if it's null or it wasn't found by id
+        //search by name instead
+        //Create new instance if it wasn't found
         return Optional.ofNullable(request.getId())
                 .flatMap(brandRepository::findById)
-                .orElseGet(() -> {
-                    Brand brand = new Brand();
-                    brand.setName(request.getName());
-                    return brand;
-                });
+                .orElseGet(() -> brandRepository.findByName(request.getName())
+                        .orElseGet(() -> {
+                            Brand brand = new Brand();
+                            brand.setName(request.getName());
+                            return brandRepository.save(brand);
+                        }));
     }
 
     @Override
@@ -49,13 +54,18 @@ public abstract class BaseDtoEntityService implements DtoEntityService {
         if (request == null)
             return null;
 
+        //Search by id if it's not null
+        //Or if it's null or it wasn't found by id
+        //search by name instead
+        //Create new instance if it wasn't found
         return Optional.ofNullable(request.getId())
                 .flatMap(categoryRepository::findById)
-                .orElseGet(() -> {
-                    Category category = new Category();
-                    category.setName(request.getName());
-                    return category;
-                });
+                .orElseGet(() -> categoryRepository.findByName(request.getName())
+                        .orElseGet(() -> {
+                            Category category = new Category();
+                            category.setName(request.getName());
+                            return categoryRepository.save(category);
+                        }));
     }
 
     @Override

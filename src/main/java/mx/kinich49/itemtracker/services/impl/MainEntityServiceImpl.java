@@ -14,18 +14,18 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service("mainDtoEntityService")
-public class DtoEntityServiceImpl extends BaseDtoEntityService {
+public class MainEntityServiceImpl extends BaseDtoEntityService {
 
     private final ShoppingListRepository shoppingListRepository;
     private final ItemRepository itemRepository;
 
     @Autowired
-    public DtoEntityServiceImpl(BrandRepository brandRepository,
-                                CategoryRepository categoryRepository,
-                                StoreRepository storeRepository,
-                                ShoppingListRepository shoppingListRepository,
-                                ItemRepository itemRepository,
-                                UserRepository userRepository) {
+    public MainEntityServiceImpl(BrandRepository brandRepository,
+                                 CategoryRepository categoryRepository,
+                                 StoreRepository storeRepository,
+                                 ShoppingListRepository shoppingListRepository,
+                                 ItemRepository itemRepository,
+                                 UserRepository userRepository) {
         super(brandRepository, categoryRepository, storeRepository, userRepository);
         this.shoppingListRepository = shoppingListRepository;
         this.itemRepository = itemRepository;
@@ -65,7 +65,6 @@ public class DtoEntityServiceImpl extends BaseDtoEntityService {
         throw new IllegalStateException("Method not implemented");
     }
 
-
     private ShoppingItem from(MainShoppingItemRequest itemRequest,
                               Brand brand,
                               Category category) {
@@ -82,7 +81,7 @@ public class DtoEntityServiceImpl extends BaseDtoEntityService {
                     if (category != null) {
                         category.addItem(newItem);
                     }
-                    return newItem;
+                    return itemRepository.save(newItem);
                 });
 
         ShoppingItem shoppingItem = new ShoppingItem();
