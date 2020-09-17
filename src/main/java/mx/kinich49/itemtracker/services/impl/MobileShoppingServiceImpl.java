@@ -47,25 +47,31 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
     @Transactional(rollbackOn = {UserNotFoundException.class})
     public MobileShoppingList save(MobileShoppingListRequest request) throws UserNotFoundException {
         Objects.requireNonNull(request, "Mobile Shopping Request must not be null");
+
         ShoppingList shoppingList = dtoEntityService.from(request);
         Long shoppingListMobileId = request.getMobileId();
         Store store = dtoEntityService.from(request.getStore());
+        storeRepository.save(store);
         Long storeMobileId = request.getStore().getMobileId();
+        shoppingListRepository.save(shoppingList);
 
         List<Tuple> tuples = new ArrayList<>(request.getShoppingItems().size());
+
         for (MobileShoppingItemRequest shoppingItemRequest : request.getShoppingItems()) {
             Category category = dtoEntityService.from(shoppingItemRequest.getCategory());
             Item item = dtoEntityService.itemFrom(shoppingItemRequest);
             ShoppingItem shoppingItem = dtoEntityService.shoppingItemFrom(shoppingItemRequest);
 
-            Optional<Brand> optBrand = Optional.ofNullable(dtoEntityService.from(shoppingItemRequest.getBrand()));
+            Optional<Brand> optBrand = Optional
+                    .ofNullable(dtoEntityService.from(shoppingItemRequest.getBrand()));
             optBrand.ifPresent(
                     brand -> brand.addItem(item)
             );
+
             category.addItem(item);
             item.addShoppingItem(shoppingItem);
 
-            shoppingItem = shoppingItemRepository.save(shoppingItem);
+            shoppingItemRepository.save(shoppingItem);
             shoppingList.addShoppingItem(shoppingItem);
 
             Long shoppingItemMobileId = shoppingItemRequest.getShoppingItemMobileId();
@@ -81,7 +87,6 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
         }
 
         store.addShoppingList(shoppingList);
-        shoppingList = shoppingListRepository.save(shoppingList);
 
         return MobileShoppingList.from(shoppingList, shoppingListMobileId, store, storeMobileId, tuples);
     }

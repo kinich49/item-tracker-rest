@@ -64,12 +64,13 @@ public class MobileDtoEntityServiceImpl extends BaseDtoEntityService {
     public <T extends BaseShoppingItemRequest> Item itemFrom(T request) {
         if (request == null)
             return null;
+
         return Optional.ofNullable(request.getId())
                 .flatMap(itemRepository::findById)
                 .orElseGet(() -> {
                     Item item = new Item();
                     item.setName(request.getName());
-                    return item;
+                    return itemRepository.save(item);
                 });
     }
 }
