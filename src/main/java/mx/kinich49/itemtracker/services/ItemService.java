@@ -10,9 +10,9 @@ public interface ItemService {
 
     List<FrontItem> findLike(String name);
 
-    Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId, long userId);
+    Optional<ItemAnalyticsDto> getAnalyticsFor(Long itemId, Long userId);
 
-    List<ItemAnalyticsDto> getAnalyticsForCategory(long categoryId, long userId);
+    List<ItemAnalyticsDto> getAnalyticsForCategory(Long categoryId, Long userId);
 
-    List<ItemAnalyticsDto> getAnalyticsForBrand(long brandId, long userId);
+    List<ItemAnalyticsDto> getAnalyticsForBrand(Long brandId, Long userId);
 }

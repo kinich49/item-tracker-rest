@@ -15,7 +15,7 @@ public interface ItemRepositoryCustom {
      * {@code LocalDate} in index 2 - the item's latest shopping date
      * {@code Integer} in index 3 - the item's latest unit price
      */
-    Optional<Tuple> findLatestStoreAndShoppingDateAndPrice(long itemId, long userId);
+    Optional<Tuple> findLatestStoreAndShoppingDateAndPrice(Long itemId, Long userId);
 
     /**
      * @param categoryId the category id
@@ -26,7 +26,7 @@ public interface ItemRepositoryCustom {
      * {@code LocalDate} in index 2 - the item's latest shopping date
      * {@code Integer} in index 3 - the item's latest unit price
      */
-    List<Tuple> findLatestStoreAndShoppingDateAndPriceForCategory(long categoryId, long userId);
+    List<Tuple> findLatestStoreAndShoppingDateAndPriceForCategory(Long categoryId, Long userId);
 
     /**
      * @param brandId the brand id
@@ -37,7 +37,7 @@ public interface ItemRepositoryCustom {
      * {@code LocalDate} in index 2 - the item's latest shopping date
      * {@code Integer} in index 3 - the item's latest unit price
      */
-    List<Tuple> findLatestStoreAndShoppingDateAndPriceForBrand(long brandId, long userId);
+    List<Tuple> findLatestStoreAndShoppingDateAndPriceForBrand(Long brandId, Long userId);
 
     /**
      * @param itemId the item id
@@ -47,7 +47,7 @@ public interface ItemRepositoryCustom {
      * {@code Double} in index 1 - the average price for item in the same currency
      * {@code String} in index 2 - the currency for the item
      */
-    List<Tuple> findAverageUnitPriceAndCurrency(long itemId, long userId);
+    List<Tuple> findAverageUnitPriceAndCurrency(Long itemId, Long userId);
 
     /**
      * @param categoryId the category id
@@ -57,7 +57,7 @@ public interface ItemRepositoryCustom {
      * {@code Double} in index 1 - the average price for item in the same currency
      * {@code String} in index 2 - the currency for the item
      */
-    List<Tuple> findAverageUnitPriceAndCurrencyForCategory(long categoryId, long userId);
+    List<Tuple> findAverageUnitPriceAndCurrencyForCategory(Long categoryId, Long userId);
 
     /**
      * @param brandId the brand id
@@ -67,5 +67,5 @@ public interface ItemRepositoryCustom {
      * {@code Integer} in index 1 - the average price for item in the same currency
      * {@code String} in index 2 - the currency for the item
      */
-    List<Tuple> findAverageUnitPriceAndCurrencyForBrand(long brandId, long userId);
+    List<Tuple> findAverageUnitPriceAndCurrencyForBrand(Long brandId, Long userId);
 }

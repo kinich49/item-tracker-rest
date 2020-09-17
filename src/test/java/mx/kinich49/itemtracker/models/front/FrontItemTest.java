@@ -37,15 +37,15 @@ public class FrontItemTest {
         //given
         Item item = new Item();
         item.setName("Test Item");
-        item.setId(1);
+        item.setId(1L);
         Category category = new Category();
         category.setName("Test Category");
-        category.setId(1);
+        category.setId(1L);
         category.addItem(item);
 
         Brand brand = new Brand();
         brand.setName("Test Brand");
-        brand.setId(1);
+        brand.setId(1L);
         brand.addItem(item);
 
         //when
@@ -61,44 +61,44 @@ public class FrontItemTest {
 
         Category categoryA = new Category();
         categoryA.setName("Test Category A");
-        categoryA.setId(1);
+        categoryA.setId(1L);
 
         Category categoryB = new Category();
         categoryB.setName("Test Category B");
-        categoryB.setId(2);
+        categoryB.setId(2L);
 
         Category categoryC = new Category();
         categoryC.setName("Test Category C");
-        categoryC.setId(2);
+        categoryC.setId(2L);
 
         Brand brandA = new Brand();
         brandA.setName("Test Brand A");
-        brandA.setId(1);
+        brandA.setId(1L);
 
         Brand brandB = new Brand();
         brandB.setName("Test Brand B");
-        brandB.setId(2);
+        brandB.setId(2L);
 
         Brand brandC = new Brand();
         brandC.setName("Test Brand C");
-        brandC.setId(3);
+        brandC.setId(3L);
 
         //given
         Item itemA = new Item();
         itemA.setName("Test Item A");
-        itemA.setId(1);
+        itemA.setId(1L);
         categoryA.addItem(itemA);
         brandA.addItem(itemA);
 
         Item itemB = new Item();
         itemB.setName("Test Item B");
-        itemB.setId(2);
+        itemB.setId(2L);
         categoryB.addItem(itemB);
         brandB.addItem(itemB);
 
         Item itemC = new Item();
         itemC.setName("Test Item C");
-        itemC.setId(3);
+        itemC.setId(3L);
         categoryC.addItem(itemC);
         brandC.addItem(itemC);
 

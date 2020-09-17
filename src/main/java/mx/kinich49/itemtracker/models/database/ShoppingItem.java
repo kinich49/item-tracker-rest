@@ -16,7 +16,7 @@ public class ShoppingItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private double quantity = 1;
     private String unit;
     @NotNull

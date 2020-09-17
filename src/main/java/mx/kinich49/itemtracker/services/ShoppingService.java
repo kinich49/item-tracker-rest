@@ -10,11 +10,11 @@ import java.util.Optional;
 
 public interface ShoppingService {
 
-    Optional<FrontShoppingList> findBy(long shoppingListId, long userId);
+    Optional<FrontShoppingList> findBy(Long shoppingListId, Long userId);
 
     Optional<FrontShoppingList> save(MainShoppingListRequest request) throws UserNotFoundException;
 
-    List<FrontShoppingList> findBy(LocalDate date, long userId);
+    List<FrontShoppingList> findBy(LocalDate date, Long userId);
 
     void deleteBy(long shoppingListId);
 }

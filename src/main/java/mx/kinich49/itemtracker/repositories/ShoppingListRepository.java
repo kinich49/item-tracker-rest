@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface ShoppingListRepository extends JpaRepository<ShoppingList, Long> {
 
-    List<ShoppingList> findByShoppingDateAndUserId(LocalDate shoppingDate, long userId);
+    List<ShoppingList> findByShoppingDateAndUserId(LocalDate shoppingDate, Long userId);
 
-    Optional<ShoppingList> findByIdAndUserId(long shoppingListId, long userId);
+    Optional<ShoppingList> findByIdAndUserId(long shoppingListId, Long userId);
 
-    List<ShoppingList> findByUserId(long userId);
+    List<ShoppingList> findByUserId(Long userId);
 
 }

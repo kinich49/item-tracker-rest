@@ -50,27 +50,27 @@ public class SuggestionServiceTest {
     void setUp() {
         testBrandA = new Brand();
         testBrandA.setName("Test Brand A");
-        testBrandA.setId(1);
+        testBrandA.setId(1L);
 
         testCategoryA = new Category();
         testCategoryA.setName("Test Category A");
-        testCategoryA.setId(1);
+        testCategoryA.setId(1L);
 
         testBrandB = new Brand();
         testBrandB.setName("Test Brand B");
-        testBrandB.setId(2);
+        testBrandB.setId(2L);
 
         testCategoryB = new Category();
         testCategoryB.setName("Test Category B");
-        testCategoryB.setId(2);
+        testCategoryB.setId(2L);
 
         testBrandC = new Brand();
         testBrandC.setName("Test Brand C");
-        testBrandC.setId(3);
+        testBrandC.setId(3L);
 
         testCategoryC = new Category();
         testCategoryC.setName("Test Category C");
-        testCategoryC.setId(3);
+        testCategoryC.setId(3L);
     }
 
     @Test
@@ -80,19 +80,19 @@ public class SuggestionServiceTest {
         List<Item> items = new ArrayList<>();
         Item itemA = new Item();
         itemA.setName("Item A");
-        itemA.setId(1);
+        itemA.setId(1L);
         testBrandA.addItem(itemA);
         testCategoryA.addItem(itemA);
 
         Item itemB = new Item();
         itemB.setName("Item B");
-        itemB.setId(2);
+        itemB.setId(2L);
         testBrandB.addItem(itemB);
         testCategoryB.addItem(itemB);
 
         Item itemC = new Item();
         itemC.setName("Item C");
-        itemC.setId(2);
+        itemC.setId(2L);
         testBrandC.addItem(itemC);
         testCategoryC.addItem(itemC);
 
@@ -132,13 +132,13 @@ public class SuggestionServiceTest {
         //given
         Brand brandA = new Brand();
         brandA.setName("Brand A");
-        brandA.setId(1);
+        brandA.setId(1L);
         Brand brandB = new Brand();
         brandB.setName("Brand B");
-        brandB.setId(2);
+        brandB.setId(2L);
         Brand brandC = new Brand();
         brandC.setName("Brand C");
-        brandC.setId(3);
+        brandC.setId(3L);
 
         List<Brand> brands = new ArrayList<>();
         brands.add(brandA);
@@ -169,13 +169,13 @@ public class SuggestionServiceTest {
         //given
         Category categoryA = new Category();
         categoryA.setName("Category A");
-        categoryA.setId(1);
+        categoryA.setId(1L);
         Category categoryB = new Category();
         categoryB.setName("Category B");
-        categoryB.setId(2);
+        categoryB.setId(2L);
         Category categoryC = new Category();
         categoryC.setName("Category C");
-        categoryC.setId(3);
+        categoryC.setId(3L);
 
         List<Category> categories = new ArrayList<>();
         categories.add(categoryA);
@@ -243,19 +243,19 @@ public class SuggestionServiceTest {
         List<Item> items = new ArrayList<>();
         Item itemA = new Item();
         itemA.setName("Item A");
-        itemA.setId(1);
+        itemA.setId(1L);
         testBrandA.addItem(itemA);
         testCategoryA.addItem(itemA);
 
         Item itemB = new Item();
         itemB.setName("Item B");
-        itemB.setId(2);
+        itemB.setId(2L);
         testBrandB.addItem(itemB);
         testCategoryB.addItem(itemB);
 
         Item itemC = new Item();
         itemC.setName("Item C");
-        itemC.setId(2);
+        itemC.setId(2L);
         testBrandC.addItem(itemC);
         testCategoryC.addItem(itemC);
 

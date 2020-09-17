@@ -35,7 +35,7 @@ public class FrontStoreTest {
         //given
         Store store = new Store();
         store.setName("Test store");
-        store.setId(1);
+        store.setId(1L);
 
         //when
         FrontStore dto = FrontStore.from(store);
@@ -50,15 +50,15 @@ public class FrontStoreTest {
         //given
         Store storeA = new Store();
         storeA.setName("Test Store A");
-        storeA.setId(1);
+        storeA.setId(1L);
 
         Store storeB = new Store();
         storeB.setName("Test Store B");
-        storeB.setId(2);
+        storeB.setId(2L);
 
         Store storeC = new Store();
         storeC.setName("Test Store C");
-        storeC.setId(3);
+        storeC.setId(3L);
 
         List<Store> stores = new ArrayList<>();
         stores.add(storeA);

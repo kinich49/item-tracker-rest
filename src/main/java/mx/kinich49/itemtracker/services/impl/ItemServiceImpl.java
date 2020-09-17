@@ -35,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId, long userId) {
+    public Optional<ItemAnalyticsDto> getAnalyticsFor(Long itemId, Long userId) {
         if (!itemRepository.existsById(itemId))
             return Optional.empty();
 
@@ -50,13 +50,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemAnalyticsDto> getAnalyticsForCategory(long categoryId, long userId) {
+    public List<ItemAnalyticsDto> getAnalyticsForCategory(Long categoryId, Long userId) {
         return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForCategory(categoryId, 1L),
                 itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(categoryId, userId));
     }
 
     @Override
-    public List<ItemAnalyticsDto> getAnalyticsForBrand(long brandId, long userId) {
+    public List<ItemAnalyticsDto> getAnalyticsForBrand(Long brandId, Long userId) {
         return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForBrand(brandId, userId),
                 itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(brandId, userId));
     }
@@ -128,6 +128,7 @@ public class ItemServiceImpl implements ItemService {
                     .map(latestPrice -> FrontShoppingItem.transformAndFormatPrice(latestPrice, "MXN"))
                     .ifPresent(builder::latestPrice);
         }
+
         return builder.build();
     }
 }

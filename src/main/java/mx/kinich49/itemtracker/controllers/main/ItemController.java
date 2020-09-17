@@ -49,7 +49,7 @@ public class ItemController {
     @GetMapping(path = "/category/{id}/analytics")
     public ResponseEntity<JsonApi<List<ItemAnalyticsDto>>> getAnalyticsForCategory(
             @PathVariable(value = "id") long categoryId) {
-        return Optional.ofNullable(itemService.getAnalyticsForCategory(categoryId, 1))
+        return Optional.ofNullable(itemService.getAnalyticsForCategory(categoryId, 1L))
                 .filter(list -> !list.isEmpty())
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
@@ -59,7 +59,7 @@ public class ItemController {
     @GetMapping(path = "/brand/{id}/analytics")
     public ResponseEntity<JsonApi<List<ItemAnalyticsDto>>> getAnalyticsForBrand(
             @PathVariable(value = "id") long brandId) {
-        return Optional.ofNullable(itemService.getAnalyticsForBrand(brandId, 1))
+        return Optional.ofNullable(itemService.getAnalyticsForBrand(brandId, 1L))
                 .filter(list -> !list.isEmpty())
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))

@@ -36,7 +36,7 @@ public class FrontCategoryTest {
         //given
         Category category = new Category();
         category.setName("Test Category");
-        category.setId(1);
+        category.setId(1L);
 
         //when
         FrontCategory dto = FrontCategory.from(category);
@@ -53,15 +53,15 @@ public class FrontCategoryTest {
         //given
         Category categoryA = new Category();
         categoryA.setName("Test Category A");
-        categoryA.setId(1);
+        categoryA.setId(1L);
 
         Category categoryB = new Category();
         categoryB.setName("Test Category B");
-        categoryB.setId(2);
+        categoryB.setId(2L);
 
         Category categoryC = new Category();
         categoryC.setName("Test Category C");
-        categoryC.setId(3);
+        categoryC.setId(3L);
 
         List<Category> categories = new ArrayList<>();
         categories.add(categoryA);

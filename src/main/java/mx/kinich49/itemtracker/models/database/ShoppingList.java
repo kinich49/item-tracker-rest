@@ -19,7 +19,7 @@ public class ShoppingList {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate shoppingDate = LocalDate.now();
     @ManyToOne(fetch = FetchType.LAZY)

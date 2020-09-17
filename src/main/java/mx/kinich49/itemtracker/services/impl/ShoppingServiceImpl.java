@@ -31,7 +31,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Optional<FrontShoppingList> findBy(long shoppingId, long userId) {
+    public Optional<FrontShoppingList> findBy(Long shoppingId, Long userId) {
         return shoppingListRepository.findByIdAndUserId(shoppingId, userId)
                 .map(FrontShoppingList::from);
     }
@@ -45,7 +45,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public List<FrontShoppingList> findBy(LocalDate date, long userId) {
+    public List<FrontShoppingList> findBy(LocalDate date, Long userId) {
         return shoppingListRepository.findByShoppingDateAndUserId(date, userId)
                 .stream().parallel()
                 .map(FrontShoppingList::from)

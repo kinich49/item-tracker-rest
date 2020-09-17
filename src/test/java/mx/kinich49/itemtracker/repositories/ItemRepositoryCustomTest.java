@@ -31,7 +31,8 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Get valid Latest Store, Price and Date for item with id 1 and user id 1L")
     public void findLatestTuple_forItemId1_userId1() {
         //when
-        Optional<Tuple> response = itemRepository.findLatestStoreAndShoppingDateAndPrice(1, 1L);
+        Optional<Tuple> response = itemRepository
+                .findLatestStoreAndShoppingDateAndPrice(1L, 1L);
 
         //then
         assertNotNull(response);
@@ -58,7 +59,8 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Get valid Latest Store, Price and Date for item with id 1 and user id 2L")
     public void findLatestTuple_forItemId1_userId2() {
         //when
-        Optional<Tuple> response = itemRepository.findLatestStoreAndShoppingDateAndPrice(1, 2);
+        Optional<Tuple> response = itemRepository
+                .findLatestStoreAndShoppingDateAndPrice(1L, 2L);
 
         //then
         assertNotNull(response);
@@ -85,7 +87,8 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Get valid Latest Store, Price and Date for item with id 4 for user id 1")
     public void shouldReturn_LatestTuple_forItemId4() {
         //when
-        Optional<Tuple> response = itemRepository.findLatestStoreAndShoppingDateAndPrice(4, 1L);
+        Optional<Tuple> response = itemRepository
+                .findLatestStoreAndShoppingDateAndPrice(4L, 1L);
 
         //then
         assertNotNull(response);
@@ -112,7 +115,8 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Optional Tuple must be empty when item id does not exists")
     public void shouldReturn_emptyTuple_forInvalidItemId() {
         //when
-        Optional<Tuple> response = itemRepository.findLatestStoreAndShoppingDateAndPrice(Long.MAX_VALUE, 1L);
+        Optional<Tuple> response = itemRepository
+                .findLatestStoreAndShoppingDateAndPrice(Long.MAX_VALUE, 1L);
 
         assertNotNull(response);
         assertFalse(response.isPresent());
@@ -122,7 +126,8 @@ public class ItemRepositoryCustomTest {
     @DisplayName("Get average price for item with valid id")
     public void findAveragePrice() {
         //when
-        List<Tuple> results = itemRepository.findAverageUnitPriceAndCurrency(1, 1L);
+        List<Tuple> results = itemRepository
+                .findAverageUnitPriceAndCurrency(1L, 1L);
 
         //then
         assertNotNull(results);
@@ -178,7 +183,7 @@ public class ItemRepositoryCustomTest {
     public void shouldReturn_emptyLatestDataTuple_whenCategoryIsEmpty() {
         //when
         List<Tuple> results = itemRepository
-                .findLatestStoreAndShoppingDateAndPriceForCategory(4, 1L);
+                .findLatestStoreAndShoppingDateAndPriceForCategory(4L, 1L);
 
         //then
         assertNull(results);
@@ -239,7 +244,7 @@ public class ItemRepositoryCustomTest {
     public void shouldReturn_emptyLatestDataTuple_whenBrandIsEmpty() {
         //when
         Collection<Tuple> results = itemRepository
-                .findLatestStoreAndShoppingDateAndPriceForBrand(5, 1L);
+                .findLatestStoreAndShoppingDateAndPriceForBrand(5L, 1L);
 
         //then
         assertNull(results);

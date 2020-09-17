@@ -10,7 +10,7 @@ public interface BrandService {
 
     List<FrontBrand> findAll();
 
-    Optional<FrontBrand> findById(long id);
+    Optional<FrontBrand> findById(Long id);
 
     Optional<FrontBrand> saveBrand(Brand fromRequest);
 

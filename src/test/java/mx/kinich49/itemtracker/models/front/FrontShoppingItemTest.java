@@ -21,19 +21,19 @@ public class FrontShoppingItemTest {
         MockitoAnnotations.initMocks(this);
 
         testBrand = new Brand();
-        testBrand.setId(1);
+        testBrand.setId(1L);
         testBrand.setName("Test Brand");
 
         testCategory = new Category();
-        testCategory.setId(1);
+        testCategory.setId(1L);
         testCategory.setName("Test Category");
 
         testStore = new Store();
         testStore.setName("Test Store");
-        testStore.setId(1);
+        testStore.setId(1L);
 
         testItem = new Item();
-        testItem.setId(1);
+        testItem.setId(1L);
         testItem.setName("Test Item");
         testBrand.addItem(testItem);
         testCategory.addItem(testItem);

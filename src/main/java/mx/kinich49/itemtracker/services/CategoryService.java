@@ -10,7 +10,7 @@ public interface CategoryService {
 
     List<FrontCategory> findAll();
 
-    Optional<FrontCategory> findById(long id);
+    Optional<FrontCategory> findById(Long id);
 
     List<FrontCategory> findLike(String name);
 

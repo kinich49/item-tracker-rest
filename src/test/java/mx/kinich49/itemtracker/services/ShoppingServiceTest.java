@@ -46,19 +46,19 @@ public class ShoppingServiceTest {
     public void setup() {
 
         testBrand = new Brand();
-        testBrand.setId(1);
+        testBrand.setId(1L);
         testBrand.setName("Test Brand");
 
         testCategory = new Category();
-        testCategory.setId(1);
+        testCategory.setId(1L);
         testCategory.setName("Test Category");
 
         testStore = new Store();
         testStore.setName("Test Store");
-        testStore.setId(1);
+        testStore.setId(1L);
 
         testItem = new Item();
-        testItem.setId(1);
+        testItem.setId(1L);
         testItem.setName("Test Item");
         testBrand.addItem(testItem);
         testCategory.addItem(testItem);
@@ -149,7 +149,7 @@ public class ShoppingServiceTest {
 
         when(shoppingListRepository.save(any(ShoppingList.class)))
                 .then(invocation -> {
-                    shoppingList.setId(1);
+                    shoppingList.setId(1L);
                     return shoppingList;
                 });
         //when
@@ -171,6 +171,7 @@ public class ShoppingServiceTest {
     public void should_findAndTransform_DtoByDate() {
         //given
         ShoppingList shoppingList = new ShoppingList();
+        shoppingList.setId(1L);
         shoppingList.setStore(testStore);
         ShoppingItem shoppingItem = new ShoppingItem();
         shoppingItem.setItem(testItem);
@@ -213,6 +214,7 @@ public class ShoppingServiceTest {
     public void should_findAndTransform_DtoById() {
         //given
         ShoppingList shoppingList = new ShoppingList();
+        shoppingList.setId(1L);
         shoppingList.setStore(testStore);
         ShoppingItem shoppingItem = new ShoppingItem();
         shoppingItem.setItem(testItem);

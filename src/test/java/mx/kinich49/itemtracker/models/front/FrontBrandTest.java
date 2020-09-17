@@ -35,7 +35,7 @@ public class FrontBrandTest {
         //given
         Brand brand = new Brand();
         brand.setName("Test Brand");
-        brand.setId(1);
+        brand.setId(1L);
 
         //when
         FrontBrand dto = FrontBrand.from(brand);
@@ -52,15 +52,15 @@ public class FrontBrandTest {
         //given
         Brand brandA = new Brand();
         brandA.setName("Test Brand A");
-        brandA.setId(1);
+        brandA.setId(1L);
 
         Brand brandB = new Brand();
         brandB.setName("Test Brand B");
-        brandB.setId(2);
+        brandB.setId(2L);
 
         Brand brandC = new Brand();
         brandC.setName("Test Brand C");
-        brandC.setId(3);
+        brandC.setId(3L);
 
         List<Brand> brands = new ArrayList<>();
         brands.add(brandA);
