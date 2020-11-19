@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.dtos.ItemAnalyticsDto;
 import mx.kinich49.itemtracker.models.database.Item;
 import mx.kinich49.itemtracker.models.database.Store;
@@ -17,21 +18,25 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final ItemRepository itemRepository;
-    private final SuggestionService suggestionService;
-
     @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository,
-                           SuggestionService suggestionService) {
-        this.itemRepository = itemRepository;
-        this.suggestionService = suggestionService;
-    }
+    private final ItemRepository itemRepository;
+    @Autowired
+    private final SuggestionService suggestionService;
 
     @Override
     public List<FrontItem> findLike(String name) {
         return suggestionService.findItemsLike(name);
+    }
+
+    @Override
+    public List<FrontItem> findAll() {
+        return Optional.of(itemRepository.findAll())
+                .filter(list -> !list.isEmpty())
+                .map(FrontItem::from)
+                .orElse(null);
     }
 
     @Override

@@ -30,4 +30,12 @@ public class StoreController {
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
+
+    @GetMapping
+    public ResponseEntity<JsonApi<List<FrontStore>>> getStores() {
+        return Optional.ofNullable(storeService.findAll())
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    }
 }

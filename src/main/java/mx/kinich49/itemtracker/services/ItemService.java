@@ -10,6 +10,8 @@ public interface ItemService {
 
     List<FrontItem> findLike(String name);
 
+    List<FrontItem> findAll();
+
     Optional<ItemAnalyticsDto> getAnalyticsFor(Long itemId, Long userId);
 
     List<ItemAnalyticsDto> getAnalyticsForCategory(Long categoryId, Long userId);

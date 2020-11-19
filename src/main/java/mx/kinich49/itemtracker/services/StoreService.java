@@ -7,4 +7,6 @@ import java.util.List;
 public interface StoreService {
 
     List<FrontStore> findLike(String name);
+
+    List<FrontStore> findAll();
 }

@@ -27,8 +27,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<JsonApi<List<Category>>> getAllCategories() {
-        return Optional.of(categoryRepository.findAll())
+    public ResponseEntity<JsonApi<List<FrontCategory>>> getAllCategories() {
+        return Optional.of(categoryService.findAll())
                 .map(JsonApi::new)
                 .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

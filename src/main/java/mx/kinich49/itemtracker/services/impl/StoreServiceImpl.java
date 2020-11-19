@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class StoreServiceImpl implements StoreService {
+
     private final StoreRepository storeRepository;
 
     @Autowired
@@ -24,6 +25,14 @@ public class StoreServiceImpl implements StoreService {
             return null;
 
         return Optional.ofNullable(storeRepository.findByNameStartsWithIgnoreCase(name))
+                .filter(list -> !list.isEmpty())
+                .map(FrontStore::from)
+                .orElse(null);
+    }
+
+    @Override
+    public List<FrontStore> findAll() {
+        return Optional.of(storeRepository.findAll())
                 .filter(list -> !list.isEmpty())
                 .map(FrontStore::from)
                 .orElse(null);

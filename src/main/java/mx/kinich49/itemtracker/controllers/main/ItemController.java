@@ -24,6 +24,15 @@ public class ItemController {
     @Autowired
     private final ItemService itemService;
 
+    @GetMapping
+    public ResponseEntity<JsonApi<List<FrontItem>>> findAll() {
+        return Optional.ofNullable(itemService.findAll())
+                .filter(list -> !list.isEmpty())
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    }
+
     @GetMapping(params = "name")
     public ResponseEntity<JsonApi<List<FrontItem>>> getItemsLike(@RequestParam String name) {
         return Optional.ofNullable(itemService.findLike(name))
