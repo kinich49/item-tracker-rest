@@ -2,7 +2,8 @@ FROM maven:3.6.3-openjdk-8-slim AS build
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 COPY src src
-RUN  mvn "verify" "-Pproduction"
+ARG stage
+RUN  mvn verify -P${stage}
 
 FROM openjdk:8-jdk-alpine AS production
 RUN addgroup -S item-tracker && adduser -S admin -G item-tracker 
