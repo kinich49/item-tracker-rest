@@ -1,12 +1,13 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.dtos.ShoppingListDto;
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
+import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
-import mx.kinich49.itemtracker.requests.ShoppingListRequest;
+import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
 import mx.kinich49.itemtracker.services.DtoEntityService;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,31 +23,32 @@ public class ShoppingServiceImpl implements ShoppingService {
     private final ShoppingListRepository shoppingListRepository;
 
     @Autowired
-    public ShoppingServiceImpl(DtoEntityService dtoEntityService,
+    public ShoppingServiceImpl(@Qualifier("mainDtoEntityService")
+                                       DtoEntityService dtoEntityService,
                                ShoppingListRepository shoppingListRepository) {
         this.dtoEntityService = dtoEntityService;
         this.shoppingListRepository = shoppingListRepository;
     }
 
     @Override
-    public Optional<ShoppingListDto> findBy(long shoppingId, long userId) {
+    public Optional<FrontShoppingList> findBy(Long shoppingId, Long userId) {
         return shoppingListRepository.findByIdAndUserId(shoppingId, userId)
-                .map(ShoppingListDto::from);
+                .map(FrontShoppingList::from);
     }
 
     @Override
     @Transactional
-    public Optional<ShoppingListDto> save(ShoppingListRequest request) throws UserNotFoundException {
+    public Optional<FrontShoppingList> save(MainShoppingListRequest request) throws UserNotFoundException {
         return Optional.ofNullable(dtoEntityService.from(request))
                 .map(shoppingListRepository::save)
-                .map(ShoppingListDto::from);
+                .map(FrontShoppingList::from);
     }
 
     @Override
-    public List<ShoppingListDto> findBy(LocalDate date, long userId) {
+    public List<FrontShoppingList> findBy(LocalDate date, Long userId) {
         return shoppingListRepository.findByShoppingDateAndUserId(date, userId)
                 .stream().parallel()
-                .map(ShoppingListDto::from)
+                .map(FrontShoppingList::from)
                 .collect(Collectors.toList());
     }
 

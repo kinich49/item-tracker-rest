@@ -1,6 +1,6 @@
 package mx.kinich49.itemtracker.repositories;
 
-import mx.kinich49.itemtracker.models.Brand;
+import mx.kinich49.itemtracker.models.database.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,10 +1,12 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.StoreDto;
+import mx.kinich49.itemtracker.models.front.FrontStore;
 
 import java.util.List;
 
 public interface StoreService {
 
-    List<StoreDto> findLike(String name);
+    List<FrontStore> findLike(String name);
+
+    List<FrontStore> findAll();
 }

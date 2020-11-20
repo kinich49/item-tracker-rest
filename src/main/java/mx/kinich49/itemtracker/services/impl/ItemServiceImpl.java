@@ -1,10 +1,11 @@
 package mx.kinich49.itemtracker.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.dtos.ItemAnalyticsDto;
-import mx.kinich49.itemtracker.dtos.ItemDto;
-import mx.kinich49.itemtracker.dtos.ShoppingItemDto;
-import mx.kinich49.itemtracker.models.Item;
-import mx.kinich49.itemtracker.models.Store;
+import mx.kinich49.itemtracker.models.database.Item;
+import mx.kinich49.itemtracker.models.database.Store;
+import mx.kinich49.itemtracker.models.front.FrontItem;
+import mx.kinich49.itemtracker.models.front.FrontShoppingItem;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
 import mx.kinich49.itemtracker.services.ItemService;
 import mx.kinich49.itemtracker.services.SuggestionService;
@@ -17,30 +18,35 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
+    @Autowired
     private final ItemRepository itemRepository;
+    @Autowired
     private final SuggestionService suggestionService;
 
-    @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository,
-                           SuggestionService suggestionService) {
-        this.itemRepository = itemRepository;
-        this.suggestionService = suggestionService;
-    }
-
     @Override
-    public List<ItemDto> findLike(String name) {
+    public List<FrontItem> findLike(String name) {
         return suggestionService.findItemsLike(name);
     }
 
     @Override
-    public Optional<ItemAnalyticsDto> getAnalyticsFor(long itemId, long userId) {
+    public List<FrontItem> findAll() {
+        return Optional.of(itemRepository.findAll())
+                .filter(list -> !list.isEmpty())
+                .map(FrontItem::from)
+                .orElse(null);
+    }
+
+    @Override
+    public Optional<ItemAnalyticsDto> getAnalyticsFor(Long itemId, Long userId) {
         if (!itemRepository.existsById(itemId))
             return Optional.empty();
 
         List<Tuple> averageTuples = itemRepository.findAverageUnitPriceAndCurrency(itemId, userId);
         List<Tuple> latestTuples = new ArrayList<>();
+
         itemRepository.findLatestStoreAndShoppingDateAndPrice(itemId, userId)
                 .ifPresent(latestTuples::add);
 
@@ -49,13 +55,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemAnalyticsDto> getAnalyticsForCategory(long categoryId, long userId) {
+    public List<ItemAnalyticsDto> getAnalyticsForCategory(Long categoryId, Long userId) {
         return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForCategory(categoryId, 1L),
                 itemRepository.findLatestStoreAndShoppingDateAndPriceForCategory(categoryId, userId));
     }
 
     @Override
-    public List<ItemAnalyticsDto> getAnalyticsForBrand(long brandId, long userId) {
+    public List<ItemAnalyticsDto> getAnalyticsForBrand(Long brandId, Long userId) {
         return getAnalyticsFor(itemRepository.findAverageUnitPriceAndCurrencyForBrand(brandId, userId),
                 itemRepository.findLatestStoreAndShoppingDateAndPriceForBrand(brandId, userId));
     }
@@ -107,11 +113,11 @@ public class ItemServiceImpl implements ItemService {
                                                Tuple averageTuple,
                                                Tuple latestTuple) {
         ItemAnalyticsDto.ItemAnalyticsDtoBuilder builder = ItemAnalyticsDto.builder();
-        builder.item(ItemDto.from(item));
+        builder.item(FrontItem.from(item));
         if (averageTuple != null) {
             Double averagePrice = averageTuple.get(1, Double.class);
             String currency = averageTuple.get(2, String.class);
-            builder.averagePrice(ShoppingItemDto.transformAndFormatPrice(averagePrice, currency));
+            builder.averagePrice(FrontShoppingItem.transformAndFormatPrice(averagePrice, currency));
         }
 
         if (latestTuple != null) {
@@ -124,9 +130,10 @@ public class ItemServiceImpl implements ItemService {
                     .ifPresent(builder::latestDate);
 
             Optional.ofNullable(latestTuple.get(3, Integer.class))
-                    .map(latestPrice -> ShoppingItemDto.transformAndFormatPrice(latestPrice, "MXN"))
+                    .map(latestPrice -> FrontShoppingItem.transformAndFormatPrice(latestPrice, "MXN"))
                     .ifPresent(builder::latestPrice);
         }
+
         return builder.build();
     }
 }

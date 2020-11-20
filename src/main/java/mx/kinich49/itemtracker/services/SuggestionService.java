@@ -1,20 +1,20 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.BrandDto;
-import mx.kinich49.itemtracker.dtos.CategoryDto;
-import mx.kinich49.itemtracker.dtos.ItemDto;
 import mx.kinich49.itemtracker.dtos.SuggestionsDto;
+import mx.kinich49.itemtracker.models.front.FrontBrand;
+import mx.kinich49.itemtracker.models.front.FrontCategory;
+import mx.kinich49.itemtracker.models.front.FrontItem;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SuggestionService {
 
-    List<ItemDto> findItemsLike(String name);
+    List<FrontItem> findItemsLike(String name);
 
-    List<CategoryDto> findCategoriesLike(String name);
+    List<FrontCategory> findCategoriesLike(String name);
 
-    List<BrandDto> findBrandsLike(String name);
+    List<FrontBrand> findBrandsLike(String name);
 
     Optional<SuggestionsDto> findSuggestionsLike(String name);
 }

@@ -1,22 +1,22 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.BrandDto;
-import mx.kinich49.itemtracker.models.Brand;
+import mx.kinich49.itemtracker.models.database.Brand;
+import mx.kinich49.itemtracker.models.front.FrontBrand;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BrandService {
 
-    List<BrandDto> findAll();
+    List<FrontBrand> findAll();
 
-    Optional<BrandDto> findById(long id);
+    Optional<FrontBrand> findById(Long id);
 
-    Optional<BrandDto> saveBrand(Brand fromRequest);
+    Optional<FrontBrand> saveBrand(Brand fromRequest);
 
-    List<BrandDto> findLike(String name);
+    List<FrontBrand> findLike(String name);
 
-    Optional<BrandDto> updateBrand(Brand dto);
+    Optional<FrontBrand> updateBrand(Brand dto);
 
     void delete(long id);
 

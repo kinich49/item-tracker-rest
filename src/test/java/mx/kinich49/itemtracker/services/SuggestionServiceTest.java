@@ -1,12 +1,12 @@
 package mx.kinich49.itemtracker.services;
 
-import mx.kinich49.itemtracker.dtos.BrandDto;
-import mx.kinich49.itemtracker.dtos.CategoryDto;
-import mx.kinich49.itemtracker.dtos.ItemDto;
+import mx.kinich49.itemtracker.models.front.FrontBrand;
+import mx.kinich49.itemtracker.models.front.FrontCategory;
+import mx.kinich49.itemtracker.models.front.FrontItem;
 import mx.kinich49.itemtracker.dtos.SuggestionsDto;
-import mx.kinich49.itemtracker.models.Brand;
-import mx.kinich49.itemtracker.models.Category;
-import mx.kinich49.itemtracker.models.Item;
+import mx.kinich49.itemtracker.models.database.Brand;
+import mx.kinich49.itemtracker.models.database.Category;
+import mx.kinich49.itemtracker.models.database.Item;
 import mx.kinich49.itemtracker.repositories.BrandRepository;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
@@ -50,27 +50,27 @@ public class SuggestionServiceTest {
     void setUp() {
         testBrandA = new Brand();
         testBrandA.setName("Test Brand A");
-        testBrandA.setId(1);
+        testBrandA.setId(1L);
 
         testCategoryA = new Category();
         testCategoryA.setName("Test Category A");
-        testCategoryA.setId(1);
+        testCategoryA.setId(1L);
 
         testBrandB = new Brand();
         testBrandB.setName("Test Brand B");
-        testBrandB.setId(2);
+        testBrandB.setId(2L);
 
         testCategoryB = new Category();
         testCategoryB.setName("Test Category B");
-        testCategoryB.setId(2);
+        testCategoryB.setId(2L);
 
         testBrandC = new Brand();
         testBrandC.setName("Test Brand C");
-        testBrandC.setId(3);
+        testBrandC.setId(3L);
 
         testCategoryC = new Category();
         testCategoryC.setName("Test Category C");
-        testCategoryC.setId(3);
+        testCategoryC.setId(3L);
     }
 
     @Test
@@ -80,19 +80,19 @@ public class SuggestionServiceTest {
         List<Item> items = new ArrayList<>();
         Item itemA = new Item();
         itemA.setName("Item A");
-        itemA.setId(1);
+        itemA.setId(1L);
         testBrandA.addItem(itemA);
         testCategoryA.addItem(itemA);
 
         Item itemB = new Item();
         itemB.setName("Item B");
-        itemB.setId(2);
+        itemB.setId(2L);
         testBrandB.addItem(itemB);
         testCategoryB.addItem(itemB);
 
         Item itemC = new Item();
         itemC.setName("Item C");
-        itemC.setId(2);
+        itemC.setId(2L);
         testBrandC.addItem(itemC);
         testCategoryC.addItem(itemC);
 
@@ -104,23 +104,23 @@ public class SuggestionServiceTest {
                 .thenReturn(items);
 
         //when
-        List<ItemDto> dtos = subject.findItemsLike("Test");
+        List<FrontItem> dtos = subject.findItemsLike("Test");
 
         //then
         assertNotNull(dtos);
         assertEquals(3, dtos.size());
 
-        ItemDto dtoA = dtos.get(0);
+        FrontItem dtoA = dtos.get(0);
         assertEquals(itemA.getName(), dtoA.getName());
         assertEquals(testBrandA.getName(), dtoA.getBrand().getName());
         assertEquals(testCategoryA.getName(), dtoA.getCategory().getName());
 
-        ItemDto dtoB = dtos.get(1);
+        FrontItem dtoB = dtos.get(1);
         assertEquals(itemB.getName(), dtoB.getName());
         assertEquals(testBrandB.getName(), dtoB.getBrand().getName());
         assertEquals(testCategoryB.getName(), dtoB.getCategory().getName());
 
-        ItemDto dtoC = dtos.get(2);
+        FrontItem dtoC = dtos.get(2);
         assertEquals(itemC.getName(), dtoC.getName());
         assertEquals(testBrandC.getName(), dtoC.getBrand().getName());
         assertEquals(testCategoryC.getName(), dtoC.getCategory().getName());
@@ -132,13 +132,13 @@ public class SuggestionServiceTest {
         //given
         Brand brandA = new Brand();
         brandA.setName("Brand A");
-        brandA.setId(1);
+        brandA.setId(1L);
         Brand brandB = new Brand();
         brandB.setName("Brand B");
-        brandB.setId(2);
+        brandB.setId(2L);
         Brand brandC = new Brand();
         brandC.setName("Brand C");
-        brandC.setId(3);
+        brandC.setId(3L);
 
         List<Brand> brands = new ArrayList<>();
         brands.add(brandA);
@@ -149,17 +149,17 @@ public class SuggestionServiceTest {
                 .thenReturn(brands);
 
         //when
-        List<BrandDto> dtos = subject.findBrandsLike("Test");
+        List<FrontBrand> dtos = subject.findBrandsLike("Test");
         assertNotNull(dtos);
         assertEquals(3, dtos.size());
 
-        BrandDto dtoA = dtos.get(0);
+        FrontBrand dtoA = dtos.get(0);
         assertEquals(brandA.getName(), dtoA.getName());
 
-        BrandDto dtoB = dtos.get(1);
+        FrontBrand dtoB = dtos.get(1);
         assertEquals(brandB.getName(), dtoB.getName());
 
-        BrandDto dtoC = dtos.get(2);
+        FrontBrand dtoC = dtos.get(2);
         assertEquals(brandC.getName(), dtoC.getName());
     }
 
@@ -169,13 +169,13 @@ public class SuggestionServiceTest {
         //given
         Category categoryA = new Category();
         categoryA.setName("Category A");
-        categoryA.setId(1);
+        categoryA.setId(1L);
         Category categoryB = new Category();
         categoryB.setName("Category B");
-        categoryB.setId(2);
+        categoryB.setId(2L);
         Category categoryC = new Category();
         categoryC.setName("Category C");
-        categoryC.setId(3);
+        categoryC.setId(3L);
 
         List<Category> categories = new ArrayList<>();
         categories.add(categoryA);
@@ -186,18 +186,18 @@ public class SuggestionServiceTest {
                 .thenReturn(categories);
 
         //when
-        List<CategoryDto> dtos = subject.findCategoriesLike("Test");
+        List<FrontCategory> dtos = subject.findCategoriesLike("Test");
 
         assertNotNull(dtos);
         assertEquals(3, dtos.size());
 
-        CategoryDto dtoA = dtos.get(0);
+        FrontCategory dtoA = dtos.get(0);
         assertEquals(categoryA.getName(), dtoA.getName());
 
-        CategoryDto dtoB = dtos.get(1);
+        FrontCategory dtoB = dtos.get(1);
         assertEquals(categoryB.getName(), dtoB.getName());
 
-        CategoryDto dtoC = dtos.get(2);
+        FrontCategory dtoC = dtos.get(2);
         assertEquals(categoryC.getName(), dtoC.getName());
     }
 
@@ -243,19 +243,19 @@ public class SuggestionServiceTest {
         List<Item> items = new ArrayList<>();
         Item itemA = new Item();
         itemA.setName("Item A");
-        itemA.setId(1);
+        itemA.setId(1L);
         testBrandA.addItem(itemA);
         testCategoryA.addItem(itemA);
 
         Item itemB = new Item();
         itemB.setName("Item B");
-        itemB.setId(2);
+        itemB.setId(2L);
         testBrandB.addItem(itemB);
         testCategoryB.addItem(itemB);
 
         Item itemC = new Item();
         itemC.setName("Item C");
-        itemC.setId(2);
+        itemC.setId(2L);
         testBrandC.addItem(itemC);
         testCategoryC.addItem(itemC);
 

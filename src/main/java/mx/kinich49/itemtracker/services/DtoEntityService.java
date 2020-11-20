@@ -1,20 +1,24 @@
 package mx.kinich49.itemtracker.services;
 
 import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
-import mx.kinich49.itemtracker.models.*;
-import mx.kinich49.itemtracker.requests.ShoppingListRequest;
+import mx.kinich49.itemtracker.models.database.*;
+import mx.kinich49.itemtracker.requests.BaseShoppingItemRequest;
+import mx.kinich49.itemtracker.requests.BaseShoppingListRequest;
+import mx.kinich49.itemtracker.requests.main.BrandRequest;
+import mx.kinich49.itemtracker.requests.main.CategoryRequest;
+import mx.kinich49.itemtracker.requests.main.StoreRequest;
 
 public interface DtoEntityService {
 
-    ShoppingList from(ShoppingListRequest request) throws UserNotFoundException;
+    <T extends BaseShoppingListRequest> ShoppingList from(T request) throws UserNotFoundException;
 
-    ShoppingItem from(ShoppingListRequest.ShoppingItem request,
-                      Brand brand,
-                      Category category);
+    <T extends BaseShoppingItemRequest> ShoppingItem shoppingItemFrom(T request);
 
-    Category from(ShoppingListRequest.Category request);
+    <T extends BaseShoppingItemRequest> Item itemFrom(T request);
 
-    Brand from(ShoppingListRequest.Brand request);
+    Category from(CategoryRequest request);
 
-    Store from(ShoppingListRequest.Store request);
+    Brand from(BrandRequest request);
+
+    Store from(StoreRequest request);
 }
