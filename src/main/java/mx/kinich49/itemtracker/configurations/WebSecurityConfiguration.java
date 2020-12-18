@@ -14,16 +14,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
-                .antMatchers("/");
+        web.ignoring()
+                .antMatchers(HttpMethod.OPTIONS, "/api/**/");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .anyRequest().authenticated()
-                .and().httpBasic()
+                .and()
+                .httpBasic().realmName("Item Tracker")
+                .and()
+                .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable();
+
     }
 }
