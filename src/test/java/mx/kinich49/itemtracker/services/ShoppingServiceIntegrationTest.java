@@ -5,6 +5,7 @@ import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.models.database.Category;
 import mx.kinich49.itemtracker.models.database.Item;
+import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
 import mx.kinich49.itemtracker.requests.main.*;
 import org.junit.jupiter.api.DisplayName;
@@ -266,5 +267,55 @@ public class ShoppingServiceIntegrationTest {
 
         assertEquals(brand_A, brand_B);
         assertEquals(category_A, category_B);
+    }
+
+    /**
+     * This test tries to insert two new items.
+     * those items have the same new Category.
+     * and the same new Brand
+     * <p>
+     * When persisted, the items must have
+     * the same category id and the same brand id
+     *
+     * @throws UserNotFoundException when user id is not found
+     * @throws Exception when database is empty
+     */
+    @DisplayName("Persists previous item in a brand new Store")
+    @Test
+    public void insert_persistedItem_with_newStore() throws Exception{
+        MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
+        shoppingListRequest.setShoppingDate(LocalDate.now());
+        shoppingListRequest.setUserId(1L);
+
+        StoreRequest storeRequest = new StoreRequest();
+        storeRequest.setName("Brand New Store");
+        shoppingListRequest.setStore(storeRequest);
+
+        Item item = itemRepository.findById(5L)
+                .orElseThrow(() -> new Exception("Item not found"));
+
+        BrandRequest brandRequest = new BrandRequest();
+        brandRequest.setId(1L);
+
+        CategoryRequest categoryRequest = new CategoryRequest();
+        categoryRequest.setId(1L);
+
+        MainShoppingItemRequest itemRequest = new MainShoppingItemRequest();
+        itemRequest.setBrand(brandRequest);
+        itemRequest.setCategory(categoryRequest);
+        itemRequest.setId(1L);
+        itemRequest.setCurrency("MXN");
+        itemRequest.setUnitPrice(20000);
+        itemRequest.setQuantity(1);
+
+        List<MainShoppingItemRequest> itemRequests = new ArrayList<>();
+        itemRequests.add(itemRequest);
+
+        shoppingListRequest.setShoppingItems(itemRequests);
+
+        Optional<FrontShoppingList> optionalResult = subject.save(shoppingListRequest);
+
+        assertTrue(optionalResult.isPresent());
+
     }
 }
