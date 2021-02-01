@@ -78,7 +78,7 @@ public abstract class BaseDtoEntityService implements DtoEntityService {
                 .orElseGet(() -> {
                     Store store = new Store();
                     store.setName(request.getName());
-                    return store;
+                    return storeRepository.save(store);
                 });
     }
 
