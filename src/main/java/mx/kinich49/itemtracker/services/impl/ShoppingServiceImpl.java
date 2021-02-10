@@ -1,6 +1,5 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
@@ -38,7 +37,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     @Transactional
-    public Optional<FrontShoppingList> save(MainShoppingListRequest request) throws UserNotFoundException {
+    public Optional<FrontShoppingList> save(MainShoppingListRequest request) {
         return Optional.ofNullable(dtoEntityService.from(request))
                 .map(shoppingListRepository::save)
                 .map(FrontShoppingList::from);

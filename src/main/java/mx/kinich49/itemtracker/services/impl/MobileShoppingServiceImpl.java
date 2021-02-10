@@ -1,6 +1,5 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.models.mobile.MobileShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingItemRepository;
@@ -44,8 +43,8 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
     }
 
     @Override
-    @Transactional(rollbackOn = {UserNotFoundException.class})
-    public MobileShoppingList save(MobileShoppingListRequest request) throws UserNotFoundException {
+    @Transactional
+    public MobileShoppingList save(MobileShoppingListRequest request) {
         Objects.requireNonNull(request, "Mobile Shopping Request must not be null");
 
         ShoppingList shoppingList = dtoEntityService.from(request);

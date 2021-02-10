@@ -1,8 +1,6 @@
 package mx.kinich49.itemtracker.services;
 
 import lombok.RequiredArgsConstructor;
-import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
-import mx.kinich49.itemtracker.models.mobile.*;
 import mx.kinich49.itemtracker.models.mobile.*;
 import mx.kinich49.itemtracker.requests.mobile.*;
 import org.assertj.core.annotations.NonNull;
@@ -32,11 +30,10 @@ public class MobileShoppingServiceTest {
      * Item, Category, and Brand does not exist previously
      * Store exists previously
      *
-     * @throws UserNotFoundException if user id does not exist
      */
     @DisplayName("Should insert brand new shopping item from mobile")
     @Test
-    public void insertBrandNewElements() throws UserNotFoundException {
+    public void insertBrandNewElements() {
         //Given
         Long shoppingListMobileId = 10L;
         Long shoppingItemMobileId = 11L;
@@ -102,11 +99,10 @@ public class MobileShoppingServiceTest {
      * <p>
      * User id is valid
      *
-     * @throws UserNotFoundException if user id is not found
      */
     @DisplayName("Should insert new shopping item when Item, Category and Brand exists")
     @Test
-    public void insertShoppingItemsAlreadyPersistedElements() throws UserNotFoundException {
+    public void insertShoppingItemsAlreadyPersistedElements() {
         //Given
         Long shoppingListMobileId = 20L;
         Long shoppingItemMobileId = 21L;
@@ -173,11 +169,10 @@ public class MobileShoppingServiceTest {
      * <p>
      * User id is valid
      *
-     * @throws UserNotFoundException if user id does not exist
      */
     @DisplayName("Should insert two brand new shopping item with same brand from mobile")
     @Test
-    public void insertTwoBrandNewElements() throws UserNotFoundException {
+    public void insertTwoBrandNewElements() {
         //Given
         Long shoppingListMobileId = 10L;
         Long shoppingItemMobileId_A = 11L;
@@ -268,11 +263,10 @@ public class MobileShoppingServiceTest {
      * <p>
      * User id is valid
      *
-     * @throws UserNotFoundException if user id does not exist
      */
     @DisplayName("Should insert brand new Item with null Brand")
     @Test
-    public void insertShoppingItemWithNullBrand() throws UserNotFoundException {
+    public void insertShoppingItemWithNullBrand() {
         //Given
         Long shoppingListMobileId = 10L;
         Long shoppingItemMobileId = 11L;
@@ -327,79 +321,13 @@ public class MobileShoppingServiceTest {
     }
 
     /**
-     * This test tries to throw an exception when User id is either
-     * not set previously in request or does not exist
-     * <p>
-     * {@code MobileShoppingListRequest#userId} is primitive,
-     * so if it's not set previously, it will default to 0
-     */
-    @DisplayName("Should throw user exception when user id not found")
-    @Test
-    public void shouldThrowUserNotFound() {
-        //Given
-        Long shoppingListMobileId = 10L;
-        Long shoppingItemMobileId = 11L;
-        Long itemMobileId = 12L;
-        Long storeMobileId = 13L;
-        Long categoryMobileId = 14L;
-        Long brandMobileId = 15L;
-
-        String shoppingItemName = "Mobile Shopping Item";
-        String brandName = "Mobile Brand";
-        String categoryName = "Mobile Category";
-        String storeName = "Mobile Store";
-
-        assertNotNull(shoppingService);
-        MobileShoppingListRequest shoppingListRequest = new MobileShoppingListRequest();
-        shoppingListRequest.setMobileId(shoppingListMobileId);
-        List<MobileShoppingItemRequest> shoppingItemRequests = new ArrayList<>();
-
-        MobileShoppingItemRequest shoppingItemRequest = new MobileShoppingItemRequest();
-        shoppingItemRequest.setShoppingItemMobileId(shoppingItemMobileId);
-        shoppingItemRequest.setItemMobileId(itemMobileId);
-
-        MobileStoreRequest storeRequest = new MobileStoreRequest();
-        storeRequest.setMobileId(storeMobileId);
-        storeRequest.setName(storeName);
-
-        MobileBrandRequest brandRequest = new MobileBrandRequest();
-        brandRequest.setMobileId(brandMobileId);
-        brandRequest.setName(brandName);
-
-        MobileCategoryRequest categoryRequest = new MobileCategoryRequest();
-        categoryRequest.setMobileId(categoryMobileId);
-        categoryRequest.setName(categoryName);
-
-        shoppingItemRequest.setBrand(brandRequest);
-        shoppingItemRequest.setCategory(categoryRequest);
-        shoppingItemRequest.setCurrency("MXN");
-        shoppingItemRequest.setName(shoppingItemName);
-        shoppingItemRequest.setQuantity(1.0);
-        shoppingItemRequest.setUnit("Unit");
-        shoppingItemRequest.setUnitPrice(2000);
-
-        shoppingItemRequests.add(shoppingItemRequest);
-        shoppingListRequest.setShoppingItems(shoppingItemRequests);
-        shoppingListRequest.setStore(storeRequest);
-        shoppingListRequest.setShoppingDate(LocalDate.now());
-
-        //when
-        Exception exception = assertThrows(UserNotFoundException.class,
-                () -> shoppingService.save(shoppingListRequest));
-
-        assertEquals(String.format("User with id %d not found", 0),
-                exception.getMessage());
-    }
-
-    /**
      * This test tries to throw a NPE if parameter is null reference.
      * Fail-fast strategy
      *
-     * @throws UserNotFoundException if user id is not valid
      */
     @DisplayName("Should throw NPE if request is null")
     @Test
-    public void insertingShouldFailIfRequestIstNull() throws UserNotFoundException {
+    public void insertingShouldFailIfRequestIstNull() {
         //when
         assertThrows(NullPointerException.class,
                 () -> shoppingService.save(null));

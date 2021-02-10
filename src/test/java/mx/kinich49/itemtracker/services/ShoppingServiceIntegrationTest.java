@@ -1,7 +1,6 @@
 package mx.kinich49.itemtracker.services;
 
 import lombok.RequiredArgsConstructor;
-import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.models.database.Category;
 import mx.kinich49.itemtracker.models.database.Item;
@@ -38,11 +37,10 @@ public class ShoppingServiceIntegrationTest {
      * <p>
      * When persisted, the items must have the same brand id.
      *
-     * @throws UserNotFoundException when user id is not found
      */
     @DisplayName("Persist two new Items with the same new Brand")
     @Test
-    public void insert_twoNewItemsWithSameNewBrand() throws UserNotFoundException {
+    public void insert_twoNewItemsWithSameNewBrand() {
         //given
         MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
         shoppingListRequest.setShoppingDate(LocalDate.now());
@@ -116,11 +114,10 @@ public class ShoppingServiceIntegrationTest {
      * <p>
      * When persisted, the items must have the same category id.
      *
-     * @throws UserNotFoundException when user id is not found
      */
     @DisplayName("Persist two new Items with the same new Category")
     @Test
-    public void insert_newItems_withSame_newCategory() throws UserNotFoundException {
+    public void insert_newItems_withSame_newCategory() {
         //given
         MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
         shoppingListRequest.setShoppingDate(LocalDate.now());
@@ -195,12 +192,10 @@ public class ShoppingServiceIntegrationTest {
      * When persisted, the items must have
      * the same category id and the same brand id
      *
-     * @throws UserNotFoundException when user id is not found
      */
     @DisplayName("Persist two new Items with the same new Category and same new Brand")
     @Test
-    public void insert_newItems_withSame_newCategory_andSameNewBrand()
-            throws UserNotFoundException {
+    public void insert_newItems_withSame_newCategory_andSameNewBrand() {
         //given
         MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
         shoppingListRequest.setShoppingDate(LocalDate.now());
@@ -277,12 +272,11 @@ public class ShoppingServiceIntegrationTest {
      * When persisted, the items must have
      * the same category id and the same brand id
      *
-     * @throws UserNotFoundException when user id is not found
      * @throws Exception when database is empty
      */
     @DisplayName("Persists previous item in a brand new Store")
     @Test
-    public void insert_persistedItem_with_newStore() throws Exception{
+    public void insert_persistedItem_with_newStore() throws Exception {
         MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
         shoppingListRequest.setShoppingDate(LocalDate.now());
         shoppingListRequest.setUserId(1L);
