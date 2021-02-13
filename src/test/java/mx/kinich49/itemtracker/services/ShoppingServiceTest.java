@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.services;
 
+import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.front.FrontShoppingItem;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.models.front.FrontStore;
@@ -62,7 +63,7 @@ public class ShoppingServiceTest {
     }
 
     @Test
-    public void should_create_newDto() {
+    public void should_create_newDto() throws BusinessException {
         //given
         MainShoppingListRequest request = new MainShoppingListRequest();
         BrandRequest brandRequest = new BrandRequest();

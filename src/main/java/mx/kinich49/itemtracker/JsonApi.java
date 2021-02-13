@@ -1,16 +1,22 @@
 package mx.kinich49.itemtracker;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
-public class JsonApi<T> {
 
-    T data;
+public final class JsonApi<T> {
+
+    @Getter
+    private final T data;
+    @Getter
+    private final String error;
 
     public JsonApi(T data) {
         this.data = data;
+        this.error = null;
     }
 
+    public JsonApi(String error) {
+        this.error = error;
+        this.data = null;
+    }
 }

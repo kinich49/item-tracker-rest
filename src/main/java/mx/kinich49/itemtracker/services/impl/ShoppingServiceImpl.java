@@ -1,9 +1,11 @@
 package mx.kinich49.itemtracker.services.impl;
 
+import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
 import mx.kinich49.itemtracker.services.DtoEntityService;
+import mx.kinich49.itemtracker.services.MainShoppingRequestValidator;
 import mx.kinich49.itemtracker.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,13 +21,16 @@ import java.util.stream.Collectors;
 public class ShoppingServiceImpl implements ShoppingService {
 
     private final DtoEntityService dtoEntityService;
+    private final MainShoppingRequestValidator mainShoppingRequestValidator;
     private final ShoppingListRepository shoppingListRepository;
 
     @Autowired
     public ShoppingServiceImpl(@Qualifier("mainDtoEntityService")
                                        DtoEntityService dtoEntityService,
+                               MainShoppingRequestValidator mainShoppingRequestValidator,
                                ShoppingListRepository shoppingListRepository) {
         this.dtoEntityService = dtoEntityService;
+        this.mainShoppingRequestValidator = mainShoppingRequestValidator;
         this.shoppingListRepository = shoppingListRepository;
     }
 
@@ -37,7 +42,8 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     @Transactional
-    public Optional<FrontShoppingList> save(MainShoppingListRequest request) {
+    public Optional<FrontShoppingList> save(MainShoppingListRequest request) throws BusinessException {
+        mainShoppingRequestValidator.validate(request);
         return Optional.ofNullable(dtoEntityService.from(request))
                 .map(shoppingListRepository::save)
                 .map(FrontShoppingList::from);

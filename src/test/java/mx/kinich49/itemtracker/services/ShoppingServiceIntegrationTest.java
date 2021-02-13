@@ -1,6 +1,7 @@
 package mx.kinich49.itemtracker.services;
 
 import lombok.RequiredArgsConstructor;
+import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.models.database.Category;
 import mx.kinich49.itemtracker.models.database.Item;
@@ -40,7 +41,7 @@ public class ShoppingServiceIntegrationTest {
      */
     @DisplayName("Persist two new Items with the same new Brand")
     @Test
-    public void insert_twoNewItemsWithSameNewBrand() {
+    public void insert_twoNewItemsWithSameNewBrand() throws BusinessException {
         //given
         MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
         shoppingListRequest.setShoppingDate(LocalDate.now());
@@ -117,7 +118,7 @@ public class ShoppingServiceIntegrationTest {
      */
     @DisplayName("Persist two new Items with the same new Category")
     @Test
-    public void insert_newItems_withSame_newCategory() {
+    public void insert_newItems_withSame_newCategory() throws BusinessException{
         //given
         MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
         shoppingListRequest.setShoppingDate(LocalDate.now());
@@ -195,7 +196,7 @@ public class ShoppingServiceIntegrationTest {
      */
     @DisplayName("Persist two new Items with the same new Category and same new Brand")
     @Test
-    public void insert_newItems_withSame_newCategory_andSameNewBrand() {
+    public void insert_newItems_withSame_newCategory_andSameNewBrand() throws BusinessException{
         //given
         MainShoppingListRequest shoppingListRequest = new MainShoppingListRequest();
         shoppingListRequest.setShoppingDate(LocalDate.now());

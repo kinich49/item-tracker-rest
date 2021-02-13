@@ -2,6 +2,7 @@ package mx.kinich49.itemtracker.controllers.main;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
+import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
 import mx.kinich49.itemtracker.services.ShoppingService;
@@ -46,12 +47,16 @@ public class ShoppingController {
 
     @PostMapping
     @CrossOrigin
-    public ResponseEntity<JsonApi<FrontShoppingList>> insertShopping(@RequestBody MainShoppingListRequest shoppingList) {
+    public ResponseEntity<?> insertShopping(@RequestBody MainShoppingListRequest shoppingList) {
         shoppingList.setUserId(1L);
-        return shoppingListService.save(shoppingList)
-                .map(JsonApi::new)
-                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        try {
+            return shoppingListService.save(shoppingList)
+                    .map(JsonApi::new)
+                    .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                    .orElseThrow(() -> new BusinessException("Something went wrong"));
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(new JsonApi<>(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
