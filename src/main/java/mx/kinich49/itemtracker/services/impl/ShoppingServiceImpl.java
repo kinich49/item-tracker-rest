@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 public class ShoppingServiceImpl implements ShoppingService {
 
     private final DtoEntityService dtoEntityService;
-    private final Validator validator;
+    private final Validator<MainShoppingListRequest> validator;
     private final ShoppingListRepository shoppingListRepository;
 
     @Autowired
     public ShoppingServiceImpl(@Qualifier("mainDtoEntityService")
                                        DtoEntityService dtoEntityService,
-                               Validator validator,
+                               Validator<MainShoppingListRequest> validator,
                                ShoppingListRepository shoppingListRepository) {
         this.dtoEntityService = dtoEntityService;
         this.validator = validator;
