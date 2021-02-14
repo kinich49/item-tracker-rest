@@ -16,7 +16,7 @@ public class StoreRequestConditionImpl implements Condition<StoreRequest> {
         if (request == null)
             return Optional.of("Store must not be null.");
 
-        if (StringUtils.isNullOrEmpty(request.getName()) ||
+        if (StringUtils.isNullOrEmpty(request.getName()) &&
                 NumberUtils.isNullOrZero(request.getId()))
             return Optional.of("Store must have a name or a valid Id");
 

@@ -1,10 +1,10 @@
 package mx.kinich49.itemtracker.services;
 
 import mx.kinich49.itemtracker.exceptions.BusinessException;
+import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.models.front.FrontShoppingItem;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.models.front.FrontStore;
-import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.main.*;
 import mx.kinich49.itemtracker.services.impl.ShoppingServiceImpl;
@@ -34,6 +34,8 @@ public class ShoppingServiceTest {
     ShoppingListRepository shoppingListRepository;
     @Mock
     DtoEntityService dtoEntityService;
+    @Mock
+    Validator<MainShoppingItemRequest> shoppingListValidator;
 
     Brand testBrand;
     Category testCategory;
@@ -112,6 +114,7 @@ public class ShoppingServiceTest {
                     shoppingList.setId(1L);
                     return shoppingList;
                 });
+
         //when
         Optional<FrontShoppingList> optDto = subject.save(request);
 

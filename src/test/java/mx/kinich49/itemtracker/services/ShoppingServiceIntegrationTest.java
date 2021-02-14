@@ -1,6 +1,5 @@
 package mx.kinich49.itemtracker.services;
 
-import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.models.database.Category;
@@ -23,11 +22,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles({"test"})
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ShoppingServiceIntegrationTest {
 
     private final ShoppingService subject;
     private final ItemRepository itemRepository;
+
+    @Autowired
+    public ShoppingServiceIntegrationTest(ShoppingService subject, ItemRepository itemRepository) {
+        this.subject = subject;
+        this.itemRepository = itemRepository;
+    }
 
     /**
      * This test tries to insert two new items.
