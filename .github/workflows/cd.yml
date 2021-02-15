@@ -26,6 +26,5 @@ jobs:
         run:
           "curl -X POST -u \"${{ secrets.CD_USERNAME}}:${{secrets.CD_TOKEN}}\"
           -H \"Accept: application/vnd.github.everest-preview+json\"
-          -H \"Content-Type: application/json\" https://api.github.com/repos/kinich49/item-tracker-cd/
-          actions/workflows/cd.yaml/dispatches
+          -H \"Content-Type: application/json\" https://api.github.com/repos/kinich49/item-tracker-cd/actions/workflows/cd.yml/dispatches
           --data '{\"ref\": \"main\"}'"
