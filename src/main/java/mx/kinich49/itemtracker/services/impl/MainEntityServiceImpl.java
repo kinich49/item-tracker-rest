@@ -1,6 +1,5 @@
 package mx.kinich49.itemtracker.services.impl;
 
-import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.*;
 import mx.kinich49.itemtracker.requests.BaseShoppingItemRequest;
@@ -32,11 +31,12 @@ public class MainEntityServiceImpl extends BaseDtoEntityService {
     }
 
     @Override
-    public <T extends BaseShoppingListRequest> ShoppingList from(T request) throws UserNotFoundException {
+    public <T extends BaseShoppingListRequest> ShoppingList from(T request) {
         if (request == null)
             return null;
 
-        User user = requireExistingUser(request);
+        User user = userRepository.getOne(request.getUserId());
+
         MainShoppingListRequest shoppingListRequest = (MainShoppingListRequest) request;
 
         Store store = from(shoppingListRequest.getStore());

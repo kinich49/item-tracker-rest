@@ -2,7 +2,6 @@ package mx.kinich49.itemtracker.controllers.mobile;
 
 import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.JsonApi;
-import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.mobile.MobileShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.mobile.MobileShoppingListRequest;
@@ -48,15 +47,11 @@ public class ShoppingListController {
     @CrossOrigin
     public ResponseEntity<JsonApi<MobileShoppingList>>
     insertShopping(@RequestBody MobileShoppingListRequest shoppingList) {
-        try {
-            shoppingList.setUserId(1L);
-            return Optional.of(shoppingListService.save(shoppingList))
-                    .map(JsonApi::new)
-                    .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
-                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-        } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+        shoppingList.setUserId(1L);
+        return Optional.of(shoppingListService.save(shoppingList))
+                .map(JsonApi::new)
+                .map(json -> new ResponseEntity<>(json, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @DeleteMapping(value = "/{id}")

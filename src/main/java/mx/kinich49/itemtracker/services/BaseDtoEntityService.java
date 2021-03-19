@@ -1,7 +1,6 @@
 package mx.kinich49.itemtracker.services;
 
 import lombok.RequiredArgsConstructor;
-import mx.kinich49.itemtracker.exceptions.UserNotFoundException;
 import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.models.database.Category;
 import mx.kinich49.itemtracker.models.database.Store;
@@ -80,11 +79,6 @@ public abstract class BaseDtoEntityService implements DtoEntityService {
                     store.setName(request.getName());
                     return storeRepository.save(store);
                 });
-    }
-
-    protected <T extends BaseShoppingListRequest> User requireExistingUser(T request) throws UserNotFoundException {
-        return userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
     }
 
 }
