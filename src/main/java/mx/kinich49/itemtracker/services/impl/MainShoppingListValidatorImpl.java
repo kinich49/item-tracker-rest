@@ -36,11 +36,13 @@ public class MainShoppingListValidatorImpl implements Validator<MainShoppingList
             throw new BusinessException("Shopping List request must not be null");
 
         var errors = new ArrayList<String>();
+
         shoppingListCondition.assertCondition(request)
                 .ifPresent(errors::add);
 
         storeRequestCondition.assertCondition(request.getStore())
                 .ifPresent(errors::add);
+
         validateShoppingItemList(request.getShoppingItems())
                 .ifPresent(errors::add);
 

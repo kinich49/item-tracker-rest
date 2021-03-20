@@ -20,12 +20,11 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class BrandServiceTest {
+
     @InjectMocks
     private BrandServiceImpl subject;
     @Mock
     private BrandRepository brandRepository;
-    @Mock
-    private SuggestionService suggestionService;
 
     @Test
     @DisplayName("Result should be updated brand")
