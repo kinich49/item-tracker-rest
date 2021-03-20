@@ -20,12 +20,11 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryServiceTest {
+
     @InjectMocks
     private CategoryServiceImpl subject;
     @Mock
     private CategoryRepository categoryRepository;
-    @Mock
-    private SuggestionService suggestionService;
 
     @Test
     @DisplayName("Result should be updated category")
