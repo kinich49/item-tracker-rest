@@ -4,7 +4,9 @@ import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.database.Brand;
 import mx.kinich49.itemtracker.models.database.Category;
 import mx.kinich49.itemtracker.models.database.Item;
+import mx.kinich49.itemtracker.models.front.FrontShoppingItem;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
+import mx.kinich49.itemtracker.models.front.FrontStore;
 import mx.kinich49.itemtracker.repositories.ItemRepository;
 import mx.kinich49.itemtracker.requests.main.*;
 import org.junit.jupiter.api.DisplayName;
@@ -141,7 +143,7 @@ public class ShoppingServiceIntegrationTest {
         brandRequest_A.setId(1L);
 
         BrandRequest brandRequest_B = new BrandRequest();
-        brandRequest_A.setId(2L);
+        brandRequest_B.setId(2L);
 
         CategoryRequest categoryRequest = new CategoryRequest();
         categoryRequest.setName(categoryName);
@@ -270,12 +272,11 @@ public class ShoppingServiceIntegrationTest {
     }
 
     /**
-     * This test tries to insert two new items.
-     * those items have the same new Category.
-     * and the same new Brand
+     * This test tries to insert an already persisted
+     * item bought in a brand new store
      * <p>
-     * When persisted, the items must have
-     * the same category id and the same brand id
+     * When persisted, the store must return
+     * an id and the item id must be the same
      *
      * @throws Exception when database is empty
      */
@@ -291,21 +292,29 @@ public class ShoppingServiceIntegrationTest {
         shoppingListRequest.setStore(storeRequest);
 
         Item item = itemRepository.findById(5L)
-                .orElseThrow(() -> new Exception("Item not found"));
+                .orElseThrow();
+
+        Brand brand = Optional.ofNullable(item.getBrand())
+                .orElseThrow();
 
         BrandRequest brandRequest = new BrandRequest();
-        brandRequest.setId(1L);
+        brandRequest.setName(brand.getName());
+        brandRequest.setId(brand.getId());
 
+        Category category = item.getCategory();
         CategoryRequest categoryRequest = new CategoryRequest();
-        categoryRequest.setId(1L);
+        categoryRequest.setName(category.getName());
+        categoryRequest.setId(category.getId());
 
         MainShoppingItemRequest itemRequest = new MainShoppingItemRequest();
         itemRequest.setBrand(brandRequest);
         itemRequest.setCategory(categoryRequest);
-        itemRequest.setId(1L);
+        itemRequest.setId(item.getId());
         itemRequest.setCurrency("MXN");
+        itemRequest.setUnit("Unit");
         itemRequest.setUnitPrice(20000);
         itemRequest.setQuantity(1);
+        itemRequest.setName(item.getName());
 
         List<MainShoppingItemRequest> itemRequests = new ArrayList<>();
         itemRequests.add(itemRequest);
@@ -315,6 +324,20 @@ public class ShoppingServiceIntegrationTest {
         Optional<FrontShoppingList> optionalResult = subject.save(shoppingListRequest);
 
         assertTrue(optionalResult.isPresent());
+
+        FrontShoppingList result = optionalResult.get();
+
+        assertNotNull(result.getStore());
+        FrontStore resultStore = result.getStore();
+
+        assertNotEquals(0, resultStore.getId());
+
+        assertNotNull(result.getItems());
+        assertFalse(result.getItems().isEmpty());
+
+        FrontShoppingItem resultItem = result.getItems().get(0);
+        assertEquals(item.getName(), resultItem.getName());
+        assertEquals(item.getId(), resultItem.getId());
 
     }
 }

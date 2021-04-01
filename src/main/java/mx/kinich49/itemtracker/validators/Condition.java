@@ -7,10 +7,11 @@ import java.util.Optional;
  * <p>
  * A condition is any business rule, requirement or demand
  * an instance must met to be declared valid. If the parameter is valid,
- * then implementations of this interface must return an Empty Optional.
+ * then implementations of this interface must return an <b>Empty</b> Optional.
  * <p>
  * If the parameter is not valid (as it didn't meet at least one condition),
- * then the Optional must return a String
+ * then the Optional must return a message fully describing
+ * the reason the param is not valid
  */
 public interface Condition<T> {
 
