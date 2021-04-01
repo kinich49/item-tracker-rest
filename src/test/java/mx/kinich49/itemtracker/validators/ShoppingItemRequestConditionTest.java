@@ -163,7 +163,63 @@ public class ShoppingItemRequestConditionTest {
         assertTrue(result.isPresent());
         String message = result.get();
         assertFalse(message.isEmpty());
-        assertTrue(message.contains("Item is missing Unit Price property."));
+        assertTrue(message.contains("Acceptable lowest unit price is 1 (One)."));
+    }
+
+
+    @Test
+    @DisplayName("Should return error message when unit price is negative")
+    public void shouldReturnMessage_when_itemHasNegativeUnitPrice() {
+        //given
+        MainShoppingItemRequest itemRequest = new MainShoppingItemRequest();
+        itemRequest.setQuantity(1.0);
+        itemRequest.setCurrency("MXN");
+        itemRequest.setName("Dummy item name");
+        itemRequest.setUnit("Unit");
+        itemRequest.setUnitPrice(-1);
+
+        BrandRequest brandRequest = new BrandRequest();
+        brandRequest.setName("Dummy brand");
+
+        CategoryRequest category = new CategoryRequest();
+        category.setName("Dummy Category");
+        itemRequest.setCategory(category);
+
+        //when
+        Optional<String> result = subject.assertCondition(itemRequest);
+
+        //then
+        assertTrue(result.isPresent());
+        String message = result.get();
+        assertFalse(message.isEmpty());
+        assertTrue(message.contains("Acceptable lowest unit price is 1 (One)."));
+    }
+
+    @DisplayName("Should return error message when unit price is zero")
+    public void shouldReturnMessage_when_itemHasZeroUnitPrice() {
+        //given
+        MainShoppingItemRequest itemRequest = new MainShoppingItemRequest();
+        itemRequest.setQuantity(1.0);
+        itemRequest.setCurrency("MXN");
+        itemRequest.setName("Dummy item name");
+        itemRequest.setUnit("Unit");
+        itemRequest.setUnitPrice(0);
+
+        BrandRequest brandRequest = new BrandRequest();
+        brandRequest.setName("Dummy brand");
+
+        CategoryRequest category = new CategoryRequest();
+        category.setName("Dummy Category");
+        itemRequest.setCategory(category);
+
+        //when
+        Optional<String> result = subject.assertCondition(itemRequest);
+
+        //then
+        assertTrue(result.isPresent());
+        String message = result.get();
+        assertFalse(message.isEmpty());
+        assertTrue(message.contains("Acceptable lowest unit price is 1 (One)."));
     }
 
     @Test
@@ -232,7 +288,7 @@ public class ShoppingItemRequestConditionTest {
         assertFalse(message.isEmpty());
 
         assertTrue(message.contains("Item is missing Quantity property."));
-        assertTrue(message.contains("Item is missing Unit Price property."));
+        assertTrue(message.contains("Acceptable lowest unit price is 1 (One)."));
         assertTrue(message.contains("Item is missing Currency property."));
         assertTrue(message.contains("Item is missing Unit property."));
         assertTrue(message.contains("Item is missing Name property."));

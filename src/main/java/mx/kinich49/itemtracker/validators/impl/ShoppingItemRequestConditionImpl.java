@@ -76,8 +76,8 @@ public class ShoppingItemRequestConditionImpl implements Condition<MainShoppingI
     }
 
     private Optional<String> assertUnitPrice(MainShoppingItemRequest request) {
-        if (request.getUnitPrice() == 0)
-            return Optional.of("Item is missing Unit Price property.");
+        if (request.getUnitPrice() < 1 )
+            return Optional.of("Acceptable lowest unit price is 1 (One).");
 
         return Optional.empty();
     }
