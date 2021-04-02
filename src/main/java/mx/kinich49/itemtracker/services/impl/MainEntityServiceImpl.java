@@ -88,7 +88,7 @@ public class MainEntityServiceImpl extends BaseDtoEntityService {
         shoppingItem.setCurrency(itemRequest.getCurrency());
         shoppingItem.setUnit(itemRequest.getUnit());
         shoppingItem.setQuantity(itemRequest.getQuantity());
-        shoppingItem.setUnitPrice(itemRequest.getUnitPrice() * 100);
+        shoppingItem.setUnitPrice(itemRequest.getUnitPrice());
 
         item.addShoppingItem(shoppingItem);
 
