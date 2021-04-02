@@ -10,6 +10,10 @@ public final class StringUtils {
         return s == null || s.isEmpty();
     }
 
+    public static boolean isNullOrEmptyOrBlank(String s) {
+        return s == null || s.isEmpty() || s.isBlank();
+    }
+
     public static boolean isNeitherNullNorEmpty(String s) {
         return s != null && s.length() > 0;
     }

@@ -1,6 +1,5 @@
 package mx.kinich49.itemtracker.services;
 
-import lombok.RequiredArgsConstructor;
 import mx.kinich49.itemtracker.models.mobile.*;
 import mx.kinich49.itemtracker.requests.mobile.*;
 import org.assertj.core.annotations.NonNull;
@@ -18,10 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles(profiles = {"test"})
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MobileShoppingServiceTest {
 
     private final MobileShoppingService shoppingService;
+
+    @Autowired
+    public MobileShoppingServiceTest(MobileShoppingService shoppingService) {
+        this.shoppingService = shoppingService;
+    }
 
     /**
      * This test tries to insert a shopping List

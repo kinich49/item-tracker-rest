@@ -7,6 +7,7 @@ import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.models.front.FrontStore;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.main.*;
+import mx.kinich49.itemtracker.services.impl.MainShoppingListValidatorImpl;
 import mx.kinich49.itemtracker.services.impl.ShoppingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ public class ShoppingServiceTest {
     @Mock
     DtoEntityService dtoEntityService;
     @Mock
-    Validator<MainShoppingItemRequest> shoppingListValidator;
+    MainShoppingListValidatorImpl shoppingListValidator;
 
     Brand testBrand;
     Category testCategory;
@@ -81,6 +82,7 @@ public class ShoppingServiceTest {
         itemRequest.setCurrency("MXN");
         itemRequest.setQuantity(1);
         itemRequest.setUnitPrice(100);
+        itemRequest.setUnit("Unit");
 
         itemRequest.setBrand(brandRequest);
         itemRequest.setCategory(categoryRequest);
