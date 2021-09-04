@@ -6,9 +6,8 @@ ARG stage
 RUN  mvn verify -P${stage}
 
 FROM adoptopenjdk/openjdk11:jdk-11.0.10_9-alpine-slim AS production
-RUN addgroup -S item-tracker && adduser -S admin -G item-tracker 
-USER admin:item-tracker
 WORKDIR home/admin
 COPY --from=build target/*.jar app.jar
-EXPOSE 9000
+ARG port
+EXPOSE ${port}
 ENTRYPOINT ["java","-jar","app.jar"]

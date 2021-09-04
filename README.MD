@@ -11,7 +11,7 @@ You can also fork the front end (It's a vue app), which is located in another re
 
 For building and running the application you need:
 
-- [JDK 1.8](https://openjdk.java.net/install/)
+- [JDK 11](https://openjdk.java.net/install/)
 - [Maven 3](https://maven.apache.org)
 
 Or alternative, [Docker](https://docs.docker.com/desktop/) 
@@ -25,7 +25,7 @@ The simplest command is
 ```shell 
 mvn spring-boot:run
 ```
-which will run with default profile ```development```, which uses in-memory H2 as RDBMS with create-drop set as 
+which will run with default profile ```development```. Development profile uses in-memory H2 as RDBMS with create-drop set as 
 Hibernate ddl-auto, and will start with predefined values from resources/development.sql. 
 
 To run ```production``` profile, you must execute
@@ -58,13 +58,21 @@ Just follow these steps:
 
 #### Build the docker image
 ```shell
-docker build -t item-tracker-rest .
+docker build -t item-tracker-rest \ 
+--build-arg stage=development  \
+--build-arg port=9001 .
 ```
 
+The build command receives two arguments, stage and port.
+Stage should be one of development or production
+Prod should match the defined port inside the appropriate 
+application-environment.properties file
+
 The project root folder should be the context
+
 #### Run the container
 ```shell
-docker run --name item-tracker-rest -p9000:9000 --rm item-tracker-rest
+docker run --name item-tracker-rest -p 9001:9001 --rm item-tracker-rest
 ```
 
 #### Stop the container
