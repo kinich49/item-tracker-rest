@@ -75,6 +75,17 @@ The project root folder should be the context
 docker run --name item-tracker-rest -p 9001:9001 --rm item-tracker-rest
 ```
 
+To preserve logs in your local system, consider adding a volume as described at https://docs.docker.com/storage/volumes/
+
+Once your volume is created, attach your volume by adding the flag
+```shell
+-v volume-name:/path/to/log-folder
+```
+
+For example: 
+```shell
+$ docker run --name item-tracker-rest-development -p 9001:9001 -v item-tracker-logs-volume:/home/admin/logs --rm -d item-tracker-rest:development
+```
 #### Stop the container
 Once you're finished, don't forget to stop the container
 ```shell
