@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Brands")
+@Table(name = "brands")
 @ToString(exclude = {"items"})
 @EqualsAndHashCode(exclude = {"items"})
 public class Brand {

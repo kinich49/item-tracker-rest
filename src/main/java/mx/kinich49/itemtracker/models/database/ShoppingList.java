@@ -17,7 +17,6 @@ import java.util.List;
 public class ShoppingList {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
