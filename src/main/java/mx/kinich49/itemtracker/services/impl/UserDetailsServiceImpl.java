@@ -19,13 +19,10 @@ import java.util.function.Function;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final UserSecurityPropertiesRepository userSecurityPropertiesRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository,
-                                  UserSecurityPropertiesRepository userSecurityPropertiesRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userSecurityPropertiesRepository = userSecurityPropertiesRepository;
     }
 
     @Override
