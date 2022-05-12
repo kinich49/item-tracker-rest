@@ -1,13 +1,15 @@
 package mx.kinich49.itemtracker.models.database;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Data
 @Entity
 @Table(name = "Users")
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -15,4 +17,7 @@ public class User {
     private Long id;
     @NotNull
     private String username;
+    @NotNull
+    private String password;
+
 }

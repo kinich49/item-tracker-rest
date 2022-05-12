@@ -1,4 +1,4 @@
-INSERT INTO Users(username) VALUES('admin')
+INSERT INTO Users(username, `password`) VALUES('admin', 'password')
 
 INSERT INTO Brands(name) VALUES ('Economax')
 INSERT INTO Brands(name) VALUES ('Silken') 
