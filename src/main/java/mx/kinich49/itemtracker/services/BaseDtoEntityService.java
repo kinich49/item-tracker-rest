@@ -1,10 +1,7 @@
 package mx.kinich49.itemtracker.services;
 
 import lombok.RequiredArgsConstructor;
-import mx.kinich49.itemtracker.models.database.Brand;
-import mx.kinich49.itemtracker.models.database.Category;
-import mx.kinich49.itemtracker.models.database.Store;
-import mx.kinich49.itemtracker.models.database.User;
+import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.BrandRepository;
 import mx.kinich49.itemtracker.repositories.CategoryRepository;
 import mx.kinich49.itemtracker.repositories.StoreRepository;
@@ -14,6 +11,7 @@ import mx.kinich49.itemtracker.requests.main.BrandRequest;
 import mx.kinich49.itemtracker.requests.main.CategoryRequest;
 import mx.kinich49.itemtracker.requests.main.StoreRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
@@ -28,6 +26,7 @@ public abstract class BaseDtoEntityService implements DtoEntityService {
     protected final StoreRepository storeRepository;
     @Autowired
     protected final UserRepository userRepository;
+
 
     @Override
     public Brand from(BrandRequest request) {

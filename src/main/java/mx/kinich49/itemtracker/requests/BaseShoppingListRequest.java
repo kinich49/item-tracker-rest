@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BaseShoppingListRequest {
 
-    protected long userId;
     protected LocalDate shoppingDate;
 
 }

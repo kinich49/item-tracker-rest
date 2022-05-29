@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.services.impl;
 
+import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.repositories.*;
 import mx.kinich49.itemtracker.requests.BaseShoppingItemRequest;
@@ -8,6 +9,7 @@ import mx.kinich49.itemtracker.requests.main.MainShoppingItemRequest;
 import mx.kinich49.itemtracker.requests.main.MainShoppingListRequest;
 import mx.kinich49.itemtracker.services.BaseDtoEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -31,13 +33,13 @@ public class MainEntityServiceImpl extends BaseDtoEntityService {
     }
 
     @Override
-    public <T extends BaseShoppingListRequest> ShoppingList from(T request) {
-        if (request == null)
-            return null;
-
-        User user = userRepository.getOne(request.getUserId());
-
+    public <T extends BaseShoppingListRequest> ShoppingList from(T request,
+                                                                 UserDetails userDetails)
+            throws BusinessException {
         MainShoppingListRequest shoppingListRequest = (MainShoppingListRequest) request;
+
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new BusinessException(String.format("username %s not found", userDetails.getUsername())));
 
         Store store = from(shoppingListRequest.getStore());
         ShoppingList shoppingList = new ShoppingList();

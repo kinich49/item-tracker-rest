@@ -41,7 +41,7 @@ public class UserController {
                     .map(userDetailsService::loadUserByUsername)
                     .map(jwtService::generateToken)
                     .map(AuthenticationResponse::new)
-                    .map(JsonApi::new)
+                    .map(JsonApi::ok)
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> {
                         JsonApi<AuthenticationResponse> jsonApi = new JsonApi<>("Something went wrong");

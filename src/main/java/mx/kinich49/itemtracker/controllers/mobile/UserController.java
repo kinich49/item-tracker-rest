@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController("mobileUserController")
 @RequestMapping("api/mobile/users")
-@RequiredArgsConstructor
 @SuppressWarnings("unused")
 public class UserController {
 
-    @Autowired
     private final UserRepository userRepository;
+
+    @Autowired
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonApi<User>> getUserById(@PathVariable long id) {

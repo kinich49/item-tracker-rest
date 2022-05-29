@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.services.impl;
 
+import mx.kinich49.itemtracker.exceptions.BusinessException;
 import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.models.mobile.MobileShoppingList;
 import mx.kinich49.itemtracker.repositories.ShoppingItemRepository;
@@ -14,6 +15,7 @@ import org.javatuples.Sextet;
 import org.javatuples.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,10 +46,9 @@ public class MobileShoppingServiceImpl implements MobileShoppingService {
 
     @Override
     @Transactional
-    public MobileShoppingList save(MobileShoppingListRequest request) {
+    public MobileShoppingList save(MobileShoppingListRequest request, UserDetails userDetails) throws BusinessException {
         Objects.requireNonNull(request, "Mobile Shopping Request must not be null");
-
-        ShoppingList shoppingList = dtoEntityService.from(request);
+        ShoppingList shoppingList = dtoEntityService.from(request, userDetails);
         Long shoppingListMobileId = request.getMobileId();
         Store store = dtoEntityService.from(request.getStore());
         storeRepository.save(store);

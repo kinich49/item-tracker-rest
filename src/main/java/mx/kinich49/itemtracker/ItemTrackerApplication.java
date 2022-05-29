@@ -8,20 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ItemTrackerApplication implements CommandLineRunner {
+public class ItemTrackerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ItemTrackerApplication.class, args);
-    }
-
-    @Autowired
-    UserService userService;
-    @Override
-    public void run(String... args) throws Exception {
-        var userRequest = new UserRequest();
-        userRequest.setUsername("manager");
-        userRequest.setPassword("password");
-
-        userService.addUser(userRequest);
     }
 }

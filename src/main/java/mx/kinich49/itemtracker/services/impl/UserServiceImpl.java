@@ -7,6 +7,8 @@ import mx.kinich49.itemtracker.repositories.UserRepository;
 import mx.kinich49.itemtracker.repositories.UserSecurityPropertiesRepository;
 import mx.kinich49.itemtracker.requests.main.UserRequest;
 import mx.kinich49.itemtracker.services.UserService;
+import mx.kinich49.itemtracker.validators.userrequest.UserRequestParameter;
+import mx.kinich49.itemtracker.validators.userrequest.UserRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Optional<User> addUser(UserRequest userRequest) throws BusinessException {
-        validator.validate(userRequest);
+        validator.validate(new UserRequestParameter(userRequest));
 
         User user = new User();
         UserSecurityProperties securityProperties = new UserSecurityProperties();

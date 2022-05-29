@@ -14,4 +14,12 @@ public final class NumberUtils {
         return param == null || param == 0;
     }
 
+    public static boolean isNullOrZero(Float param) {
+        return param == null || param == 0;
+    }
+
+    public static boolean isNullOrZero(Double param) {
+        return param == null || param == 0;
+    }
+
 }

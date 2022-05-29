@@ -14,7 +14,15 @@ public final class StringUtils {
         return s == null || s.isEmpty() || s.isBlank();
     }
 
+    public static boolean isNullOrEmptyOrBlank(CharSequence s){
+        return s == null || s.length() == 0  || s.toString().isBlank();
+    }
+
     public static boolean isNeitherNullNorEmpty(String s) {
         return s != null && s.length() > 0;
+    }
+
+    public static boolean isNeitherNullNorEmptyNorBlank(String s) {
+        return s != null && s.length() > 0 && !s.equals(" ");
     }
 }

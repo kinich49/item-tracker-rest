@@ -1,20 +1,26 @@
 package mx.kinich49.itemtracker.services;
 
 import mx.kinich49.itemtracker.exceptions.BusinessException;
+import mx.kinich49.itemtracker.models.MockUserDetails;
 import mx.kinich49.itemtracker.models.database.*;
 import mx.kinich49.itemtracker.models.front.FrontShoppingItem;
 import mx.kinich49.itemtracker.models.front.FrontShoppingList;
 import mx.kinich49.itemtracker.models.front.FrontStore;
 import mx.kinich49.itemtracker.repositories.ShoppingListRepository;
 import mx.kinich49.itemtracker.requests.main.*;
-import mx.kinich49.itemtracker.services.impl.MainShoppingListValidatorImpl;
 import mx.kinich49.itemtracker.services.impl.ShoppingServiceImpl;
+import mx.kinich49.itemtracker.validators.shoppinglist.ShoppingListOwnershipParameter;
+import mx.kinich49.itemtracker.validators.shoppinglist.ShoppingListOwnershipValidator;
+import mx.kinich49.itemtracker.validators.shoppinglist.ShoppingListParameter;
+import mx.kinich49.itemtracker.validators.shoppinglist.ShoppingListValidator;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,7 +42,9 @@ public class ShoppingServiceTest {
     @Mock
     DtoEntityService dtoEntityService;
     @Mock
-    MainShoppingListValidatorImpl shoppingListValidator;
+    ShoppingListValidator shoppingListValidator;
+    @Mock
+    ShoppingListOwnershipValidator ownershipParameter;
 
     Brand testBrand;
     Category testCategory;
@@ -66,6 +74,7 @@ public class ShoppingServiceTest {
     }
 
     @Test
+    @DisplayName("Should create new DTO")
     public void should_create_newDto() throws BusinessException {
         //given
         MainShoppingListRequest request = new MainShoppingListRequest();
@@ -74,7 +83,8 @@ public class ShoppingServiceTest {
         StoreRequest storeRequest = new StoreRequest();
         MainShoppingItemRequest itemRequest = new MainShoppingItemRequest();
 
-        request.setUserId(1L);
+        UserDetails mockUserDetails = new MockUserDetails("Test username");
+
         brandRequest.setName("Test Brand");
         categoryRequest.setName("Test Category");
         storeRequest.setName("Test Store");
@@ -108,7 +118,8 @@ public class ShoppingServiceTest {
         FrontShoppingList dto = new FrontShoppingList(1, LocalDate.now(),
                 frontStore, itemDtos);
 
-        when(dtoEntityService.from(any(MainShoppingListRequest.class)))
+        when(dtoEntityService.from(any(MainShoppingListRequest.class),
+                any(UserDetails.class)))
                 .thenReturn(shoppingList);
 
         when(shoppingListRepository.save(any(ShoppingList.class)))
@@ -118,14 +129,14 @@ public class ShoppingServiceTest {
                 });
 
         //when
-        Optional<FrontShoppingList> optDto = subject.save(request);
+        Optional<FrontShoppingList> optDto = subject.save(request, mockUserDetails);
 
         //then
         verify(shoppingListRepository, times(1))
                 .save(any(ShoppingList.class));
 
         verify(dtoEntityService, times(1))
-                .from(any(MainShoppingListRequest.class));
+                .from(any(MainShoppingListRequest.class), eq(mockUserDetails));
 
         assertTrue(optDto.isPresent());
         FrontShoppingList result = optDto.get();
@@ -148,10 +159,15 @@ public class ShoppingServiceTest {
         LocalDate localDate = LocalDate.now();
         List<ShoppingList> shoppingLists = new ArrayList<>();
         shoppingLists.add(shoppingList);
-        when(shoppingListRepository.findByShoppingDateAndUserId(eq(localDate), eq(1L)))
+
+        var mockUserDetails = new MockUserDetails("Test username");
+
+        when(shoppingListRepository.findByShoppingDateAndUsername(eq(localDate), eq("Test username")))
                 .thenReturn(shoppingLists);
+
+
         //when
-        List<FrontShoppingList> response = subject.findBy(localDate, 1L);
+        List<FrontShoppingList> response = subject.findBy(localDate, mockUserDetails);
 
         //then
         assertNotNull(response);
@@ -176,10 +192,12 @@ public class ShoppingServiceTest {
     }
 
     @Test
-    public void should_findAndTransform_DtoById() {
+    @DisplayName("Should find and transform DTO by ID")
+    public void should_findAndTransform_DtoById() throws BusinessException {
         //given
+        long shoppingListId = 1L;
         ShoppingList shoppingList = new ShoppingList();
-        shoppingList.setId(1L);
+        shoppingList.setId(shoppingListId);
         shoppingList.setStore(testStore);
         ShoppingItem shoppingItem = new ShoppingItem();
         shoppingItem.setItem(testItem);
@@ -188,10 +206,12 @@ public class ShoppingServiceTest {
         shoppingItem.setUnitPrice(100);
         shoppingList.addShoppingItem(shoppingItem);
 
-        when(shoppingListRepository.findByIdAndUserId(eq(1L), eq(1L)))
+
+        var userDetails = new MockUserDetails("Test username");
+        when(shoppingListRepository.findById(eq(shoppingListId)))
                 .thenReturn(Optional.of(shoppingList));
         //when
-        Optional<FrontShoppingList> response = subject.findBy(1L, 1L);
+        Optional<FrontShoppingList> response = subject.findBy(shoppingListId, userDetails);
 
         //then
         assertNotNull(response);
@@ -214,31 +234,40 @@ public class ShoppingServiceTest {
     }
 
     @Test
+    @DisplayName("Should not find shopping list by date")
     public void should_notFind_byDate() {
         //given
-        when(shoppingListRepository.findByShoppingDateAndUserId(any(LocalDate.class), eq(1L)))
-                .thenReturn(Collections.emptyList());
+
+        var userDetails = new MockUserDetails("Test username");
+        var now = LocalDate.now();
+
+        when(shoppingListRepository.findByShoppingDateAndUsername(eq(now), eq(userDetails.getUsername())))
+                .thenReturn(null);
 
         //when
-        List<FrontShoppingList> response = subject.findBy(LocalDate.now(), 1L);
+        List<FrontShoppingList> response = subject.findBy(LocalDate.now(), userDetails);
 
         //then
-        assertNotNull(response);
-        assertTrue(response.isEmpty());
+        assertNull(response);
 
     }
 
     @Test
-    public void should_notFind_byId() {
+    @DisplayName("Should not find by shopping list ID")
+    public void should_notFind_byId() throws BusinessException{
         //given
-        when(shoppingListRepository.findByIdAndUserId(anyLong(), anyLong()))
+        long shoppingListId = 1L;
+        var userDetails = new MockUserDetails("Test username");
+
+        when(shoppingListRepository.findById(eq(shoppingListId)))
                 .thenReturn(Optional.empty());
 
         //when
-        Optional<FrontShoppingList> response = subject.findBy(1L, 1L);
+        Optional<FrontShoppingList> response = subject.findBy(shoppingListId, userDetails);
 
         //then
         assertFalse(response.isPresent());
 
     }
+
 }

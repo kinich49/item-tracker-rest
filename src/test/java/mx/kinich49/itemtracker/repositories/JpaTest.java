@@ -1,10 +1,15 @@
 package mx.kinich49.itemtracker.repositories;
 
+import mx.kinich49.itemtracker.configurations.PasswordEncoderConfiguration;
 import mx.kinich49.itemtracker.models.database.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
@@ -15,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @ActiveProfiles(profiles = {"test"})
+@Import(PasswordEncoderConfiguration.class)
 public class JpaTest {
 
     private final ShoppingListRepository shoppingListRepository;
@@ -65,6 +71,12 @@ public class JpaTest {
         brandRepository.save(testBrand);
         categoryRepository.save(testCategory);
         itemRepository.save(testItem);
+    }
+
+    @Test
+    @DisplayName("Sanity test")
+    public void sanityTest() {
+
     }
 
     @Test

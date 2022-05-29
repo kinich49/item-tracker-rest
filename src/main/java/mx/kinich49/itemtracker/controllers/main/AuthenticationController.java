@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.controllers.main;
 
+import mx.kinich49.itemtracker.JsonApi;
 import mx.kinich49.itemtracker.requests.main.AuthenticationRequest;
 import mx.kinich49.itemtracker.requests.main.AuthenticationResponse;
 import mx.kinich49.itemtracker.services.JWTService;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 public class AuthenticationController {
@@ -37,12 +40,18 @@ public class AuthenticationController {
         try {
             Authentication authentication = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
             authenticationManager.authenticate(authentication);
-        } catch (BadCredentialsException e){
+        } catch (BadCredentialsException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        String token = jwtService.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+        return Optional.ofNullable(userDetailsService.loadUserByUsername(request.getUsername()))
+                .map(jwtService::generateToken)
+                .map(AuthenticationResponse::new)
+                .map(JsonApi::ok)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    JsonApi<AuthenticationResponse> jsonApi = new JsonApi<>("Something went wrong");
+                    return new ResponseEntity<>(jsonApi, HttpStatus.BAD_REQUEST);
+                });
     }
 }

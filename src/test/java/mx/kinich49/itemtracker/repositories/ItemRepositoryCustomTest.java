@@ -1,11 +1,14 @@
 package mx.kinich49.itemtracker.repositories;
 
+import mx.kinich49.itemtracker.configurations.PasswordEncoderConfiguration;
 import mx.kinich49.itemtracker.models.database.Item;
 import mx.kinich49.itemtracker.models.database.Store;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.Tuple;
@@ -18,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles(profiles = {"test"})
+@Import(PasswordEncoderConfiguration.class)
 public class ItemRepositoryCustomTest {
 
     private final ItemRepository itemRepository;
@@ -25,6 +29,12 @@ public class ItemRepositoryCustomTest {
     @Autowired
     public ItemRepositoryCustomTest(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+    }
+
+    @Test
+    @DisplayName("Sanity test")
+    void sanityTest() {
+
     }
 
     @Test

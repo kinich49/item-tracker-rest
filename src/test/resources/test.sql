@@ -1,5 +1,8 @@
-INSERT INTO Users(username) VALUES ('User A')
-INSERT INTO Users(username) VALUES ('User B')
+INSERT INTO Users(username, password) VALUES ('User A', 'password')
+INSERT INTO Users(username, password) VALUES ('User B', 'password')
+
+INSERT INTO User_Security_Properties(user_id, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_enabled) VALUES (1,1,1,1,1)
+INSERT INTO User_Security_Properties(user_id, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_enabled) VALUES (2,1,1,1,1)
 
 INSERT INTO Brands(name) VALUES ('Test Brand 1')
 INSERT INTO Brands(name) VALUES ('Test Brand 2')
